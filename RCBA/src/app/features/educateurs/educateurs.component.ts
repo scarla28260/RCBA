@@ -26,8 +26,24 @@ export class EducateursComponent {
   readonly convocations = this.clubService.convocations;
   readonly playerStats = this.clubService.playerStats;
 
-  // Tabs: Convocations, Stats Joueurs, Tableau interactif, Bibliothèque, Documents, Planning
-  readonly activeTab = signal<'convocations' | 'stats' | 'tactique' | 'bibliotheque' | 'documents' | 'planning'>('convocations');
+  // Tabs: Convocations, Stats Joueurs, Tableau interactif, Bibliothèque, Documents, Planning, Video
+  readonly activeTab = signal<'convocations' | 'stats' | 'tactique' | 'video' | 'bibliotheque' | 'documents' | 'planning'>('convocations');
+
+  // Analyse Vidéo (source coach/video-analysis de l'ancien projet)
+  readonly videoAnalysisList = signal([
+    {
+      id: 'vid-1',
+      title: 'Victoire U13 — Demi-finale Départementale',
+      event: 'Match officiel U13 vs Cherisy (6-1)',
+      date: 'Mai 2026',
+      videoUrl: 'videos/victoire-u13.mp4',
+      category: 'U13',
+      pointsForts: ['Transitions offensives rapides', 'Placement bloc médian', 'Efficacité sur phases arrêtées'],
+      pointsAmelioration: ['Relances courtes sous pressing', 'Repli défensif des ailiers'],
+    }
+  ]);
+  readonly selectedVideo = signal<any>(this.videoAnalysisList()[0]);
+
 
   // Format du terrain: Demi-terrain, Terrain complet, Zone réduite
   readonly pitchType = signal<'half' | 'full' | 'box'>('half');

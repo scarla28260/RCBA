@@ -89,6 +89,17 @@
         </button>
         <button
           type="button"
+          (click)="activeTab.set('video')"
+          [class.bg-[#101d69]]="activeTab() === 'video'"
+          [class.text-white]="activeTab() === 'video'"
+          [class.bg-slate-100]="activeTab() !== 'video'"
+          [class.text-slate-700]="activeTab() !== 'video'"
+          class="rounded-lg px-3.5 py-2 text-xs font-black uppercase tracking-wider transition-all flex items-center gap-1.5"
+        >
+          <span>🎬</span> Analyse Vidéo
+        </button>
+        <button
+          type="button"
           (click)="activeTab.set('bibliotheque')"
           [class.bg-[#101d69]]="activeTab() === 'bibliotheque'"
           [class.text-white]="activeTab() === 'bibliotheque'"
@@ -1122,4 +1133,91 @@
     </div>
   }
 
+  <!-- TAB 7: ANALYSE VIDÉO & PERFORMANCES (Portage du projet original) -->
+  @if (activeTab() === 'video') {
+    <div class="bg-white rounded-2xl border-t-4 border-[#101d69] p-6 sm:p-8 shadow-sm space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-black uppercase text-[#21ad1c]">Débriefing & Séquences</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-[#101d69] text-white">Match & Entraînement</span>
+          </div>
+          <h2 class="text-xl font-black uppercase text-[#101d69] mt-1">
+            Analyse Vidéo des Matchs & Séances
+          </h2>
+          <p class="text-xs text-slate-500 mt-1">
+            Visionnez les temps forts, séquencez les phases de jeu clés et partagez vos retours tactiques avec les joueurs.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Colonne Gauche : Lecteur Vidéo & Informations -->
+        <div class="lg:col-span-2 space-y-4">
+          <div class="rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 shadow-lg aspect-video flex items-center justify-center relative">
+            <video
+              [src]="selectedVideo().videoUrl"
+              controls
+              class="w-full h-full object-cover"
+            ></video>
+          </div>
+
+          <div class="p-5 rounded-xl bg-slate-50 border border-slate-200 flex items-start justify-between">
+            <div>
+              <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-emerald-100 text-emerald-800 mb-1">
+                {{ selectedVideo().category }}
+              </span>
+              <h3 class="text-lg font-black uppercase text-[#101d69]">{{ selectedVideo().title }}</h3>
+              <p class="text-xs text-slate-500 font-medium">{{ selectedVideo().event }} &bull; {{ selectedVideo().date }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Colonne Droite : Points Clés & Débriefing -->
+        <div class="space-y-6">
+          <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50 space-y-4">
+            <h4 class="text-sm font-black uppercase tracking-wider text-[#101d69] flex items-center gap-2">
+              <span>✅</span> Points Forts Observés
+            </h4>
+            <ul class="space-y-2 text-xs text-slate-700">
+              @for (pf of selectedVideo().pointsForts; track pf) {
+                <li class="flex items-start gap-2">
+                  <span class="text-[#21ad1c] font-black text-sm">✓</span>
+                  <span>{{ pf }}</span>
+                </li>
+              }
+            </ul>
+          </div>
+
+          <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50 space-y-4">
+            <h4 class="text-sm font-black uppercase tracking-wider text-[#101d69] flex items-center gap-2">
+              <span>⚠️</span> Axes d'Amélioration
+            </h4>
+            <ul class="space-y-2 text-xs text-slate-700">
+              @for (pa of selectedVideo().pointsAmelioration; track pa) {
+                <li class="flex items-start gap-2">
+                  <span class="text-amber-500 font-black text-sm">→</span>
+                  <span>{{ pa }}</span>
+                </li>
+              }
+            </ul>
+          </div>
+
+          <div class="p-5 rounded-2xl border border-dashed border-slate-300 bg-slate-100/50 text-center space-y-2">
+            <span class="text-2xl">📹</span>
+            <h5 class="text-xs font-black uppercase text-slate-700">Ajouter une nouvelle vidéo</h5>
+            <p class="text-[11px] text-slate-500">Formats acceptés : MP4, MOV. Taille max recommandée : 500 Mo.</p>
+            <button
+              type="button"
+              class="px-4 py-2 rounded-lg bg-[#101d69] text-white text-xs font-black uppercase tracking-wider hover:bg-[#1f39cf] transition-all"
+            >
+              + Importer une séquence
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
 </div>
+

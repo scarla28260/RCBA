@@ -163,6 +163,15 @@
     >
       <span>📂</span> Documents Officiels
     </button>
+    <button
+      type="button"
+      (click)="activeTab.set('studio')"
+      [class]="activeTab() === 'studio'
+        ? 'inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-wider bg-[#101d69] text-white shadow-md'
+        : 'inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'"
+    >
+      <span>🎨</span> Studio Visuel & Réseaux
+    </button>
   </div>
 
   <!-- ========================================================= -->
@@ -1958,4 +1967,202 @@
     </div>
   }
 
+  <!-- ========================================================= -->
+  <!-- CONTENU ONGLET 9: STUDIO VISUEL MATCH & RÉSEAUX           -->
+  <!-- ========================================================= -->
+  @if (activeTab() === 'studio') {
+    <div class="space-y-8">
+      <div class="rounded-2xl border-t-4 border-[#101d69] bg-white p-6 sm:p-8 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+          <div>
+            <span class="text-xs font-black uppercase text-[#21ad1c]">Communication & Réseaux Sociaux</span>
+            <h2 class="text-xl font-black uppercase text-[#101d69] mt-0.5">
+              Studio Graphique Officiel RCBA
+            </h2>
+            <p class="text-xs text-slate-500 mt-1">
+              Générez en temps réel les affiches officielles de match, résultats du week-end et annonces pour Facebook, Instagram et affichage club.
+            </p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              (click)="studioTheme.set('match')"
+              [class.bg-[#101d69]]="studioTheme() === 'match'"
+              [class.text-white]="studioTheme() === 'match'"
+              [class.bg-slate-100]="studioTheme() !== 'match'"
+              class="px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase transition-all"
+            >
+              Jour de Match
+            </button>
+            <button
+              type="button"
+              (click)="studioTheme.set('resultat')"
+              [class.bg-[#101d69]]="studioTheme() === 'resultat'"
+              [class.text-white]="studioTheme() === 'resultat'"
+              [class.bg-slate-100]="studioTheme() !== 'resultat'"
+              class="px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase transition-all"
+            >
+              Résultat Final
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-6">
+          <!-- Formulaire de configuration -->
+          <div class="space-y-4">
+            <h3 class="text-sm font-black uppercase text-[#101d69] flex items-center gap-2">
+              <span>⚙️</span> Paramètres du Visuel
+            </h3>
+
+            <div class="space-y-3 text-xs">
+              <div>
+                <label class="block font-bold text-slate-700 mb-1 uppercase">Compétition / Catégorie</label>
+                <input
+                  type="text"
+                  [(ngModel)]="studioMatchComp"
+                  class="w-full rounded-lg border border-slate-300 p-2.5 font-bold uppercase"
+                />
+              </div>
+
+              <div>
+                <label class="block font-bold text-slate-700 mb-1 uppercase">Adversaire</label>
+                <input
+                  type="text"
+                  [(ngModel)]="studioMatchOpponent"
+                  class="w-full rounded-lg border border-slate-300 p-2.5 font-bold uppercase"
+                />
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1 uppercase">Date</label>
+                  <input
+                    type="text"
+                    [(ngModel)]="studioMatchDate"
+                    class="w-full rounded-lg border border-slate-300 p-2.5 font-bold uppercase"
+                  />
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1 uppercase">Heure</label>
+                  <input
+                    type="text"
+                    [(ngModel)]="studioMatchTime"
+                    class="w-full rounded-lg border border-slate-300 p-2.5 font-bold uppercase"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label class="block font-bold text-slate-700 mb-1 uppercase">Lieu de la Rencontre</label>
+                <input
+                  type="text"
+                  [(ngModel)]="studioMatchLieu"
+                  class="w-full rounded-lg border border-slate-300 p-2.5 font-bold uppercase"
+                />
+              </div>
+
+              @if (studioTheme() === 'resultat') {
+                <div class="grid grid-cols-2 gap-3 p-3 rounded-lg bg-slate-50 border border-slate-200">
+                  <div>
+                    <label class="block font-bold text-slate-700 mb-1 uppercase">Score RCBA</label>
+                    <input
+                      type="text"
+                      [(ngModel)]="studioMatchScoreHome"
+                      class="w-full rounded-lg border border-slate-300 p-2 font-black text-center text-lg"
+                    />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 mb-1 uppercase">Score Adversaire</label>
+                    <input
+                      type="text"
+                      [(ngModel)]="studioMatchScoreAway"
+                      class="w-full rounded-lg border border-slate-300 p-2 font-black text-center text-lg"
+                    />
+                  </div>
+                </div>
+              }
+            </div>
+
+            <div class="pt-4 border-t border-slate-200 flex items-center justify-between">
+              <span class="text-[11px] text-slate-500">Format 1:1 idéal pour publication Facebook & Instagram</span>
+              <button
+                type="button"
+                (click)="printStudio()"
+                class="px-4 py-2 rounded-lg bg-[#101d69] text-white text-xs font-black uppercase tracking-wider hover:bg-[#1f39cf] transition-all"
+              >
+                Imprimer / Exporter PDF
+              </button>
+            </div>
+          </div>
+
+          <!-- Aperçu du Poster Graphique -->
+          <div class="flex flex-col items-center justify-center">
+            <div class="w-full max-w-[420px] aspect-square rounded-2xl bg-gradient-to-br from-[#0a1128] via-[#101d69] to-[#0a1128] border-2 border-white/20 shadow-2xl p-6 flex flex-col justify-between text-white relative overflow-hidden">
+              
+              <!-- Effet halo stade vert & bleu -->
+              <div class="absolute -top-12 -right-12 w-48 h-48 bg-[#25cf1f]/20 blur-3xl rounded-full pointer-events-none"></div>
+              <div class="absolute -bottom-12 -left-12 w-48 h-48 bg-[#1f39cf]/30 blur-3xl rounded-full pointer-events-none"></div>
+
+              <!-- Haut du visuel -->
+              <div class="flex items-center justify-between z-10">
+                <div class="flex items-center gap-2">
+                  <img src="logo.png" alt="Logo RCBA" class="h-10 w-10 object-contain drop-shadow" />
+                  <div class="flex flex-col">
+                    <span class="text-xs font-black uppercase tracking-wider text-white">RCBA</span>
+                    <span class="text-[9px] text-emerald-400 font-bold uppercase">Bû &bull; Abondant</span>
+                  </div>
+                </div>
+                <span class="px-2.5 py-1 rounded bg-amber-400 text-slate-950 font-black text-[10px] uppercase tracking-wider">
+                  {{ studioMatchComp() }}
+                </span>
+              </div>
+
+              <!-- Centre du visuel : Match ou Résultat -->
+              <div class="my-auto text-center space-y-3 z-10">
+                @if (studioTheme() === 'match') {
+                  <span class="inline-block text-amber-300 font-black text-xs uppercase tracking-[0.25em]">
+                    — JOUR DE MATCH —
+                  </span>
+                  <div class="flex items-center justify-center gap-4">
+                    <span class="text-3xl font-black uppercase tracking-tight text-white">RCBA</span>
+                    <span class="text-lg font-black text-amber-400">VS</span>
+                    <span class="text-2xl font-black uppercase tracking-tight text-slate-200">{{ studioMatchOpponent() }}</span>
+                  </div>
+                } @else {
+                  <span class="inline-block text-emerald-400 font-black text-xs uppercase tracking-[0.25em]">
+                    — SCORE FINAL —
+                  </span>
+                  <div class="flex items-center justify-center gap-6">
+                    <div class="flex flex-col items-center">
+                      <span class="text-xs font-black uppercase text-slate-300">RCBA</span>
+                      <span class="text-5xl font-black text-white">{{ studioMatchScoreHome() }}</span>
+                    </div>
+                    <span class="text-2xl font-black text-white/40">-</span>
+                    <div class="flex flex-col items-center">
+                      <span class="text-xs font-black uppercase text-slate-300">{{ studioMatchOpponent() }}</span>
+                      <span class="text-5xl font-black text-white">{{ studioMatchScoreAway() }}</span>
+                    </div>
+                  </div>
+                }
+              </div>
+
+              <!-- Bas du visuel : Détails rendez-vous & Partenaires -->
+              <div class="z-10 pt-4 border-t border-white/10 flex items-center justify-between text-[11px]">
+                <div class="flex flex-col text-left">
+                  <span class="font-black text-white uppercase">{{ studioMatchDate() }} &bull; {{ studioMatchTime() }}</span>
+                  <span class="text-[10px] text-sky-200 font-semibold">{{ studioMatchLieu() }}</span>
+                </div>
+                <div class="flex items-center gap-1.5 opacity-80">
+                  <span class="text-[9px] uppercase tracking-wider font-bold text-slate-400">RCBA.CLUB</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
 </div>
+

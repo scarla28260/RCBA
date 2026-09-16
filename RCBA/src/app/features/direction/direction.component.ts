@@ -40,8 +40,26 @@ export class DirectionComponent {
   readonly partners = this.clubService.partners;
   readonly installations = this.clubService.installations;
 
-  // Active Tab: Tableau de bord, Licences & Effectifs, Buvette, Mini-Bus Partagé, Finances, Convocations, Tâches, Documents
-  readonly activeTab = signal<'dashboard' | 'licences' | 'buvette' | 'minibus' | 'finances' | 'convocations' | 'taches' | 'documents'>('dashboard');
+  // Active Tab: Tableau de bord, Licences & Effectifs, Buvette, Mini-Bus Partagé, Finances, Convocations, Tâches, Documents, Studio Visuel
+  readonly activeTab = signal<'dashboard' | 'licences' | 'buvette' | 'minibus' | 'finances' | 'convocations' | 'taches' | 'documents' | 'studio'>('dashboard');
+
+  // Studio Visuel Match & Réseaux Sociaux (Portage de direction/studio du projet original)
+  readonly studioTheme = signal<'match' | 'resultat' | 'annonce'>('match');
+  readonly studioMatchOpponent = signal<string>('DREUX A PORTU');
+  readonly studioMatchDate = signal<string>('DIMANCHE 20 SEPTEMBRE');
+  readonly studioMatchTime = signal<string>('15H00');
+  readonly studioMatchScoreHome = signal<string>('4');
+  readonly studioMatchScoreAway = signal<string>('0');
+  readonly studioMatchComp = signal<string>('CHAMPIONNAT D3 DISTRICT');
+  readonly studioMatchLieu = signal<string>('STADE DE BÛ');
+
+  printStudio(): void {
+    if (typeof window !== 'undefined') {
+      window.print();
+    }
+  }
+
+
 
   // Filtre convocations
   readonly selectedTeamFilter = signal<string>('all');

@@ -24,9 +24,80 @@
     </div>
   </section>
 
-  <!-- Section Organigramme Officiel (Source Footeo RCBA) -->
-  <section class="bg-white rounded-2xl border-t-4 border-[#21ad1c] p-8 shadow-sm space-y-8">
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200">
+  <!-- Navigation d'onglets interne au Club (Histoire, Organigramme, Horaires, Tarifs, Charte, Arbitres) -->
+  <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-200">
+    <button
+      type="button"
+      (click)="activeTab.set('organigramme')"
+      [class.bg-[#101d69]]="activeTab() === 'organigramme'"
+      [class.text-white]="activeTab() === 'organigramme'"
+      [class.bg-white]="activeTab() !== 'organigramme'"
+      [class.text-slate-700]="activeTab() !== 'organigramme'"
+      class="px-4 py-2.5 rounded-lg text-xs font-black uppercase tracking-wider shadow-xs hover:bg-[#101d69]/90 hover:text-white transition-all whitespace-nowrap border border-slate-200"
+    >
+      🏢 Organigramme
+    </button>
+    <button
+      type="button"
+      (click)="activeTab.set('histoire')"
+      [class.bg-[#101d69]]="activeTab() === 'histoire'"
+      [class.text-white]="activeTab() === 'histoire'"
+      [class.bg-white]="activeTab() !== 'histoire'"
+      [class.text-slate-700]="activeTab() !== 'histoire'"
+      class="px-4 py-2.5 rounded-lg text-xs font-black uppercase tracking-wider shadow-xs hover:bg-[#101d69]/90 hover:text-white transition-all whitespace-nowrap border border-slate-200"
+    >
+      📖 Histoire & Projet
+    </button>
+    <button
+      type="button"
+      (click)="activeTab.set('horaires')"
+      [class.bg-[#101d69]]="activeTab() === 'horaires'"
+      [class.text-white]="activeTab() === 'horaires'"
+      [class.bg-white]="activeTab() !== 'horaires'"
+      [class.text-slate-700]="activeTab() !== 'horaires'"
+      class="px-4 py-2.5 rounded-lg text-xs font-black uppercase tracking-wider shadow-xs hover:bg-[#101d69]/90 hover:text-white transition-all whitespace-nowrap border border-slate-200"
+    >
+      ⏰ Horaires Séances
+    </button>
+    <button
+      type="button"
+      (click)="activeTab.set('tarifs')"
+      [class.bg-[#101d69]]="activeTab() === 'tarifs'"
+      [class.text-white]="activeTab() === 'tarifs'"
+      [class.bg-white]="activeTab() !== 'tarifs'"
+      [class.text-slate-700]="activeTab() !== 'tarifs'"
+      class="px-4 py-2.5 rounded-lg text-xs font-black uppercase tracking-wider shadow-xs hover:bg-[#101d69]/90 hover:text-white transition-all whitespace-nowrap border border-slate-200"
+    >
+      💳 Tarifs Licences
+    </button>
+    <button
+      type="button"
+      (click)="activeTab.set('charte')"
+      [class.bg-[#101d69]]="activeTab() === 'charte'"
+      [class.text-white]="activeTab() === 'charte'"
+      [class.bg-white]="activeTab() !== 'charte'"
+      [class.text-slate-700]="activeTab() !== 'charte'"
+      class="px-4 py-2.5 rounded-lg text-xs font-black uppercase tracking-wider shadow-xs hover:bg-[#101d69]/90 hover:text-white transition-all whitespace-nowrap border border-slate-200"
+    >
+      📜 Charte & Règlement
+    </button>
+    <button
+      type="button"
+      (click)="activeTab.set('arbitres')"
+      [class.bg-[#101d69]]="activeTab() === 'arbitres'"
+      [class.text-white]="activeTab() === 'arbitres'"
+      [class.bg-white]="activeTab() !== 'arbitres'"
+      [class.text-slate-700]="activeTab() !== 'arbitres'"
+      class="px-4 py-2.5 rounded-lg text-xs font-black uppercase tracking-wider shadow-xs hover:bg-[#101d69]/90 hover:text-white transition-all whitespace-nowrap border border-slate-200"
+    >
+      ⚖️ Arbitres Officiels
+    </button>
+  </div>
+
+  <!-- VUE 1 : ORGANIGRAMME -->
+  @if (activeTab() === 'organigramme') {
+    <section class="bg-white rounded-2xl border-t-4 border-[#21ad1c] p-8 shadow-sm space-y-8">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200">
       <div>
         <span class="text-xs font-black uppercase tracking-wider text-[#21ad1c]">Document de Référence 2025 - 2026</span>
         <h2 class="text-2xl font-black uppercase text-[#101d69] mt-0.5">
@@ -161,8 +232,208 @@
       </p>
     </div>
   </section>
+  }
 
-  <!-- Statuts et Règlement Intérieur -->
+  <!-- VUE 2 : HISTOIRE & PROJET CLUB -->
+  @if (activeTab() === 'histoire') {
+    <section class="bg-white rounded-2xl border-t-4 border-[#101d69] p-8 shadow-sm space-y-8">
+      <div>
+        <span class="text-xs font-black uppercase tracking-wider text-[#21ad1c]">Origines & Fusion 2020</span>
+        <h2 class="text-2xl font-black uppercase text-[#101d69] mt-0.5">L'Histoire du Racing Club Bû Abondant</h2>
+        <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+          Le <strong>RCBA</strong> est né en <strong>2020</strong> de la fusion historique entre le <strong>FC Bû</strong> et le <strong>CO Abondant</strong>. 
+          En seulement quelques années, le club s'est imposé comme un acteur majeur du football en Eure-et-Loir. En 2023, cette excellence formatrice a été récompensée par une 
+          <strong>double labellisation FFF</strong> (Label Jeunes et Label Féminines — Bronze 2023-2026).
+        </p>
+      </div>
+
+      <!-- Piliers & Philosophie -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="p-5 rounded-xl bg-slate-50 border border-slate-200 text-center space-y-1">
+          <span class="text-3xl">⚽</span>
+          <h4 class="text-sm font-black uppercase text-[#101d69]">Formation</h4>
+          <p class="text-xs text-slate-500">École de football labellisée de U6 à U18</p>
+        </div>
+        <div class="p-5 rounded-xl bg-slate-50 border border-slate-200 text-center space-y-1">
+          <span class="text-3xl">🤝</span>
+          <h4 class="text-sm font-black uppercase text-[#101d69]">Respect</h4>
+          <p class="text-xs text-slate-500">Fair-play, arbitres et mixité sur le terrain</p>
+        </div>
+        <div class="p-5 rounded-xl bg-slate-50 border border-slate-200 text-center space-y-1">
+          <span class="text-3xl">❤️</span>
+          <h4 class="text-sm font-black uppercase text-[#101d69]">Convivialité</h4>
+          <p class="text-xs text-slate-500">Familles, bénévoles et 2 communes unies</p>
+        </div>
+        <div class="p-5 rounded-xl bg-slate-50 border border-slate-200 text-center space-y-1">
+          <span class="text-3xl">🏆</span>
+          <h4 class="text-sm font-black uppercase text-[#101d69]">Ambition</h4>
+          <p class="text-xs text-slate-500">Compétitions District & Ligue régionales</p>
+        </div>
+      </div>
+
+      <!-- Infrastructures & Sites -->
+      <div class="p-6 rounded-xl border border-slate-200 bg-slate-50 space-y-3">
+        <h3 class="text-base font-bold uppercase text-[#101d69]">Nos Deux Terrains Municipaux</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Le club bénéficie des installations des deux communes partenaires : le <strong>Stade Municipal de Bû</strong> (pelouse naturelle éclairée, tribune, vestiaires officiels et club-house avec buvette) et le <strong>Stade d'Abondant</strong> (complexe sportif dédié aux séances de l'école de foot et aux plateaux jeunes).
+        </p>
+        <div class="pt-2">
+          <a routerLink="/installations" class="inline-flex items-center gap-1.5 text-xs font-bold text-[#1f39cf] hover:underline">
+            📍 Consulter les détails des installations & plans d'accès →
+          </a>
+        </div>
+      </div>
+    </section>
+  }
+
+  <!-- VUE 3 : HORAIRES DES ENTRAÎNEMENTS -->
+  @if (activeTab() === 'horaires') {
+    <section class="bg-white rounded-2xl border-t-4 border-[#21ad1c] p-8 shadow-sm space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+        <div>
+          <span class="text-xs font-black uppercase tracking-wider text-[#21ad1c]">Planning Hebdomadaire</span>
+          <h2 class="text-2xl font-black uppercase text-[#101d69] mt-0.5">Horaires des Entraînements (2025-2026)</h2>
+          <p class="text-xs text-slate-500 mt-1">Séances réparties sur les stades de Bû et Abondant.</p>
+        </div>
+        <span class="text-xs font-bold px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0">
+          ● Créneaux en vigueur
+        </span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead>
+            <tr class="border-b-2 border-slate-200 bg-slate-50 text-slate-700 uppercase font-black tracking-wider">
+              <th class="py-3.5 px-4">Catégorie</th>
+              <th class="py-3.5 px-4">Jours de séance</th>
+              <th class="py-3.5 px-4">Créneau horaire</th>
+              <th class="py-3.5 px-4">Lieu & Stade</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            @for (h of horaires; track h.category) {
+              <tr class="hover:bg-slate-50/80 transition-colors">
+                <td class="py-4 px-4 font-bold text-slate-900">{{ h.category }}</td>
+                <td class="py-4 px-4 font-semibold text-[#101d69]">{{ h.days }}</td>
+                <td class="py-4 px-4 font-bold text-slate-700">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-100 border border-slate-200">
+                    ⏱️ {{ h.time }}
+                  </span>
+                </td>
+                <td class="py-4 px-4 font-bold text-emerald-700">
+                  <span class="inline-flex items-center gap-1">
+                    📍 Stade de {{ h.venue }}
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  }
+
+  <!-- VUE 4 : TARIFS & COTISATIONS -->
+  @if (activeTab() === 'tarifs') {
+    <section class="bg-white rounded-2xl border-t-4 border-[#101d69] p-8 shadow-sm space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+        <div>
+          <span class="text-xs font-black uppercase tracking-wider text-[#21ad1c]">Adhésions 2025-2026</span>
+          <h2 class="text-2xl font-black uppercase text-[#101d69] mt-0.5">Grille Officielle des Cotisations</h2>
+          <p class="text-xs text-slate-500 mt-1">Chaque cotisation comprend la licence FFF et le pack textile adidas officiel.</p>
+        </div>
+        <a
+          routerLink="/inscriptions"
+          class="inline-flex items-center gap-1.5 rounded-lg bg-[#21ad1c] px-4 py-2 text-xs font-black uppercase text-white hover:bg-[#1b8e17] transition-colors shadow-sm shrink-0"
+        >
+          S'inscrire en ligne ↗
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @for (c of cotisations; track c.category) {
+          <div class="rounded-xl border border-slate-200 bg-slate-50 p-6 flex flex-col justify-between space-y-4 hover:border-[#101d69] transition-all hover:shadow-sm">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <h4 class="text-base font-black uppercase text-[#101d69]">{{ c.category }}</h4>
+                <span class="text-2xl font-black text-[#21ad1c] tabular-nums">{{ c.price }} €</span>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">{{ c.includes }}</p>
+            </div>
+            <div class="pt-3 border-t border-slate-200 flex items-center justify-between text-[11px] text-slate-500">
+              <span>Règlement HelloAsso / Pass'Sport</span>
+              <span class="text-[#101d69] font-bold">1x ou 3x sans frais</span>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+  }
+
+  <!-- VUE 5 : CHARTE ÉTHIQUE & VALEURS -->
+  @if (activeTab() === 'charte') {
+    <section class="bg-white rounded-2xl border-t-4 border-[#21ad1c] p-8 shadow-sm space-y-8">
+      <div>
+        <span class="text-xs font-black uppercase tracking-wider text-[#21ad1c]">Esprit Club & Fair-Play</span>
+        <h2 class="text-2xl font-black uppercase text-[#101d69] mt-0.5">Charte d'Engagement & Valeurs RCBA</h2>
+        <p class="text-xs text-slate-500 mt-1">Les 5 valeurs fondamentales qui guident chaque joueur, éducateur et supporter du club.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        @for (val of values; track val.title) {
+          <div class="rounded-xl border border-slate-200 bg-slate-50 p-5 space-y-2">
+            <span class="text-3xl block">{{ val.icon }}</span>
+            <h4 class="text-sm font-black uppercase text-[#101d69]">{{ val.title }}</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">{{ val.desc }}</p>
+          </div>
+        }
+      </div>
+
+      <!-- Engagements individuels -->
+      <div class="pt-6 border-t border-slate-200 space-y-4">
+        <h3 class="text-base font-bold uppercase text-[#101d69]">Les 6 Engagements du Licencié</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          @for (comm of commitments; track comm.title) {
+            <div class="p-4 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
+              <span class="text-xs font-black uppercase text-emerald-700">✓ {{ comm.title }}</span>
+              <p class="text-[11px] text-slate-600">{{ comm.desc }}</p>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+  }
+
+  <!-- VUE 6 : ARBITRES OFFICIELS -->
+  @if (activeTab() === 'arbitres') {
+    <section class="bg-white rounded-2xl border-t-4 border-[#101d69] p-8 shadow-sm space-y-6">
+      <div>
+        <span class="text-xs font-black uppercase tracking-wider text-[#21ad1c]">Arbitrage & FFF</span>
+        <h2 class="text-2xl font-black uppercase text-[#101d69] mt-0.5">Le Corps Arbitral du RCBA</h2>
+        <p class="text-xs text-slate-500 mt-1">L'arbitrage est essentiel à la vie sportive du club et au respect des règles du jeu.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        @for (a of arbitres; track a.name) {
+          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 flex flex-col items-center text-center space-y-4 shadow-xs">
+            <div class="h-24 w-24 rounded-full overflow-hidden border-4 border-[#101d69] bg-white shadow-md">
+              <img [src]="a.photo" [alt]="a.name" class="h-full w-full object-cover" onerror="this.src='logo.png'" />
+            </div>
+            <div class="space-y-1">
+              <h4 class="text-lg font-black uppercase text-[#101d69]">{{ a.name }}</h4>
+              <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase bg-[#101d69] text-white">
+                {{ a.badge }}
+              </span>
+              <p class="text-xs text-slate-500 pt-1 font-medium">{{ a.role }}</p>
+              <p class="text-xs text-slate-600 pt-2 leading-relaxed">{{ a.experience }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+  }
+
+  <!-- Statuts et Règlement Intérieur (Toujours visible en bas de page) -->
   <section class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6">
     <div>
       <h3 class="text-base font-bold text-slate-900 uppercase">Documents Juridiques du Club</h3>
