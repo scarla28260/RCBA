@@ -22,7 +22,7 @@ export class DirigeantsComponent {
 
   readonly categories: { key: Category; label: string; icon: string }[] = [
     { key: 'direction', label: 'Direction & Bureau', icon: '🏛️' },
-    { key: 'all', label: 'Tout le Club (30)', icon: '👥' },
+    { key: 'all', label: 'Tout le Club', icon: '👥' },
     { key: 'bureau', label: 'Bureau Exécutif', icon: '🏆' },
     { key: 'administration', label: 'Administration & CA', icon: '📋' },
     { key: 'technique', label: 'Staff Technique & Éducateurs', icon: '⚽' },
