@@ -1,0 +1,17 @@
+<span
+  class="inline-flex items-center rounded px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider border shadow-xs"
+  [class.bg-[#101d69]/10]="variant() === 'primary'"
+  [class.text-[#101d69]]="variant() === 'primary'"
+  [class.border-[#101d69]/30]="variant() === 'primary'"
+  [class.bg-[#21ad1c]/15]="variant() === 'success'"
+  [class.text-[#167812]]="variant() === 'success'"
+  [class.border-[#21ad1c]/40]="variant() === 'success'"
+  [class.bg-amber-50]="variant() === 'warning'"
+  [class.text-amber-700]="variant() === 'warning'"
+  [class.border-amber-300]="variant() === 'warning'"
+  [class.bg-slate-100]="variant() === 'muted'"
+  [class.text-slate-600]="variant() === 'muted'"
+  [class.border-slate-300]="variant() === 'muted'"
+>
+  {{ label() }}
+</span>

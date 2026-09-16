@@ -39,3 +39,34 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# ignored by antigravity
+temp_agent_skills/
+scratch/
+
+# databases
+*.db
+*.sqlite
+*-wal
+*-shm
+
+# eslint cache (peut atteindre plusieurs Mo)
+eslint.json
+
+# données temporaires / scrapées
+scraped_data.json
+fff_results.json
+portal_resp.txt
+temp_clubs.html
+
+# images temporaires à la racine
+orga*.png
+squad.png
+
+# gros fichiers exécutables et binaires
+*.exe
+*.dll
+*.iso
+
+# mcp et secrets locaux
+.mcp.json

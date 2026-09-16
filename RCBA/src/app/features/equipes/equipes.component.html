@@ -1,0 +1,167 @@
+<div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-10">
+
+  <!-- Page Header -->
+  <div class="bg-white rounded-2xl border-t-4 border-[#101d69] p-8 shadow-sm">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div class="max-w-3xl space-y-2">
+        <div class="inline-flex items-center gap-2">
+          <span class="rounded-full bg-[#21ad1c]/15 px-3 py-1 text-xs font-black uppercase tracking-wider text-[#167812]">
+            Saison 2026–2027
+          </span>
+          <span class="text-xs font-bold text-slate-500 uppercase">District Eure-et-Loir & Ligue</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-black uppercase text-[#101d69] tracking-tight">
+          Nos Équipes & Pôles de Pratique
+        </h1>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Le Racing Club Bû Abondant s'articule autour de 2 grands pôles de formation et de compétition :
+          <strong class="text-[#101d69]">L'École de Football</strong> (Foot à 8, Foot à 5 & Éveil) et <strong class="text-[#101d69]">Le Pôle Foot à 11</strong> (U15, Seniors & Vétérans).
+        </p>
+      </div>
+
+      <!-- Quick stats -->
+      <div class="flex gap-4 shrink-0">
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center">
+          <div class="text-2xl font-black text-[#21ad1c]">{{ ecoleFootCount() }}</div>
+          <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mt-0.5">École de Foot</div>
+          <div class="text-[9px] text-slate-400">Foot à 8 & 5</div>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center">
+          <div class="text-2xl font-black text-[#101d69]">{{ foot11Count() }}</div>
+          <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mt-0.5">Foot à 11</div>
+          <div class="text-[9px] text-slate-400">Compétition</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pôles Filtering Tabs -->
+    <div class="flex flex-wrap gap-2 pt-6 mt-6 border-t border-slate-100">
+      <button
+        type="button"
+        (click)="activePole.set('all')"
+        [class]="activePole() === 'all'
+          ? 'px-5 py-2 rounded-full font-black text-xs uppercase tracking-wider bg-[#101d69] text-white shadow-sm transition-all'
+          : 'px-5 py-2 rounded-full font-bold text-xs uppercase tracking-wider bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all'"
+      >
+        Toutes les équipes ({{ teams().length }})
+      </button>
+      <button
+        type="button"
+        (click)="activePole.set('ecole-foot')"
+        [class]="activePole() === 'ecole-foot'
+          ? 'px-5 py-2 rounded-full font-black text-xs uppercase tracking-wider bg-[#21ad1c] text-white shadow-sm transition-all'
+          : 'px-5 py-2 rounded-full font-bold text-xs uppercase tracking-wider bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all'"
+      >
+        🌱 École de Football — Foot à 8 ({{ ecoleFootCount() }})
+      </button>
+      <button
+        type="button"
+        (click)="activePole.set('foot-a-11')"
+        [class]="activePole() === 'foot-a-11'
+          ? 'px-5 py-2 rounded-full font-black text-xs uppercase tracking-wider bg-[#101d69] text-white shadow-sm transition-all'
+          : 'px-5 py-2 rounded-full font-bold text-xs uppercase tracking-wider bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all'"
+      >
+        ⚽ Foot à 11 — Compétition ({{ foot11Count() }})
+      </button>
+    </div>
+  </div>
+
+  <!-- Banner explicatif École de Foot (si sélectionné ou all) -->
+  @if (activePole() === 'ecole-foot') {
+    <div class="rounded-2xl bg-emerald-50 border border-emerald-200 border-l-4 border-l-[#21ad1c] p-6 shadow-sm flex items-start gap-4">
+      <span class="text-3xl">🌱</span>
+      <div class="space-y-1">
+        <h2 class="text-base font-black uppercase text-[#167812] tracking-wide">
+          L'École de Football du RCBA — Toutes les équipes du Foot à 8 & Foot d'Animation
+        </h2>
+        <p class="text-xs sm:text-sm text-emerald-900 leading-relaxed">
+          Labellisée <strong>Espoir FFF</strong> et <strong>École Féminine de Football</strong>, l'École de Foot regroupe nos jeunes footballeurs de Baby à U13. Les U13 et U11 pratiquent le <strong>Foot à 8</strong> sur demi-terrain, tandis que les U9 et U7 découvrent le <strong>Foot à 5</strong> et les ateliers d'éveil motricité.
+        </p>
+      </div>
+    </div>
+  }
+
+  <!-- Teams Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    @for (team of filteredTeams(); track team.id; let idx = $index) {
+      <div
+        class="rounded-2xl bg-white p-6 shadow-sm border border-slate-200 flex flex-col justify-between space-y-4 transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
+        [class.border-t-4]="true"
+        [class.border-t-[#101d69]]="team.pole === 'foot-a-11'"
+        [class.border-t-[#21ad1c]]="team.pole === 'ecole-foot'"
+      >
+        <div>
+          <!-- Badges de haut de carte -->
+          <div class="flex items-center justify-between mb-3 gap-2">
+            <span
+              class="text-[10px] font-black uppercase px-2.5 py-1 rounded-full"
+              [class]="team.pole === 'ecole-foot'
+                ? 'bg-[#21ad1c]/15 text-[#167812]'
+                : 'bg-[#101d69]/10 text-[#101d69]'"
+            >
+              {{ team.format }}
+            </span>
+            <span class="text-xs font-bold text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full">
+              {{ team.ageGroup }}
+            </span>
+          </div>
+
+          <h2 class="text-xl font-black uppercase tracking-wider text-slate-900 leading-snug">
+            {{ team.name }}
+          </h2>
+          <div class="text-xs text-[#21ad1c] font-black uppercase tracking-wider mt-0.5">
+            {{ team.division }}
+          </div>
+
+          <!-- Description courte -->
+          @if (team.description) {
+            <p class="text-xs text-slate-500 mt-2 line-clamp-2 leading-relaxed">
+              {{ team.description }}
+            </p>
+          }
+
+          <!-- Infos clés -->
+          <div class="mt-4 space-y-2 text-xs border-t border-slate-100 pt-3">
+            <div class="flex items-center gap-2 text-slate-600">
+              <span class="text-[#101d69] font-black">👤 Éducateur :</span>
+              <strong class="text-slate-900">{{ team.coach }}</strong>
+            </div>
+
+            @if (team.assistantCoach) {
+              <div class="flex items-center gap-2 text-slate-600">
+                <span class="text-[#167812] font-black">👥 Adjoint :</span>
+                <span class="font-medium text-slate-800">{{ team.assistantCoach }}</span>
+              </div>
+            }
+
+            <div class="flex items-center gap-2 text-slate-600">
+              <span class="text-slate-400">🕒 Entraînements :</span>
+              <span class="font-medium text-slate-800">{{ team.trainingSchedule }}</span>
+            </div>
+
+            <div class="flex items-center gap-2 text-slate-600">
+              <span class="text-slate-400">📍 Site principal :</span>
+              <span class="font-medium text-slate-800">{{ team.site }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-100 flex justify-between items-center text-xs">
+          <a
+            [routerLink]="['/equipes', team.id]"
+            class="inline-flex items-center gap-1.5 rounded-lg bg-[#101d69] px-4 py-2 text-xs font-black uppercase tracking-wider text-white hover:bg-[#1f39cf] transition-colors shadow-xs"
+          >
+            Fiche Équipe & Staff →
+          </a>
+          <a
+            routerLink="/inscriptions"
+            class="text-[#21ad1c] font-black uppercase tracking-wider hover:underline"
+          >
+            Licence →
+          </a>
+        </div>
+      </div>
+    }
+  </div>
+
+</div>

@@ -1,0 +1,554 @@
+<div class="space-y-12 pb-16">
+  <!-- Hero Section : Institutionnel, Lumineux & Sportif -->
+  <section class="relative bg-gradient-to-b from-[#101d69] via-[#162788] to-[#101d69] text-white py-16 sm:py-20 shadow-lg">
+    <!-- Subtle Grass & Field Pitch Overlay -->
+    <div class="absolute inset-0 bg-[radial-gradient(#ffffff15_1px,transparent_1px)] [background-size:24px_24px] opacity-40"></div>
+
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col lg:flex-row items-center justify-between gap-10">
+        
+        <!-- Left: Text & Badges -->
+        <div class="flex-1 text-center lg:text-left space-y-6">
+          <div class="inline-flex flex-wrap items-center justify-center lg:justify-start gap-2.5">
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-[#21ad1c] px-3.5 py-1 text-xs font-black uppercase tracking-wider text-white shadow-sm">
+              <span class="h-2 w-2 rounded-full bg-white animate-pulse"></span>
+              Couleurs officielles : Bleu Roi & Vert
+            </span>
+            <span class="rounded-full bg-white/15 px-3 py-1 text-xs font-bold text-sky-100 backdrop-blur-xs border border-white/20">
+              Affiliation FFF n° 528340 &bull; District 28
+            </span>
+          </div>
+
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase italic tracking-tight leading-none text-white">
+            Racing Club <br />
+            <span class="text-[#25cf1f] drop-shadow-sm">Bû &bull; Abondant</span>
+          </h1>
+
+          <p class="text-base sm:text-lg text-slate-100 max-w-2xl font-medium leading-relaxed">
+            Bienvenue sur le portail officiel du RCBA. Un club formateur et familial au nord de l'Eure-et-Loir, rassemblant les passionnés de football de l'école de foot aux vétérans.
+          </p>
+
+          <!-- CTAs -->
+          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3.5 pt-2">
+            <a
+              routerLink="/inscriptions"
+              class="inline-flex items-center justify-center rounded-lg bg-[#21ad1c] px-6 py-3.5 text-sm font-black uppercase tracking-wider text-white shadow-md hover:bg-[#1b8e17] transition-transform active:scale-95"
+            >
+              ⚽ Inscriptions & Licences
+            </a>
+            <a
+              routerLink="/club"
+              class="inline-flex items-center justify-center rounded-lg bg-white px-6 py-3.5 text-sm font-black uppercase tracking-wider text-[#101d69] shadow-md hover:bg-slate-100 transition-colors active:scale-95"
+            >
+              📋 L'Organigramme du Club
+            </a>
+            <a
+              routerLink="/educateurs"
+              class="inline-flex items-center justify-center rounded-lg border-2 border-white/40 bg-white/10 px-5 py-3.5 text-sm font-bold uppercase tracking-wider text-white hover:bg-white/20 transition-colors"
+            >
+              🔒 Espace Éducateurs
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: Crest & Labels Emblem -->
+        <div class="flex flex-col items-center justify-center p-6 sm:p-8 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl text-center max-w-sm w-full">
+          <div class="relative flex h-32 w-32 items-center justify-center rounded-full bg-white p-2 shadow-xl mb-4">
+            <img
+              src="logo.png"
+              alt="Blason Officiel RCBA"
+              class="h-full w-full object-contain"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+            />
+            <span class="absolute inset-0 items-center justify-center text-2xl font-black text-[#101d69] hidden">RCBA</span>
+          </div>
+          
+          <h2 class="text-lg font-black uppercase text-white tracking-wide">
+            Racing Club Bû Abondant
+          </h2>
+          <span class="text-xs font-bold text-[#25cf1f] mt-0.5">Fondé en 2020 &bull; Eure-et-Loir</span>
+
+          <div class="mt-5 pt-5 border-t border-white/20 w-full">
+            <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[#21ad1c] text-center mb-3">Labels Nationaux FFF</p>
+            <div class="flex items-center justify-around gap-4">
+              <div class="flex flex-col items-center gap-2">
+                <img src="/label-espoir.png" alt="Label Espoir FFF" class="h-20 w-auto object-contain" />
+                <span class="text-[10px] font-bold text-white uppercase tracking-wide">Label Espoir</span>
+              </div>
+              <div class="flex flex-col items-center gap-2">
+                <img src="/label-feminine.png" alt="Label École Féminine FFF" class="h-20 w-auto object-contain" />
+                <span class="text-[10px] font-bold text-white uppercase tracking-wide">Label Féminin</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Section Chiffres Clés (Clean White Cards avec Top Border Bleu & Vert) -->
+  <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      @for (metric of metrics(); track metric.label; let idx = $index) {
+        <div
+          class="rounded-xl bg-white p-6 shadow-sm border border-slate-200 transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
+          [class.border-t-4]="true"
+          [class.border-t-[#101d69]]="idx % 2 === 0"
+          [class.border-t-[#21ad1c]]="idx % 2 !== 0"
+        >
+          <div
+            class="text-3xl sm:text-4xl font-black font-mono"
+            [class.text-[#101d69]]="idx % 2 === 0"
+            [class.text-[#21ad1c]]="idx % 2 !== 0"
+          >
+            {{ metric.value }}
+          </div>
+          <div class="text-xs sm:text-sm font-black text-slate-800 uppercase tracking-wider mt-2">
+            {{ metric.label }}
+          </div>
+          <div class="text-xs text-slate-500 mt-1">
+            {{ metric.detail }}
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Section Labels FFF — Mise en valeur institutionnelle -->
+  <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="rounded-2xl bg-[#101d69] overflow-hidden shadow-lg">
+      <!-- Header -->
+      <div class="px-8 pt-8 pb-4 text-center">
+        <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em] text-sky-200">Distinction Nationale</span>
+        <h2 class="text-2xl sm:text-3xl font-black uppercase text-white tracking-tight mt-3">
+          Club Labellisé par la Fédération Française de Football
+        </h2>
+        <p class="text-sm text-sky-200 mt-2 max-w-2xl mx-auto leading-relaxed">
+          Le RCBA est l'un des rares clubs du district &agrave; détenir <strong class="text-white">deux labels nationaux FFF</strong>, gage d’engagement envers la formation des jeunes et le développement du football féminin.
+        </p>
+      </div>
+
+      <!-- Labels -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-0 divide-y sm:divide-y-0 sm:divide-x divide-white/10">
+
+        <!-- Label Espoir -->
+        <div class="flex flex-col sm:flex-row items-center gap-6 px-8 py-8">
+          <img src="/label-espoir.png" alt="Label Espoir FFF" class="h-32 w-auto object-contain shrink-0" />
+          <div class="text-center sm:text-left">
+            <span class="text-[10px] font-black uppercase tracking-[0.2em] text-[#21ad1c]">Label Jeunes FFF</span>
+            <h3 class="text-xl font-black uppercase text-white mt-1">Label Espoir</h3>
+            <p class="text-xs text-sky-100 mt-2 leading-relaxed">
+              Attribué aux clubs dont le projet de formation des jeunes joueurs répond aux critères de qualité définis par la FFF : encadrement qualifié, éducation sportive et épanouissement de chaque enfant.
+            </p>
+            <div class="mt-3 flex flex-wrap gap-2 justify-center sm:justify-start">
+              <span class="rounded bg-white/10 px-2 py-0.5 text-[10px] font-bold text-sky-200 uppercase">U6 &rarr; U18</span>
+              <span class="rounded bg-white/10 px-2 py-0.5 text-[10px] font-bold text-sky-200 uppercase">Éducateurs Diplomés</span>
+              <span class="rounded bg-white/10 px-2 py-0.5 text-[10px] font-bold text-sky-200 uppercase">Projet Formateur</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Label Féminin -->
+        <div class="flex flex-col sm:flex-row items-center gap-6 px-8 py-8">
+          <img src="/label-feminine.png" alt="Label École Féminine FFF" class="h-32 w-auto object-contain shrink-0" />
+          <div class="text-center sm:text-left">
+            <span class="text-[10px] font-black uppercase tracking-[0.2em] text-[#21ad1c]">École Féminine FFF</span>
+            <h3 class="text-xl font-black uppercase text-white mt-1">Label Féminin</h3>
+            <p class="text-xs text-sky-100 mt-2 leading-relaxed">
+              Reconnaissance de l’engagement du club dans le développement du football féminin : structures dédiées, encadrement spécifique et promotion de la pratique du football pour les jeunes filles.
+            </p>
+            <div class="mt-3 flex flex-wrap gap-2 justify-center sm:justify-start">
+              <span class="rounded bg-white/10 px-2 py-0.5 text-[10px] font-bold text-sky-200 uppercase">U6F &rarr; U15F</span>
+              <span class="rounded bg-white/10 px-2 py-0.5 text-[10px] font-bold text-sky-200 uppercase">Football Féminin</span>
+              <span class="rounded bg-white/10 px-2 py-0.5 text-[10px] font-bold text-sky-200 uppercase">Mixte & Féminin</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer bar -->
+      <div class="px-8 py-4 bg-black/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+        <span class="text-slate-300">Labels décernés par la <strong class="text-white">Fédération Française de Football</strong> &bull; Saison 2026-2027</span>
+        <a
+          routerLink="/inscriptions"
+          class="inline-flex items-center gap-1.5 rounded-lg bg-[#21ad1c] px-5 py-2 text-xs font-black uppercase tracking-wider text-white hover:bg-[#1b8e17] transition-colors"
+        >
+          Rejoindre le club &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Résultats & Matchs Récents -->
+  <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="rounded-2xl bg-white border border-slate-200 border-t-4 border-t-[#21ad1c] p-6 sm:p-8 shadow-sm">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-6 pb-4 border-b border-slate-200 gap-4">
+        <div>
+          <span class="text-xs font-black uppercase tracking-wider text-[#21ad1c]">Compétition & Résultats</span>
+          <h2 class="text-2xl sm:text-3xl font-black uppercase text-[#101d69] tracking-tight mt-0.5">
+            Dernières Rencontres
+          </h2>
+        </div>
+        <a
+          routerLink="/equipes"
+          class="text-xs font-bold uppercase tracking-wider text-[#1f39cf] hover:underline flex items-center gap-1.5"
+        >
+          Tous les effectifs & classements &rarr;
+        </a>
+      </div>
+
+      <!-- Results Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        @for (match of recentResults(); track match.category) {
+          <div class="flex flex-col justify-between rounded-xl border border-slate-200 bg-slate-50 p-5 transition-all hover:shadow-md hover:bg-white">
+            
+            <div class="flex items-center justify-between text-xs text-slate-500 pb-3 border-b border-slate-200">
+              <app-badge [label]="match.category" variant="primary" />
+              <span class="font-medium">{{ match.date }}</span>
+            </div>
+
+            <!-- Teams & Scores -->
+            <div class="py-4 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-sm text-slate-800" [class.text-[#101d69]]="match.teamHome === 'RCBA'">
+                  {{ match.teamHome }}
+                </span>
+                <span class="text-lg font-black font-mono text-[#101d69]">{{ match.scoreHome }}</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-sm text-slate-700" [class.text-[#101d69]]="match.teamAway === 'RCBA'">
+                  {{ match.teamAway }}
+                </span>
+                <span class="text-lg font-black font-mono text-[#101d69]">{{ match.scoreAway }}</span>
+              </div>
+            </div>
+
+            <!-- Victory/Defeat Indicator -->
+            <div class="pt-3 border-t border-slate-200 flex items-center justify-between text-xs font-bold">
+              @if (match.isVictory) {
+                <app-badge label="Victoire RCBA" variant="success" />
+              } @else {
+                <app-badge label="Terminé" variant="muted" />
+              }
+              <span class="text-[10px] text-slate-500 uppercase tracking-wider">District 28</span>
+            </div>
+
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ⭐ JOUEUR & ENTRAÎNEUR DU MOIS -->
+  <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <!-- Header section -->
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+      <div>
+        <span class="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-3 py-1 text-xs font-black uppercase tracking-wider text-amber-700 border border-amber-200">
+          ⭐ Distinction mensuelle
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-black uppercase text-[#101d69] tracking-tight mt-2">
+          Joueur & Entraîneur du Mois
+        </h2>
+        <p class="text-sm text-slate-500 mt-1">{{ playerOfMonth().month }} {{ playerOfMonth().year }}</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+      <!-- CARTE PANINI — JOUEUR DU MOIS -->
+      <div class="group relative bg-gradient-to-b from-[#101d69] via-[#162788] to-[#101d69] rounded-3xl overflow-hidden shadow-2xl border border-white/10 hover:-translate-y-1 transition-all duration-300">
+
+        <!-- Hachures décoratives -->
+        <div class="absolute inset-0 opacity-5"
+             style="background-image: repeating-linear-gradient(45deg, #21ad1c 0, #21ad1c 1px, transparent 0, transparent 50%); background-size: 16px 16px;"></div>
+
+        <!-- Header Panini -->
+        <div class="relative px-6 pt-6 pb-3 flex items-center justify-between">
+          <div>
+            <span class="text-[9px] font-black uppercase tracking-[0.4em] text-white/40">RCBA • SAISON 2026-2027</span>
+            <div class="text-xs font-black uppercase tracking-wider text-[#21ad1c] mt-0.5">⭐ Joueur du Mois</div>
+          </div>
+          <div class="text-right">
+            <span class="inline-flex items-center gap-1 rounded-full bg-amber-400 text-[#101d69] text-[10px] font-black uppercase px-2.5 py-1 shadow">
+              {{ playerOfMonth().month }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Zone photo Panini centrée avec cadre circulaire doré -->
+        <div class="relative flex justify-center items-center py-2 px-6">
+          <div class="p-1.5 rounded-full bg-gradient-to-tr from-amber-300 via-white to-[#21ad1c] shadow-2xl">
+            @if (playerOfMonth().photo) {
+              <img
+                [src]="playerOfMonth().photo"
+                [alt]="playerOfMonth().firstName + ' ' + playerOfMonth().lastName"
+                class="w-32 h-32 rounded-full object-cover object-top border-4 border-white shadow-inner"
+              />
+            } @else {
+              <div class="w-32 h-32 rounded-full flex items-center justify-center text-white text-4xl font-black shadow-inner border-4 border-white"
+                   style="background: linear-gradient(135deg, #1f39cf, #101d69)">
+                ⚽
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Nom & stats Panini -->
+        <div class="relative px-6 pb-6 text-center">
+          <h3 class="text-3xl font-black text-white uppercase tracking-tight leading-none mt-2">
+            {{ playerOfMonth().firstName }}<br />
+            <span class="text-[#21ad1c]">{{ playerOfMonth().lastName }}</span>
+          </h3>
+          <p class="text-xs text-blue-200 font-semibold mt-1.5">{{ playerOfMonth().teamName }}</p>
+          <span class="inline-block mt-2 rounded-full bg-white/10 border border-white/20 text-white text-[10px] font-bold px-3 py-0.5 uppercase tracking-wider">
+            {{ playerOfMonth().ageGroup }}
+          </span>
+
+          <!-- Stats Panini -->
+          @if (playerOfMonth().stats) {
+            <div class="mt-5 grid grid-cols-3 gap-2 border-t border-white/15 pt-4">
+              @for (stat of playerOfMonth().stats!; track stat.label) {
+                <div class="text-center">
+                  <div class="text-xl font-black text-white font-mono">{{ stat.value }}</div>
+                  <div class="text-[9px] font-bold text-blue-300 uppercase tracking-wider mt-0.5">{{ stat.label }}</div>
+                </div>
+              }
+            </div>
+          }
+
+          <!-- Description -->
+          <p class="text-xs text-blue-200/80 mt-4 leading-relaxed text-left">
+            {{ playerOfMonth().description }}
+          </p>
+        </div>
+
+        <!-- Barre couleur bas -->
+        <div class="h-1.5 bg-gradient-to-r from-amber-400 via-[#21ad1c] to-amber-400"></div>
+      </div>
+
+      <!-- CARTE PANINI — ENTRAÎNEUR DU MOIS -->
+      <div class="group relative bg-gradient-to-b from-[#0d4a1a] via-[#146b24] to-[#0d4a1a] rounded-3xl overflow-hidden shadow-2xl border border-white/10 hover:-translate-y-1 transition-all duration-300">
+
+        <!-- Hachures décoratives -->
+        <div class="absolute inset-0 opacity-5"
+             style="background-image: repeating-linear-gradient(-45deg, #101d69 0, #101d69 1px, transparent 0, transparent 50%); background-size: 16px 16px;"></div>
+
+        <!-- Header Panini -->
+        <div class="relative px-6 pt-6 pb-3 flex items-center justify-between">
+          <div>
+            <span class="text-[9px] font-black uppercase tracking-[0.4em] text-white/40">RCBA • SAISON 2026-2027</span>
+            <div class="text-xs font-black uppercase tracking-wider text-amber-400 mt-0.5">🏆 Entraîneur du Mois</div>
+          </div>
+          <div class="text-right">
+            <span class="inline-flex items-center gap-1 rounded-full bg-[#101d69] text-white text-[10px] font-black uppercase px-2.5 py-1 shadow">
+              {{ coachOfMonth().month }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Zone photo Panini centrée avec cadre circulaire doré -->
+        <div class="relative flex justify-center items-center py-2 px-6">
+          <div class="p-1.5 rounded-full bg-gradient-to-tr from-amber-300 via-white to-[#21ad1c] shadow-2xl">
+            @if (coachOfMonth().photo) {
+              <img
+                [src]="coachOfMonth().photo"
+                [alt]="coachOfMonth().firstName + ' ' + coachOfMonth().lastName"
+                class="w-32 h-32 rounded-full object-cover object-top border-4 border-white shadow-inner"
+              />
+            } @else {
+              <div class="w-32 h-32 rounded-full flex items-center justify-center text-white text-4xl font-black shadow-inner border-4 border-white"
+                   style="background: linear-gradient(135deg, #21ad1c, #0d4a1a)">
+                🏆
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Nom & stats -->
+        <div class="relative px-6 pb-6 text-center">
+          <h3 class="text-3xl font-black text-white uppercase tracking-tight leading-none mt-2">
+            {{ coachOfMonth().firstName }}<br />
+            <span class="text-amber-400">{{ coachOfMonth().lastName }}</span>
+          </h3>
+          <p class="text-xs text-green-200 font-semibold mt-1.5">{{ coachOfMonth().teamName }}</p>
+          <span class="inline-block mt-2 rounded-full bg-white/10 border border-white/20 text-white text-[10px] font-bold px-3 py-0.5 uppercase tracking-wider">
+            {{ coachOfMonth().ageGroup }}
+          </span>
+
+          <!-- Stats -->
+          @if (coachOfMonth().stats) {
+            <div class="mt-5 grid grid-cols-3 gap-2 border-t border-white/15 pt-4">
+              @for (stat of coachOfMonth().stats!; track stat.label) {
+                <div class="text-center">
+                  <div class="text-xl font-black text-white font-mono">{{ stat.value }}</div>
+                  <div class="text-[9px] font-bold text-green-300 uppercase tracking-wider mt-0.5">{{ stat.label }}</div>
+                </div>
+              }
+            </div>
+          }
+
+          <!-- Description -->
+          <p class="text-xs text-green-200/80 mt-4 leading-relaxed text-left">
+            {{ coachOfMonth().description }}
+          </p>
+        </div>
+
+        <!-- Barre couleur bas -->
+        <div class="h-1.5 bg-gradient-to-r from-[#101d69] via-amber-400 to-[#101d69]"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 🤝 NOS PARTENAIRES -->
+  <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-6 gap-4">
+      <div>
+        <span class="inline-flex items-center gap-1.5 rounded-full bg-[#101d69]/10 px-3 py-1 text-xs font-black uppercase tracking-wider text-[#101d69] border border-[#101d69]/20">
+          🤝 Partenaires officiels
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-black uppercase text-[#101d69] tracking-tight mt-2">
+          Nos Partenaires
+        </h2>
+        <p class="text-sm text-slate-500 mt-1">Ils soutiennent le RCBA — Saison 2026-2027</p>
+      </div>
+      <a
+        routerLink="/club"
+        class="text-xs font-bold uppercase tracking-wider text-[#1f39cf] hover:underline flex items-center gap-1.5 flex-shrink-0"
+      >
+        En savoir plus →
+      </a>
+    </div>
+
+    <div class="rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden p-8">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 items-center justify-items-center">
+        @for (partner of partners(); track partner.name) {
+          <div class="group flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-slate-50 transition-colors cursor-default w-full">
+            <div class="h-14 flex items-center justify-center">
+              <img
+                [src]="partner.logo"
+                [alt]="partner.name"
+                class="max-h-14 max-w-[120px] object-contain grayscale group-hover:grayscale-0 transition-all duration-300 opacity-70 group-hover:opacity-100"
+                (error)="$any($event.target).style.display='none'"
+              />
+            </div>
+            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wide text-center leading-tight group-hover:text-[#101d69] transition-colors">
+              {{ partner.name }}
+            </span>
+            <span class="text-[9px] text-slate-400 font-medium text-center">{{ partner.category }}</span>
+          </div>
+        }
+      </div>
+      <div class="mt-6 pt-4 border-t border-slate-100 text-center">
+        <p class="text-xs text-slate-400">
+          Vous souhaitez devenir partenaire du RCBA ?
+          <a routerLink="/contact" class="text-[#1f39cf] font-bold hover:underline ml-1">Contactez-nous →</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portails Internes du Club (Portail Coach & Portail Direction) -->
+  <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="rounded-2xl bg-gradient-to-r from-[#101d69] via-[#0d1652] to-[#101d69] p-8 text-white shadow-lg relative overflow-hidden">
+      <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-white/15">
+        <div>
+          <span class="text-[10px] font-black uppercase tracking-[0.25em] text-[#25cf1f]">Espaces Réservés</span>
+          <h2 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white mt-1">
+            Portails Internes RCBA
+          </h2>
+          <p class="text-xs sm:text-sm text-sky-200 mt-1 max-w-xl">
+            Accès sécurisés dédiés aux éducateurs sportifs et aux membres de la gouvernance pour la gestion quotidienne du club.
+          </p>
+        </div>
+        <a
+          routerLink="/login"
+          class="inline-flex items-center gap-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 px-4 py-2.5 text-xs font-black uppercase tracking-wider text-white transition-all shadow-sm shrink-0"
+        >
+          <span>🔒</span> Espace Connexion &rarr;
+        </a>
+      </div>
+
+      <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+        <!-- Carte Portail Coach -->
+        <div class="rounded-xl border border-white/20 bg-white/10 p-6 backdrop-blur-sm flex flex-col justify-between space-y-4 hover:bg-white/15 transition-all">
+          <div>
+            <div class="flex items-center gap-2.5">
+              <span class="text-2xl">⚽</span>
+              <div>
+                <h3 class="text-lg font-black uppercase text-white">Portail Coach & Éducateurs</h3>
+                <span class="text-[11px] font-bold text-[#25cf1f]">Staff Technique & Entraîneurs</span>
+              </div>
+            </div>
+            <p class="text-xs text-sky-100 mt-3 leading-relaxed">
+              Tableau tactique interactif tactile, créateur de séances chronométrées, bibliothèque d'ateliers d'entraînement et planning d'occupation des terrains.
+            </p>
+          </div>
+          <a
+            routerLink="/educateurs"
+            class="inline-flex items-center justify-center gap-2 rounded-lg bg-[#21ad1c] hover:bg-[#1b8e17] px-4 py-2.5 text-xs font-black uppercase tracking-wider text-white transition-colors shadow-md"
+          >
+            Accéder au Portail Coach &rarr;
+          </a>
+        </div>
+
+        <!-- Carte Portail Direction -->
+        <div class="rounded-xl border border-white/20 bg-white/10 p-6 backdrop-blur-sm flex flex-col justify-between space-y-4 hover:bg-white/15 transition-all">
+          <div>
+            <div class="flex items-center gap-2.5">
+              <span class="text-2xl">🏛️</span>
+              <div>
+                <h3 class="text-lg font-black uppercase text-white">Portail Direction & Gouvernance</h3>
+                <span class="text-[11px] font-bold text-amber-300">Bureau & Conseil d'Administration</span>
+              </div>
+            </div>
+            <p class="text-xs text-sky-100 mt-3 leading-relaxed">
+              Pilotage des 280+ licences, convocations et feuilles de match du week-end, suivi budgétaire, feuille de route du CA et documents statutaires.
+            </p>
+          </div>
+          <a
+            routerLink="/direction"
+            class="inline-flex items-center justify-center gap-2 rounded-lg bg-white hover:bg-slate-100 px-4 py-2.5 text-xs font-black uppercase tracking-wider text-[#101d69] transition-colors shadow-md"
+          >
+            Accéder au Portail Direction &rarr;
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Les 3 Terrains & Installations du Club -->
+  <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <div class="rounded-xl bg-white border border-slate-200 border-t-4 border-t-[#101d69] p-6 shadow-sm flex flex-col justify-between space-y-4">
+        <div>
+          <span class="text-xs font-bold text-[#101d69] uppercase">Stade Principal</span>
+          <h3 class="text-lg font-bold text-slate-900 uppercase mt-1">Stade Municipal de Bû</h3>
+          <p class="text-xs text-slate-600 mt-2">
+            Terrain d'honneur en herbe, vestiaires récents, éclairage homologué et club-house avec buvette.
+          </p>
+        </div>
+        <a routerLink="/installations" class="text-xs font-bold text-[#1f39cf] hover:underline">
+          Découvrir les installations de Bû &rarr;
+        </a>
+      </div>
+
+      <div class="rounded-xl bg-white border border-slate-200 border-t-4 border-t-[#21ad1c] p-6 shadow-sm flex flex-col justify-between space-y-4">
+        <div>
+          <span class="text-xs font-bold text-[#21ad1c] uppercase">Stade École de Foot</span>
+          <h3 class="text-lg font-bold text-slate-900 uppercase mt-1">Stade d'Abondant</h3>
+          <p class="text-xs text-slate-600 mt-2">
+            Pelouse naturelle adaptée aux entraînements des catégories jeunes, vestiaires et zone technique.
+          </p>
+        </div>
+        <a routerLink="/installations" class="text-xs font-bold text-[#1f39cf] hover:underline">
+          Découvrir les installations d'Abondant &rarr;
+        </a>
+      </div>
+
+    </div>
+  </section>
+</div>

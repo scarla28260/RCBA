@@ -1,0 +1,239 @@
+<div class="min-h-screen bg-slate-50">
+
+  <!-- HERO BANNER -->
+  <section class="relative bg-[#101d69] overflow-hidden">
+    <div class="absolute inset-0 opacity-10"
+         style="background-image: repeating-linear-gradient(45deg, #21ad1c 0, #21ad1c 1px, transparent 0, transparent 50%); background-size: 20px 20px;">
+    </div>
+    <div class="relative max-w-7xl mx-auto px-4 py-16 text-center">
+      <div class="inline-flex items-center gap-2 bg-[#21ad1c]/20 border border-[#21ad1c]/40 text-[#21ad1c] rounded-full px-4 py-1.5 text-sm font-semibold mb-6">
+        <span>⚽</span>
+        <span>Saison 2026–2027 • District Eure-et-Loir</span>
+      </div>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4">
+        Dirigeants & Staff du Club
+      </h1>
+      <p class="text-blue-200 text-lg max-w-2xl mx-auto">
+        Découvrez l'équipe dirigeante, administrative et technique qui fait vivre le <strong class="text-white">{{ clubName() }}</strong>
+        au quotidien — des bénévoles et éducateurs passionnés au service du football local.
+      </p>
+
+      <!-- Métriques -->
+      <div class="flex flex-wrap justify-center gap-6 mt-10">
+        <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-8 py-4 text-white text-center">
+          <div class="text-3xl font-black text-[#21ad1c]">{{ totalCount() }}</div>
+          <div class="text-sm text-blue-200 mt-1">Membres Officiels</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-8 py-4 text-white text-center">
+          <div class="text-3xl font-black text-[#21ad1c]">{{ techniqueCount() }}</div>
+          <div class="text-sm text-blue-200 mt-1">Éducateurs & Coachs</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-8 py-4 text-white text-center">
+          <div class="text-3xl font-black text-[#21ad1c]">2</div>
+          <div class="text-sm text-blue-200 mt-1">Labels FFF Détenus</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILTRES CATÉGORIES -->
+  <div class="sticky top-0 z-10 bg-white border-b border-gray-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex items-center gap-2 overflow-x-auto py-3 scrollbar-hide">
+        @for (cat of categories; track cat.key) {
+          <button
+            (click)="setCategory(cat.key)"
+            [class]="activeCategory() === cat.key
+              ? 'flex-shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider bg-[#101d69] text-white shadow-md transition-all'
+              : 'flex-shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-full font-semibold text-xs uppercase tracking-wider bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all'"
+          >
+            <span>{{ cat.icon }}</span>
+            <span>{{ cat.label }}</span>
+            <span class="ml-1 bg-black/15 text-xs rounded-full px-2 py-0.5 font-bold">
+              {{ getCategoryCount(cat.key) }}
+            </span>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION DIRECTION & ORGANIGRAMME OFFICIEL FOOTEO -->
+  <section class="max-w-7xl mx-auto px-4 pt-8">
+    <div class="rounded-2xl bg-white border border-slate-200 p-6 sm:p-8 shadow-sm">
+      <div class="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-slate-200 gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#101d69]">
+            <span>🏛️</span> Direction & Gouvernance
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-black uppercase text-[#101d69] tracking-tight mt-1">
+            Organigramme & Conseil d'Administration
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl">
+            Retrouvez la structuration officielle du club en 3 volets selon les statuts associatifs et le document fédéral déposé auprès de la Ligue Centre-Val de Loire et du District 28.
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <a
+            href="https://s2.static-footeo.com/uploads/rcba/Medias/RCBA_Organigramme_g%C3%A9n%C3%A9ral_2025_2026_court__t6yqb4.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 rounded-lg bg-[#101d69] px-4 py-2 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#1a2d8a] transition-colors shadow-sm"
+          >
+            <span>📄 Organigramme (PDF) ↗</span>
+          </a>
+          <a
+            href="https://s2.static-footeo.com/uploads/rcba/Medias/Statuts%20RCBA__qg1bkg.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-slate-50 px-4 py-2 text-xs font-bold uppercase tracking-wider text-slate-700 hover:border-[#101d69] transition-colors"
+          >
+            <span>⚖️ Statuts ↗</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 3 Piliers de Gouvernance -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
+        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:shadow-md transition-all">
+          <div class="flex items-center gap-2 text-xs font-black uppercase text-[#101d69]">
+            <span class="text-base">1️⃣</span> Volet 1 — Direction & Bureau
+          </div>
+          <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+            Présidence, Vice-Présidence, Secrétariat Général, Trésorerie et membres du Conseil d'Administration.
+          </p>
+          <a href="/orga1.png" target="_blank" class="mt-3 inline-flex items-center gap-1 text-[11px] font-bold text-[#1f39cf] hover:underline">
+            Voir l'affiche HD ↗
+          </a>
+        </div>
+
+        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:shadow-md transition-all">
+          <div class="flex items-center gap-2 text-xs font-black uppercase text-[#101d69]">
+            <span class="text-base">2️⃣</span> Volet 2 — Technique & Sportif
+          </div>
+          <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+            Responsable Technique des Jeunes, éducateurs diplômés École de foot (U6-U13) et Foot à 11 (U15, Seniors, Vétérans).
+          </p>
+          <a href="/orga2.png" target="_blank" class="mt-3 inline-flex items-center gap-1 text-[11px] font-bold text-[#1f39cf] hover:underline">
+            Voir l'affiche HD ↗
+          </a>
+        </div>
+
+        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:shadow-md transition-all">
+          <div class="flex items-center gap-2 text-xs font-black uppercase text-[#101d69]">
+            <span class="text-base">3️⃣</span> Volet 3 — Bénévolat & Animation
+          </div>
+          <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+            Commissions événementielles, buvette, sponsoring partenaires, tournois annuels et communication web/réseaux.
+          </p>
+          <a href="/orga3.png" target="_blank" class="mt-3 inline-flex items-center gap-1 text-[11px] font-bold text-[#1f39cf] hover:underline">
+            Voir l'affiche HD ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRILLE DES MEMBRES — VÉRITABLE STYLE CARTE PANINI -->
+  <div class="max-w-7xl mx-auto px-4 py-10">
+
+    @if (filteredStaff().length === 0) {
+      <div class="text-center py-20 text-gray-400">
+        <div class="text-6xl mb-4">🔍</div>
+        <p class="text-lg font-medium">Aucun membre dans cette catégorie</p>
+      </div>
+    }
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      @for (member of filteredStaff(); track member.id) {
+        <!-- CARTE PANINI COMPLÈTE -->
+        <div class="group relative rounded-2xl p-[3px] bg-gradient-to-b from-[#21ad1c] via-[#101d69] to-[#0d1550] shadow-md hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300">
+          
+          <div class="rounded-[14px] bg-white overflow-hidden flex flex-col h-full border border-white/40">
+            
+            <!-- EN-TÊTE PANINI (Drapeau / Saison / Logo) -->
+            <div class="bg-gradient-to-r from-[#101d69] to-[#0d1550] px-3.5 py-2 flex items-center justify-between border-b-2 border-[#21ad1c]">
+              <div class="flex items-center gap-1.5">
+                <span class="text-sm">⭐</span>
+                <span class="text-[9px] font-black uppercase tracking-[0.25em] text-white">RCBA • 2026-27</span>
+              </div>
+              <span class="text-[8px] font-black uppercase px-2 py-0.5 rounded-full text-white shadow-xs" [style.background]="getCategoryColor(member.category)">
+                {{ getCategoryLabel(member.category) }}
+              </span>
+            </div>
+
+            <!-- CADRE PHOTO PANINI CENTRÉ AVEC ARRIÈRE-PLAN GÉOMÉTRIQUE -->
+            <div class="relative h-48 bg-gradient-to-b from-slate-900 via-[#101d69] to-slate-900 flex items-center justify-center overflow-hidden">
+              <!-- Hachures et motif filigrane carte de collection -->
+              <div class="absolute inset-0 opacity-15"
+                   style="background-image: repeating-linear-gradient(45deg, #21ad1c 0, #21ad1c 1px, transparent 0, transparent 20px);"></div>
+              <div class="absolute text-[60px] font-black text-white/5 select-none pointer-events-none tracking-tighter">
+                RCBA
+              </div>
+
+              <!-- Cadre circulaire doré/blanc de la photo (taille uniforme 112px x 112px) -->
+              <div class="relative z-10 p-1 rounded-full bg-gradient-to-tr from-amber-300 via-white to-[#21ad1c] shadow-2xl">
+                @if (member.photo) {
+                  <img
+                    [src]="member.photo"
+                    [alt]="member.firstName + ' ' + member.lastName"
+                    class="w-28 h-28 rounded-full object-cover object-top border-2 border-white shadow-inner group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                    (error)="$any($event.target).style.display='none'"
+                  />
+                } @else {
+                  <div
+                    class="w-28 h-28 rounded-full flex items-center justify-center text-white text-2xl font-black shadow-inner border-2 border-white"
+                    [style.background]="'linear-gradient(135deg, ' + getCategoryColor(member.category) + ', #0d1550)'"
+                  >
+                    {{ getInitials(member) }}
+                  </div>
+                }
+              </div>
+
+              <!-- Badge officiel au coin -->
+              <div class="absolute bottom-2 right-2.5 z-10">
+                <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-white/90 text-[#101d69] text-xs font-black shadow">
+                  ⚽
+                </span>
+              </div>
+            </div>
+
+            <!-- CARTUCHE NOM & POSTE (STYLE CARTE À COLLECTIONNER) -->
+            <div class="p-4 flex-1 flex flex-col justify-between text-center bg-gradient-to-b from-white to-slate-50">
+              <div>
+                <h2 class="font-black text-slate-900 text-base uppercase tracking-tight leading-tight">
+                  {{ member.firstName }} <br />
+                  <span class="text-[#101d69]">{{ member.lastName }}</span>
+                </h2>
+                <div class="inline-block mt-2 px-2.5 py-1 rounded-md bg-slate-100 border border-slate-200 text-xs font-bold text-slate-700">
+                  {{ member.role }}
+                </div>
+              </div>
+
+              <!-- Pied de carte Panini avec identifiant officiel -->
+              <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between text-[9px] font-mono font-bold text-slate-400">
+                <span>RCBA-OFFICIEL</span>
+                <span class="text-[#21ad1c]">FFF #528340</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- LIEN FOOTEO -->
+    <div class="mt-12 text-center">
+      <a
+        href="https://rcba.footeo.com/dirigeants.html"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 bg-[#101d69] hover:bg-[#1a2d8a] text-white font-bold text-xs uppercase tracking-wider px-6 py-3.5 rounded-xl transition-colors shadow-md"
+      >
+        <span>Consulter l'annuaire complet sur Footeo ↗</span>
+      </a>
+      <p class="text-xs text-gray-400 mt-2">Source officielle du club : rcba.footeo.com/dirigeants.html ({{ totalCount() }} dirigeants répertoriés)</p>
+    </div>
+  </div>
+</div>

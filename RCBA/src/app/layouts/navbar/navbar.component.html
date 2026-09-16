@@ -1,0 +1,158 @@
+<header class="sticky top-0 z-50 w-full shadow-md">
+  <!-- Top Institution Bar (Bleu Roi #101d69) -->
+  <div class="bg-[#101d69] text-white border-b border-[#1f39cf]/50">
+    <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      
+      <!-- Brand Crest & Club Name -->
+      <a routerLink="/" class="flex items-center gap-3.5 group">
+        <div class="relative flex h-12 w-12 items-center justify-center rounded-full bg-white p-1 shadow-md transition-transform group-hover:scale-105">
+          <img
+            src="logo.png"
+            alt="Blason RCBA"
+            class="h-full w-full object-contain"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+          />
+          <span class="absolute inset-0 hidden items-center justify-center text-xs font-black text-[#101d69]">RCBA</span>
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2">
+            <span class="text-lg sm:text-xl font-black uppercase tracking-wider text-white">
+              Racing Club Bû Abondant
+            </span>
+            <span class="hidden sm:inline-flex items-center rounded bg-[#21ad1c] px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-white">
+              FFF n° 528340
+            </span>
+          </div>
+          <span class="text-[11px] font-semibold text-sky-200 tracking-wide">
+            Communes de Bû &bull; Abondant (Eure-et-Loir)
+          </span>
+        </div>
+      </a>
+
+      <!-- Quick Action Right (Portail Coach, Direction & Inscriptions) -->
+      <div class="hidden sm:flex items-center gap-2">
+        <a
+          routerLink="/educateurs"
+          class="inline-flex items-center gap-1 rounded bg-white/10 px-2.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white hover:bg-white/20 transition-colors border border-white/20"
+        >
+          <span>⚽</span> Coach
+        </a>
+        <a
+          routerLink="/direction"
+          class="inline-flex items-center gap-1 rounded bg-white/10 px-2.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white hover:bg-white/20 transition-colors border border-white/20"
+        >
+          <span>🏛️</span> Direction
+        </a>
+
+        @if (isAuthenticated()) {
+          <div class="flex items-center gap-1.5 pl-2 border-l border-white/20">
+            <span class="inline-flex items-center gap-1 px-2 py-1 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase">
+              <span>●</span> {{ currentUser()?.role === 'direction' ? 'Direction' : 'Coach' }}
+            </span>
+            <button
+              type="button"
+              (click)="authService.logout()"
+              class="text-[10px] text-slate-300 hover:text-white underline font-bold"
+              title="Se déconnecter"
+            >
+              Déconnexion
+            </button>
+          </div>
+        } @else {
+          <a
+            routerLink="/login"
+            class="inline-flex items-center gap-1 rounded bg-white/20 px-2.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white hover:bg-white/30 transition-colors"
+          >
+            <span>🔒</span> Connexion
+          </a>
+        }
+
+        <a
+          routerLink="/inscriptions"
+          class="inline-flex items-center rounded bg-[#21ad1c] px-3 py-1.5 text-[11px] font-black uppercase tracking-wider text-white hover:bg-[#1b8e17] transition-colors shadow-sm ml-1"
+        >
+          Inscriptions
+        </a>
+      </div>
+
+      <!-- Mobile Toggle -->
+      <button
+        type="button"
+        (click)="toggleMobileMenu()"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-white/30 text-white lg:hidden hover:bg-white/10"
+        [attr.aria-expanded]="isMobileMenuOpen()"
+        aria-label="Menu principal"
+      >
+        @if (isMobileMenuOpen()) {
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        } @else {
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        }
+      </button>
+    </div>
+  </div>
+
+  <!-- Lower Navigation Bar (Clean White with Bleu Roi & Vert Accents) -->
+  <nav class="hidden lg:block bg-white border-b-4 border-[#101d69]">
+    <div class="mx-auto flex h-12 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center gap-1 xl:gap-2">
+        @for (link of navLinks(); track link.label) {
+          <a
+            [routerLink]="link.path"
+            [routerLinkActive]="'text-[#101d69] font-black border-b-2 border-[#21ad1c] bg-slate-50'"
+            [routerLinkActiveOptions]="{ exact: link.exact ?? false }"
+            class="inline-flex items-center px-3 py-2 text-xs font-bold uppercase tracking-wider text-slate-700 transition-colors hover:text-[#101d69] hover:bg-slate-50"
+            [class.text-[#167812]]="link.isPrivate"
+          >
+            @if (link.isPrivate) {
+              <span class="mr-1 text-[11px]">🔒</span>
+            }
+            {{ link.label }}
+          </a>
+        }
+      </div>
+
+      <div class="flex items-center gap-2 text-xs font-bold text-slate-500">
+        <span class="inline-block h-2 w-2 rounded-full bg-[#21ad1c]"></span>
+        <span>Saison 2025-2026</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Dropdown -->
+  @if (isMobileMenuOpen()) {
+    <div class="border-b-4 border-[#101d69] bg-white px-4 py-4 lg:hidden shadow-xl">
+      <nav class="flex flex-col divide-y divide-slate-100">
+        @for (link of navLinks(); track link.label) {
+          <a
+            [routerLink]="link.path"
+            (click)="closeMobileMenu()"
+            [routerLinkActive]="'text-[#101d69] font-black bg-slate-50 pl-3'"
+            [routerLinkActiveOptions]="{ exact: link.exact ?? false }"
+            class="flex items-center justify-between py-3 text-sm font-bold uppercase text-slate-700 hover:text-[#101d69] transition-all"
+          >
+            <span>{{ link.label }}</span>
+            @if (link.isPrivate) {
+              <span class="rounded bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-[#167812]">
+                Privé
+              </span>
+            }
+          </a>
+        }
+      </nav>
+      <div class="pt-4 mt-2">
+        <a
+          routerLink="/inscriptions"
+          (click)="closeMobileMenu()"
+          class="flex w-full items-center justify-center rounded bg-[#21ad1c] py-3 text-center text-xs font-black uppercase tracking-wider text-white shadow-md hover:bg-[#1b8e17]"
+        >
+          Rejoindre le club (Inscriptions)
+        </a>
+      </div>
+    </div>
+  }
+</header>

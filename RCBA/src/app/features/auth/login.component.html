@@ -1,0 +1,129 @@
+<div class="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-slate-50">
+  <div class="max-w-md w-full space-y-6">
+
+    <!-- Card Container -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-8 shadow-xl relative overflow-hidden">
+      <!-- Accent Top Bar -->
+      <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#101d69] via-[#21ad1c] to-[#101d69]"></div>
+
+      <!-- Brand Crest & Header -->
+      <div class="text-center">
+        <div class="inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#101d69] text-white shadow-lg mb-3">
+          <span class="text-2xl">🔒</span>
+        </div>
+        <h1 class="text-2xl font-black uppercase text-[#101d69] tracking-tight">
+          Espace Sécurisé RCBA
+        </h1>
+        <p class="text-xs text-slate-500 mt-1">
+          Connectez-vous pour accéder au Portail Coach ou au Portail Direction
+        </p>
+      </div>
+
+      <!-- Choix du Portail -->
+      <div class="grid grid-cols-2 gap-2 p-1 rounded-xl bg-slate-100 border border-slate-200 mt-6">
+        <button
+          type="button"
+          (click)="selectPortal('coach')"
+          [class]="selectedPortal() === 'coach'
+            ? 'flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-black uppercase bg-[#21ad1c] text-white shadow-sm transition-all'
+            : 'flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-bold uppercase text-slate-600 hover:text-slate-900 transition-all'"
+        >
+          <span>⚽</span> Coach & Staff
+        </button>
+        <button
+          type="button"
+          (click)="selectPortal('direction')"
+          [class]="selectedPortal() === 'direction'
+            ? 'flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-black uppercase bg-[#101d69] text-white shadow-sm transition-all'
+            : 'flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-bold uppercase text-slate-600 hover:text-slate-900 transition-all'"
+        >
+          <span>🏛️</span> Direction & CA
+        </button>
+      </div>
+
+      <!-- Message d'erreur -->
+      @if (errorMessage()) {
+        <div class="mt-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold flex items-center gap-2">
+          <span>⚠️</span>
+          <span>{{ errorMessage() }}</span>
+        </div>
+      }
+
+      <!-- Formulaire de Connexion -->
+      <form (ngSubmit)="onSubmit()" class="mt-6 space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-700 mb-1">
+            Identifiant ou Email
+          </label>
+          <input
+            type="text"
+            [(ngModel)]="identifier"
+            name="identifier"
+            placeholder="Ex: coach ou direction"
+            class="w-full rounded-xl border border-slate-300 px-4 py-3 text-xs text-slate-900 focus:border-[#101d69] focus:outline-none focus:ring-1 focus:ring-[#101d69]"
+            required
+          />
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-xs font-bold uppercase text-slate-700">
+              Mot de passe
+            </label>
+          </div>
+          <input
+            type="password"
+            [(ngModel)]="password"
+            name="password"
+            placeholder="••••••••"
+            class="w-full rounded-xl border border-slate-300 px-4 py-3 text-xs text-slate-900 focus:border-[#101d69] focus:outline-none focus:ring-1 focus:ring-[#101d69]"
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          [class]="selectedPortal() === 'coach'
+            ? 'w-full rounded-xl bg-[#21ad1c] hover:bg-[#1b8e17] py-3 text-xs font-black uppercase tracking-wider text-white shadow-md transition-all mt-2'
+            : 'w-full rounded-xl bg-[#101d69] hover:bg-[#1a2d8a] py-3 text-xs font-black uppercase tracking-wider text-white shadow-md transition-all mt-2'"
+        >
+          Déverrouiller le Portail {{ selectedPortal() === 'coach' ? 'Coach' : 'Direction' }} &rarr;
+        </button>
+      </form>
+
+      <!-- Accès en 1 Clic / Raccourcis Démo Pratiques -->
+      <div class="mt-8 pt-6 border-t border-slate-200">
+        <span class="text-[10px] font-black uppercase tracking-wider text-slate-400 block text-center mb-3">
+          ⚡ Connexion Rapide (1 clic)
+        </span>
+        <div class="grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            (click)="fillQuickAccount('coach')"
+            class="rounded-lg border border-slate-200 bg-slate-50 p-2 text-center hover:bg-slate-100 transition-all"
+          >
+            <strong class="text-xs font-bold text-[#101d69] block">⚽ Accès Coach</strong>
+            <span class="text-[10px] text-slate-500">coach / coach</span>
+          </button>
+          <button
+            type="button"
+            (click)="fillQuickAccount('direction')"
+            class="rounded-lg border border-slate-200 bg-slate-50 p-2 text-center hover:bg-slate-100 transition-all"
+          >
+            <strong class="text-xs font-bold text-[#101d69] block">🏛️ Direction & Tout le Site</strong>
+            <span class="text-[10px] text-slate-500 font-mono font-bold">admin / rcba2026</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Retour Accueil -->
+    <div class="text-center">
+      <a routerLink="/" class="text-xs font-bold text-slate-500 hover:text-[#101d69] transition-colors">
+        &larr; Retour au site public du Racing Club Bû Abondant
+      </a>
+    </div>
+
+  </div>
+</div>

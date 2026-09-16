@@ -1,0 +1,471 @@
+@if (team()) {
+  <!-- HERO BANNER ÉQUIPE -->
+  <section class="relative bg-[#101d69] overflow-hidden">
+    <div
+      class="absolute inset-0 opacity-10"
+      style="background-image: repeating-linear-gradient(45deg, #21ad1c 0, #21ad1c 1px, transparent 0, transparent 50%); background-size: 20px 20px;"
+    ></div>
+    <div class="relative max-w-7xl mx-auto px-4 py-12 sm:py-16">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm text-blue-300 mb-8">
+        <a routerLink="/" class="hover:text-white transition-colors">Accueil</a>
+        <span class="text-blue-500">›</span>
+        <a routerLink="/equipes" class="hover:text-white transition-colors">Équipes</a>
+        <span class="text-blue-500">›</span>
+        <span class="text-white font-semibold">{{ team()!.name }}</span>
+      </nav>
+
+      <div class="flex flex-col lg:flex-row items-start gap-10">
+        <!-- Left: Info équipe -->
+        <div class="flex-1">
+          <div class="inline-flex items-center gap-2 bg-[#21ad1c]/20 border border-[#21ad1c]/40 text-[#21ad1c] rounded-full px-4 py-1.5 text-xs font-bold mb-5 uppercase tracking-wider">
+            ⚽ {{ team()!.division }}
+          </div>
+          <h1 class="text-4xl sm:text-5xl font-black uppercase text-white tracking-tight leading-none mb-4">
+            {{ team()!.name }}
+          </h1>
+          <p class="text-blue-200 text-base max-w-xl leading-relaxed mb-6">
+            {{ team()!.description ?? 'Équipe du Racing Club Bû Abondant, engagée en championnat du District 28.' }}
+          </p>
+
+          <!-- Infos clés -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-center">
+              <div class="text-xs font-black uppercase tracking-wider text-[#21ad1c] mb-1">Catégorie</div>
+              <div class="text-sm font-bold text-white">{{ team()!.ageGroup }}</div>
+            </div>
+            <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-center">
+              <div class="text-xs font-black uppercase tracking-wider text-[#21ad1c] mb-1">Entraînements</div>
+              <div class="text-sm font-bold text-white">{{ team()!.trainingSchedule }}</div>
+            </div>
+            <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-center">
+              <div class="text-xs font-black uppercase tracking-wider text-[#21ad1c] mb-1">Terrain</div>
+              <div class="text-sm font-bold text-white">{{ team()!.site }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Écusson animé -->
+        <div class="flex-shrink-0 flex flex-col items-center justify-center p-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl shadow-xl text-center w-56">
+          <div class="relative flex h-24 w-24 items-center justify-center rounded-full bg-white p-2 shadow-xl mb-4">
+            <img
+              src="/logo.png"
+              alt="Blason RCBA"
+              class="h-full w-full object-contain"
+              onerror="this.style.display='none'"
+            />
+          </div>
+          <div class="text-white font-black uppercase text-sm tracking-wide">RCBA</div>
+          <div class="text-[#21ad1c] text-xs font-bold mt-1">Saison 2026–2027</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENU PRINCIPAL -->
+  <div class="max-w-7xl mx-auto px-4 py-12 space-y-12">
+
+    <!-- STAFF TECHNIQUE / ÉDUCATEURS (STYLE CARTE PANINI) -->
+    @if (staffForTeam().length > 0) {
+      <section>
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <span class="text-xs font-black uppercase tracking-wider text-[#21ad1c]">Encadrement</span>
+            <h2 class="text-2xl font-black uppercase text-[#101d69] tracking-tight mt-0.5">Staff & Éducateurs</h2>
+          </div>
+          <span class="text-xs font-bold text-slate-400 uppercase">Cartes Officielles RCBA</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          @for (staff of staffForTeam(); track staff.id) {
+            <!-- CARTE PANINI OFFICIELLE DU STAFF -->
+            <div class="group relative rounded-2xl p-[3px] bg-gradient-to-b from-[#21ad1c] via-[#101d69] to-[#0d1550] shadow-md hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300">
+              <div class="rounded-[14px] bg-white overflow-hidden flex flex-col h-full border border-white/40">
+                <!-- En-tête Panini -->
+                <div class="bg-gradient-to-r from-[#101d69] to-[#0d1550] px-3.5 py-2 flex items-center justify-between border-b-2 border-[#21ad1c]">
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-sm">⭐</span>
+                    <span class="text-[9px] font-black uppercase tracking-[0.25em] text-white">RCBA • 2026-27</span>
+                  </div>
+                  <span class="text-[8px] font-black uppercase px-2 py-0.5 rounded-full bg-[#21ad1c] text-white">
+                    Éducateur
+                  </span>
+                </div>
+
+                <!-- Cadre photo Panini centré (taille uniforme 112px x 112px) -->
+                <div class="relative h-48 bg-gradient-to-b from-slate-900 via-[#101d69] to-slate-900 flex items-center justify-center overflow-hidden">
+                  <div class="absolute inset-0 opacity-15"
+                       style="background-image: repeating-linear-gradient(45deg, #21ad1c 0, #21ad1c 1px, transparent 0, transparent 20px);"></div>
+                  <div class="absolute text-[55px] font-black text-white/5 select-none pointer-events-none">
+                    STAFF
+                  </div>
+
+                  <div class="relative z-10 p-1 rounded-full bg-gradient-to-tr from-amber-300 via-white to-[#21ad1c] shadow-2xl">
+                    @if (staff.photo) {
+                      <img
+                        [src]="staff.photo"
+                        [alt]="staff.firstName + ' ' + staff.lastName"
+                        class="w-28 h-28 rounded-full object-cover object-top border-2 border-white shadow-inner group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                        (error)="$any($event.target).style.display='none'"
+                      />
+                    } @else {
+                      <div
+                        class="w-28 h-28 rounded-full flex items-center justify-center text-white text-2xl font-black shadow-inner border-2 border-white"
+                        style="background: linear-gradient(135deg, #21ad1c, #101d69)"
+                      >
+                        {{ getInitials(staff.firstName, staff.lastName) }}
+                      </div>
+                    }
+                  </div>
+
+                  <div class="absolute bottom-2 right-2.5 z-10">
+                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-white text-[#101d69] text-xs font-black shadow">
+                      📋
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Cartouche Nom & Rôle Panini -->
+                <div class="p-4 flex-1 flex flex-col justify-between text-center bg-gradient-to-b from-white to-slate-50">
+                  <div>
+                    <h3 class="font-black text-slate-900 text-base uppercase tracking-tight leading-tight">
+                      {{ staff.firstName }} <br />
+                      <span class="text-[#101d69]">{{ staff.lastName }}</span>
+                    </h3>
+                    <div class="inline-block mt-2 px-2.5 py-1 rounded-md bg-slate-100 border border-slate-200 text-xs font-bold text-slate-700">
+                      {{ staff.role }}
+                    </div>
+                  </div>
+                  <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between text-[9px] font-mono font-bold text-slate-400">
+                    <span>RCBA-STAFF</span>
+                    <span class="text-[#21ad1c]">{{ team()!.name }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+    }
+
+    <!-- SECTION CONVOCATION DU MATCH OFFICIEL (SI PUBLIÉE) -->
+    @if (activeConvocation()) {
+      <section class="rounded-2xl border-2 border-[#101d69] bg-gradient-to-br from-white via-slate-50 to-emerald-50/40 p-6 sm:p-8 shadow-md">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-200">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="inline-flex items-center gap-1 rounded-full bg-[#101d69] text-white px-3 py-0.5 text-xs font-black uppercase tracking-wider">
+                📢 Convocation Officielle
+              </span>
+              <span class="text-xs font-bold text-[#167812] uppercase tracking-wider">
+                Sélectionnée par le Coach
+              </span>
+            </div>
+            <h2 class="text-2xl font-black uppercase text-[#101d69] tracking-tight">
+              Match : {{ activeConvocation()!.opponent }}
+            </h2>
+            <p class="text-xs text-slate-600 mt-1">
+              {{ activeConvocation()!.matchDate }} à {{ activeConvocation()!.matchTime }} &bull; {{ activeConvocation()!.location }}
+            </p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3">
+            <div class="bg-white border border-slate-200 rounded-xl px-4 py-2 text-center shadow-xs">
+              <div class="text-[10px] font-black uppercase text-slate-400">Rendez-vous</div>
+              <div class="text-sm font-black text-[#101d69]">{{ activeConvocation()!.meetingTime }}</div>
+              <div class="text-[10px] text-slate-500">{{ activeConvocation()!.meetingPlace }}</div>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-xl px-4 py-2 text-center shadow-xs">
+              <div class="text-[10px] font-black uppercase text-slate-400">Joueurs retenus</div>
+              <div class="text-sm font-black text-[#21ad1c]">
+                {{ activeConvocation()!.selectedPlayers.length }} sélectionnés
+              </div>
+              <div class="text-[10px] text-slate-500">{{ activeConvocation()!.coachName }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Joueurs Convoqués -->
+        <div class="mt-5 space-y-4">
+          <div>
+            <h3 class="text-xs font-black uppercase tracking-wider text-slate-700 mb-2.5">
+              Joueurs Convoqués pour cette rencontre ({{ activeConvocation()!.selectedPlayers.length }}) :
+            </h3>
+            <div class="flex flex-wrap gap-2">
+              @for (playerName of activeConvocation()!.selectedPlayers; track playerName) {
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-white border border-slate-200 shadow-xs text-slate-800">
+                  <span class="w-2 h-2 rounded-full bg-[#21ad1c]"></span>
+                  {{ playerName }}
+                </span>
+              }
+            </div>
+          </div>
+
+          @if (activeConvocation()!.notes) {
+            <div class="bg-blue-50/70 border border-blue-200 rounded-xl p-3.5 text-xs text-[#101d69]">
+              <strong class="font-bold">Consignes du coach :</strong> {{ activeConvocation()!.notes }}
+            </div>
+          }
+        </div>
+      </section>
+    }
+
+    <!-- EFFECTIF JOUEURS (STYLE CARTE PANINI) -->
+    @if (playersForTeam().length > 0) {
+      <section>
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <span class="text-xs font-black uppercase tracking-wider text-[#21ad1c]">Effectif</span>
+            <h2 class="text-2xl font-black uppercase text-[#101d69] tracking-tight mt-0.5">
+              Joueurs de l'Équipe ({{ playersForTeam().length }})
+            </h2>
+          </div>
+          <span class="text-xs font-bold text-slate-400 uppercase">Cartes Officielles RCBA</span>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
+          @for (player of playersForTeam(); track player.id) {
+            <!-- CARTE PANINI OFFICIELLE DU JOUEUR -->
+            <div class="group relative rounded-2xl p-[2.5px] bg-gradient-to-b from-amber-400 via-[#101d69] to-[#0d1550] shadow-md hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300">
+              <div class="rounded-[14px] bg-white overflow-hidden flex flex-col h-full border border-white/40">
+                <!-- Header carte -->
+                <div class="bg-gradient-to-r from-[#101d69] to-[#0d1550] px-3 py-1.5 flex items-center justify-between border-b-2 border-amber-400">
+                  <span class="text-[8px] font-black uppercase tracking-[0.2em] text-white">RCBA • JOUEUR</span>
+                  @if (player.number) {
+                    <span class="text-xs font-black text-amber-400 font-mono">#{{ player.number }}</span>
+                  }
+                </div>
+
+                <!-- Cadre photo joueur Panini (112px x 112px centré uniforme) -->
+                <div class="relative h-44 bg-gradient-to-b from-slate-900 via-[#101d69] to-slate-900 flex items-center justify-center overflow-hidden">
+                  <div class="absolute inset-0 opacity-15"
+                       style="background-image: repeating-linear-gradient(45deg, #21ad1c 0, #21ad1c 1px, transparent 0, transparent 20px);"></div>
+
+                  <div class="relative z-10 p-1 rounded-full bg-gradient-to-tr from-amber-300 via-white to-[#21ad1c] shadow-xl">
+                    @if (player.photo) {
+                      <img
+                        [src]="player.photo"
+                        [alt]="player.displayName"
+                        class="w-24 h-24 rounded-full object-cover object-top border-2 border-white shadow-inner group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                        (error)="$any($event.target).style.display='none'"
+                      />
+                    } @else {
+                      <div
+                        class="w-24 h-24 rounded-full flex items-center justify-center text-white text-xl font-black shadow-inner border-2 border-white"
+                        style="background: linear-gradient(135deg, #1f39cf, #101d69)"
+                      >
+                        {{ getInitials(player.firstName, player.lastName) }}
+                      </div>
+                    }
+                  </div>
+
+                  <!-- Badge sélection en match si convoqué -->
+                  @if (isPlayerSelected(player)) {
+                    <div class="absolute top-2 right-2 z-10">
+                      <span class="inline-flex items-center gap-1 text-[8px] font-black uppercase bg-[#21ad1c] text-white px-2 py-0.5 rounded-full shadow-sm animate-pulse">
+                        ⚽ Convoqué
+                      </span>
+                    </div>
+                  }
+
+                  @if (player.position) {
+                    <div class="absolute bottom-2 left-2 z-10">
+                      <span class="text-[9px] font-bold text-white bg-slate-900/80 backdrop-blur-xs px-2 py-0.5 rounded-full border border-white/20">
+                        {{ player.position }}
+                      </span>
+                    </div>
+                  }
+                </div>
+
+                <!-- Cartouche Nom Panini : UNIQUEMENT LE PRÉNOM (et 1ère lettre du nom si homonymes) -->
+                <div class="p-3 text-center bg-gradient-to-b from-white to-slate-50 flex-1 flex flex-col justify-between">
+                  <div>
+                    <h3 class="font-black text-slate-900 text-base uppercase tracking-tight leading-tight">
+                      {{ player.displayName }}
+                    </h3>
+                  </div>
+
+                  <!-- Stats d'évolution du joueur si disponibles -->
+                  @if (player.stats) {
+                    <div class="mt-2.5 pt-2 border-t border-slate-100 grid grid-cols-3 gap-1 text-center bg-slate-50 rounded-lg p-1.5">
+                      <div>
+                        <div class="text-[9px] text-slate-400 font-bold uppercase">Buts</div>
+                        <div class="text-xs font-black text-[#101d69]">{{ player.stats.goals }}</div>
+                      </div>
+                      <div>
+                        <div class="text-[9px] text-slate-400 font-bold uppercase">Passes</div>
+                        <div class="text-xs font-black text-[#21ad1c]">{{ player.stats.assists }}</div>
+                      </div>
+                      <div>
+                        <div class="text-[9px] text-slate-400 font-bold uppercase">Prog.</div>
+                        <div class="text-xs font-black text-amber-500">{{ player.stats.ratingProgression }}/10</div>
+                      </div>
+                    </div>
+                  }
+
+                  <div class="mt-2 pt-1.5 border-t border-slate-100 flex items-center justify-between text-[8px] font-mono font-bold text-slate-400">
+                    <span>{{ team()!.ageGroup }}</span>
+                    <span class="text-[#21ad1c]">{{ team()!.format }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+    }
+
+    <!-- ENCADRÉS COACH + ADJOINT (depuis data equipe) -->
+    <section>
+      <div class="mb-6">
+        <span class="text-xs font-black uppercase tracking-wider text-[#21ad1c]">Organisation</span>
+        <h2 class="text-2xl font-black uppercase text-[#101d69] tracking-tight mt-0.5">Responsables de l'Équipe</h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <!-- Coach principal -->
+        <div class="rounded-xl bg-white border border-slate-200 border-t-4 border-t-[#101d69] p-6 shadow-sm flex items-center gap-5">
+          <div
+            class="w-14 h-14 rounded-full flex items-center justify-center text-white text-xl font-black shadow-lg flex-shrink-0"
+            style="background: linear-gradient(135deg, #101d69, #1f39cf)"
+          >
+            👤
+          </div>
+          <div>
+            <div class="text-xs font-black uppercase tracking-wider text-[#101d69] mb-1">Entraîneur Principal</div>
+            <div class="text-base font-black text-slate-900">{{ team()!.coach }}</div>
+          </div>
+        </div>
+
+        <!-- Coach adjoint si présent -->
+        @if (team()!.assistantCoach) {
+          <div class="rounded-xl bg-white border border-slate-200 border-t-4 border-t-[#21ad1c] p-6 shadow-sm flex items-center gap-5">
+            <div
+              class="w-14 h-14 rounded-full flex items-center justify-center text-white text-xl font-black shadow-lg flex-shrink-0"
+              style="background: linear-gradient(135deg, #21ad1c, #167812)"
+            >
+              👤
+            </div>
+            <div>
+              <div class="text-xs font-black uppercase tracking-wider text-[#21ad1c] mb-1">Entraîneur Adjoint</div>
+              <div class="text-base font-black text-slate-900">{{ team()!.assistantCoach }}</div>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- DERNIERS RÉSULTATS -->
+    @if (recentMatchesForTeam().length > 0) {
+      <section>
+        <div class="mb-6">
+          <span class="text-xs font-black uppercase tracking-wider text-[#21ad1c]">Compétition</span>
+          <h2 class="text-2xl font-black uppercase text-[#101d69] tracking-tight mt-0.5">Derniers Résultats</h2>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          @for (match of recentMatchesForTeam(); track match.date) {
+            <div class="rounded-xl bg-white border border-slate-200 p-5 shadow-sm">
+              <div class="flex items-center justify-between text-xs text-slate-500 mb-4 pb-3 border-b border-slate-100">
+                <app-badge [label]="match.category" variant="primary" />
+                <span class="font-medium">{{ match.date }}</span>
+              </div>
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-sm" [class.text-[#101d69]]="match.teamHome.includes('RCBA')">
+                    {{ match.teamHome }}
+                  </span>
+                  <span class="text-lg font-black font-mono text-[#101d69]">{{ match.scoreHome }}</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-sm" [class.text-[#101d69]]="match.teamAway.includes('RCBA')">
+                    {{ match.teamAway }}
+                  </span>
+                  <span class="text-lg font-black font-mono text-[#101d69]">{{ match.scoreAway }}</span>
+                </div>
+              </div>
+              <div class="pt-3 mt-3 border-t border-slate-100 flex justify-between items-center text-xs">
+                @if (match.isVictory) {
+                  <app-badge label="Victoire RCBA" variant="success" />
+                } @else if (match.isVictory === false) {
+                  <app-badge label="Défaite" variant="muted" />
+                } @else {
+                  <app-badge label="Nul" variant="muted" />
+                }
+                <span class="text-slate-400 text-[10px] uppercase tracking-wider">{{ match.location }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+    }
+
+    <!-- INFOS PRATIQUES -->
+    <section>
+      <div class="rounded-2xl bg-[#101d69] p-8 text-white">
+        <h2 class="text-xl font-black uppercase tracking-tight mb-6">Rejoindre cette Équipe</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div class="flex items-start gap-3">
+            <span class="text-2xl">🕒</span>
+            <div>
+              <div class="text-xs font-black uppercase tracking-wider text-[#21ad1c] mb-1">Entraînements</div>
+              <div class="text-sm font-bold text-white">{{ team()!.trainingSchedule }}</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="text-2xl">📍</span>
+            <div>
+              <div class="text-xs font-black uppercase tracking-wider text-[#21ad1c] mb-1">Site Principal</div>
+              <div class="text-sm font-bold text-white">{{ team()!.site }}</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="text-2xl">👶</span>
+            <div>
+              <div class="text-xs font-black uppercase tracking-wider text-[#21ad1c] mb-1">Catégorie d'Âge</div>
+              <div class="text-sm font-bold text-white">{{ team()!.ageGroup }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a
+            routerLink="/inscriptions"
+            class="inline-flex items-center gap-2 bg-[#21ad1c] hover:bg-[#1b8e17] text-white font-black px-6 py-3 rounded-xl transition-colors shadow-md text-sm uppercase tracking-wider"
+          >
+            ⚽ S'inscrire dans cette équipe
+          </a>
+          <a
+            routerLink="/contact"
+            class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold px-6 py-3 rounded-xl transition-colors text-sm"
+          >
+            📧 Nous contacter
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- RETOUR LISTE -->
+    <div class="flex justify-center">
+      <a
+        routerLink="/equipes"
+        class="inline-flex items-center gap-2 text-[#101d69] hover:text-[#1f39cf] font-bold text-sm uppercase tracking-wider transition-colors"
+      >
+        ← Retour à toutes les équipes
+      </a>
+    </div>
+  </div>
+
+} @else {
+  <!-- ÉQUIPE NON TROUVÉE -->
+  <div class="min-h-[60vh] flex flex-col items-center justify-center gap-6 px-4 text-center">
+    <div class="text-6xl">⚽</div>
+    <h1 class="text-3xl font-black text-[#101d69] uppercase">Équipe introuvable</h1>
+    <p class="text-slate-500 max-w-sm">Cette équipe n'existe pas ou a peut-être été déplacée.</p>
+    <a
+      routerLink="/equipes"
+      class="inline-flex items-center gap-2 bg-[#101d69] hover:bg-[#1f39cf] text-white font-black px-6 py-3 rounded-xl transition-colors shadow-md text-sm uppercase tracking-wider"
+    >
+      ← Retour aux équipes
+    </a>
+  </div>
+}

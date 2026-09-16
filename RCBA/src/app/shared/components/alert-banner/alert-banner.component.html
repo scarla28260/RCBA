@@ -1,0 +1,45 @@
+@if (alert(); as currentAlert) {
+  <aside
+    class="relative z-40 border-b px-4 py-2.5 sm:px-6 transition-all duration-300"
+    [class.bg-[#101d69]]="currentAlert.type === 'info'"
+    [class.border-[#1f39cf]]="currentAlert.type === 'info'"
+    [class.text-white]="currentAlert.type === 'info'"
+    [class.bg-amber-600]="currentAlert.type === 'warning'"
+    [class.border-amber-700]="currentAlert.type === 'warning'"
+    [class.text-white]="currentAlert.type === 'warning'"
+    [class.bg-rose-700]="currentAlert.type === 'urgent'"
+    [class.border-rose-800]="currentAlert.type === 'urgent'"
+    [class.text-white]="currentAlert.type === 'urgent'"
+    role="alert"
+  >
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4">
+      <div class="flex items-center gap-2.5 text-xs sm:text-sm font-medium">
+        <span class="flex h-2.5 w-2.5 rounded-full bg-[#21ad1c] ring-2 ring-white animate-pulse"></span>
+        <strong class="font-bold uppercase tracking-wider text-white">
+          {{ currentAlert.title }} :
+        </strong>
+        <span>{{ currentAlert.message }}</span>
+        
+        @if (currentAlert.linkUrl && currentAlert.linkText) {
+          <a
+            [routerLink]="currentAlert.linkUrl"
+            class="ml-2 inline-flex items-center rounded bg-[#21ad1c] px-2 py-0.5 text-xs font-bold text-white hover:bg-[#1b8e17] transition-colors"
+          >
+            {{ currentAlert.linkText }} &rarr;
+          </a>
+        }
+      </div>
+
+      <button
+        type="button"
+        (click)="dismiss()"
+        class="rounded p-1 text-white/80 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+        aria-label="Fermer l'alerte"
+      >
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </aside>
+}

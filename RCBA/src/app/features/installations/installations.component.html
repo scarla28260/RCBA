@@ -1,0 +1,77 @@
+<div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-10">
+  <!-- Page Header -->
+  <div class="bg-white rounded-2xl border-t-4 border-[#101d69] p-8 shadow-sm">
+    <div class="max-w-3xl">
+      <span class="text-xs font-black uppercase tracking-wider text-[#21ad1c]">Territoire & Terrains</span>
+      <h1 class="text-3xl sm:text-4xl font-black uppercase text-[#101d69] tracking-tight mt-1">
+        Nos Installations Sportives
+      </h1>
+      <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+        Le Racing Club Bû Abondant s'appuie sur les infrastructures de 2 communes : <strong class="text-[#101d69]">Bû</strong> et <strong class="text-[#167812]">Abondant</strong>.
+      </p>
+    </div>
+  </div>
+
+  <!-- Installations Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    @for (site of installations(); track site.id; let idx = $index) {
+      <div
+        class="rounded-2xl bg-white p-6 shadow-sm border border-slate-200 flex flex-col justify-between space-y-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
+        [class.border-t-4]="true"
+        [class.border-t-[#101d69]]="idx % 2 === 0"
+        [class.border-t-[#21ad1c]]="idx % 2 !== 0"
+      >
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span
+              class="inline-flex items-center rounded px-2.5 py-1 text-xs font-bold uppercase tracking-wider"
+              [class.bg-[#101d69]/10]="idx % 2 === 0"
+              [class.text-[#101d69]]="idx % 2 === 0"
+              [class.bg-[#21ad1c]/15]="idx % 2 !== 0"
+              [class.text-[#167812]]="idx % 2 !== 0"
+            >
+              📍 Commune de {{ site.commune }}
+            </span>
+            <span class="text-xs font-bold text-slate-400">28410</span>
+          </div>
+
+          <h2 class="text-xl font-black uppercase tracking-wider text-slate-900">
+            {{ site.name }}
+          </h2>
+
+          <p class="text-xs text-slate-500 mt-1.5 flex items-center gap-1.5">
+            <span>📫</span> {{ site.address }}
+          </p>
+
+          <div class="mt-4 pt-4 border-t border-slate-100">
+            <span class="text-[10px] font-black uppercase tracking-wider text-slate-400">Surface de jeu :</span>
+            <p class="text-xs text-slate-700 mt-0.5 font-semibold">{{ site.surface }}</p>
+          </div>
+
+          <div class="mt-4">
+            <span class="text-[10px] font-black uppercase tracking-wider text-slate-400">Équipements & Confort :</span>
+            <ul class="mt-2 space-y-1.5 text-xs text-slate-600">
+              @for (feat of site.features; track feat) {
+                <li class="flex items-center gap-2">
+                  <span class="text-[#21ad1c] font-bold">✓</span>
+                  <span>{{ feat }}</span>
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-100">
+          <a
+            [href]="'https://www.google.com/maps/search/?api=1&query=' + site.name + ' ' + site.address"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex w-full items-center justify-center gap-1.5 rounded-lg border border-slate-300 bg-slate-50 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-700 hover:border-[#101d69] hover:text-[#101d69] transition-colors"
+          >
+            🗺️ Ouvrir l'itinéraire Google Maps ↗
+          </a>
+        </div>
+      </div>
+    }
+  </div>
+</div>

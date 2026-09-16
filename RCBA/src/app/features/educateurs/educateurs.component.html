@@ -1,0 +1,1125 @@
+<div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
+  
+  <!-- Header with Private Badge & Title -->
+  <div class="bg-white rounded-2xl border-t-4 border-[#101d69] p-6 sm:p-8 shadow-sm">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2 mb-1.5">
+          <span class="inline-flex items-center gap-1 rounded bg-[#21ad1c]/15 px-2.5 py-0.5 text-xs font-black uppercase tracking-wider text-[#167812]">
+            ⚽ Portail Coach & Éducateurs
+          </span>
+          <span class="text-xs text-slate-500 font-bold uppercase tracking-wider">
+            Pôle Technique & Sportif RCBA
+          </span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-[#101d69]">
+          Portail Coach & Tableau Tactique
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-600 mt-1 max-w-3xl">
+          Outil interactif tactile pour préparer vos séances d'entraînement, vos schémas de jeu et animer vos causeries d'avant-match sur tablette ou ordinateur.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        @if (isAuthenticated()) {
+          <div class="flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-lg text-xs">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span class="font-bold text-emerald-900">{{ currentUser()?.name }}</span>
+            <button
+              type="button"
+              (click)="authService.logout()"
+              class="text-rose-600 hover:text-rose-800 font-bold ml-1 text-[11px] underline"
+            >
+              Déconnexion
+            </button>
+          </div>
+        } @else {
+          <a
+            routerLink="/login"
+            [queryParams]="{ target: 'coach' }"
+            class="inline-flex items-center gap-1.5 rounded-lg bg-[#21ad1c] text-white px-3.5 py-2 text-xs font-bold uppercase tracking-wider hover:bg-[#1b8e17] transition-all shadow-sm"
+          >
+            <span>🔒</span> Se connecter
+          </a>
+        }
+
+        <a
+          routerLink="/direction"
+          class="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-slate-50 hover:bg-slate-100 px-3.5 py-2 text-xs font-bold uppercase tracking-wider text-slate-700 transition-all"
+        >
+          <span>🏛️</span> Portail Direction &rarr;
+        </a>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+      <div class="flex flex-wrap gap-2">
+        <button
+          type="button"
+          (click)="activeTab.set('convocations')"
+          [class.bg-[#101d69]]="activeTab() === 'convocations'"
+          [class.text-white]="activeTab() === 'convocations'"
+          [class.bg-slate-100]="activeTab() !== 'convocations'"
+          [class.text-slate-700]="activeTab() !== 'convocations'"
+          class="rounded-lg px-3.5 py-2 text-xs font-black uppercase tracking-wider transition-all flex items-center gap-1.5"
+        >
+          <span>📢</span> Convocations Match
+        </button>
+        <button
+          type="button"
+          (click)="activeTab.set('stats')"
+          [class.bg-[#101d69]]="activeTab() === 'stats'"
+          [class.text-white]="activeTab() === 'stats'"
+          [class.bg-slate-100]="activeTab() !== 'stats'"
+          [class.text-slate-700]="activeTab() !== 'stats'"
+          class="rounded-lg px-3.5 py-2 text-xs font-black uppercase tracking-wider transition-all flex items-center gap-1.5"
+        >
+          <span>📈</span> Évolution & Stats Joueurs
+        </button>
+        <button
+          type="button"
+          (click)="activeTab.set('tactique')"
+          [class.bg-[#101d69]]="activeTab() === 'tactique'"
+          [class.text-white]="activeTab() === 'tactique'"
+          [class.bg-slate-100]="activeTab() !== 'tactique'"
+          [class.text-slate-700]="activeTab() !== 'tactique'"
+          class="rounded-lg px-3.5 py-2 text-xs font-black uppercase tracking-wider transition-all"
+        >
+          Tableau Tactique
+        </button>
+        <button
+          type="button"
+          (click)="activeTab.set('bibliotheque')"
+          [class.bg-[#101d69]]="activeTab() === 'bibliotheque'"
+          [class.text-white]="activeTab() === 'bibliotheque'"
+          [class.bg-slate-100]="activeTab() !== 'bibliotheque'"
+          [class.text-slate-700]="activeTab() !== 'bibliotheque'"
+          class="rounded-lg px-3.5 py-2 text-xs font-black uppercase tracking-wider transition-all"
+        >
+          Bibliothèque Séances
+        </button>
+        <button
+          type="button"
+          (click)="activeTab.set('documents')"
+          [class.bg-[#101d69]]="activeTab() === 'documents'"
+          [class.text-white]="activeTab() === 'documents'"
+          [class.bg-slate-100]="activeTab() !== 'documents'"
+          [class.text-slate-700]="activeTab() !== 'documents'"
+          class="rounded-lg px-3.5 py-2 text-xs font-black uppercase tracking-wider transition-all"
+        >
+          Projets de Jeu & Docs
+        </button>
+        <button
+          type="button"
+          (click)="activeTab.set('planning')"
+          [class.bg-[#101d69]]="activeTab() === 'planning'"
+          [class.text-white]="activeTab() === 'planning'"
+          [class.bg-slate-100]="activeTab() !== 'planning'"
+          [class.text-slate-700]="activeTab() !== 'planning'"
+          class="rounded-lg px-3.5 py-2 text-xs font-black uppercase tracking-wider transition-all"
+        >
+          Planning Terrains
+        </button>
+      </div>
+  </div>
+
+  <!-- MESSAGE DE CONFIRMATION SAUVEGARDE -->
+  @if (convocationSavedMessage()) {
+    <div class="rounded-xl bg-emerald-50 border border-emerald-300 p-4 text-emerald-800 text-xs font-bold flex items-center justify-between shadow-xs">
+      <div class="flex items-center gap-2">
+        <span class="text-base">✅</span>
+        <span>{{ convocationSavedMessage() }}</span>
+      </div>
+      <button type="button" (click)="convocationSavedMessage.set(null)" class="text-emerald-600 hover:text-emerald-900 font-bold">&times;</button>
+    </div>
+  }
+
+  <!-- ========================================== -->
+  <!-- TAB: CONVOCATIONS DE MATCH DU COACH        -->
+  <!-- ========================================== -->
+  @if (activeTab() === 'convocations') {
+    <div class="space-y-6">
+      <!-- Barre d'action & Choix de l'équipe -->
+      <div class="rounded-2xl border border-slate-200 border-t-4 border-t-[#101d69] bg-white p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <span class="text-[10px] font-black uppercase tracking-widest text-[#21ad1c]">Sélections du Week-end</span>
+          <h2 class="text-xl font-black uppercase tracking-tight text-[#101d69]">
+            Convocations Officielles de Match
+          </h2>
+          <p class="text-xs text-slate-600 mt-0.5">
+            Sélectionnez votre équipe, cochez les joueurs convoqués et publiez la convocation visible sur la fiche équipe.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <!-- Sélecteur d'équipe -->
+          <div class="flex items-center gap-2">
+            <label class="text-xs font-bold text-slate-700">Équipe :</label>
+            <select
+              [ngModel]="selectedTeamId()"
+              (ngModelChange)="selectedTeamId.set($event)"
+              class="rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-xs font-bold text-[#101d69] shadow-xs focus:border-[#101d69] focus:outline-hidden"
+            >
+              @for (team of teams(); track team.id) {
+                <option [value]="team.id">{{ team.name }} ({{ team.division }})</option>
+              }
+            </select>
+          </div>
+
+          <button
+            type="button"
+            (click)="openConvocationModal()"
+            class="inline-flex items-center gap-2 rounded-xl bg-[#21ad1c] hover:bg-[#1b8e17] text-white px-4 py-2 text-xs font-black uppercase tracking-wider transition-colors shadow-sm"
+          >
+            <span>✍️</span> Établir / Modifier la Convocation
+          </button>
+        </div>
+      </div>
+
+      <!-- Fiche Convocation Active de l'équipe -->
+      @if (currentTeamConvocation()) {
+        <div class="rounded-2xl border-2 border-[#101d69] bg-white p-6 sm:p-8 shadow-sm space-y-6">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-100">
+            <div>
+              <div class="flex items-center gap-2 mb-1.5">
+                <span class="inline-flex items-center gap-1 rounded bg-[#101d69] text-white px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider">
+                  {{ currentTeam().name }}
+                </span>
+                <span class="inline-flex items-center gap-1 rounded bg-[#21ad1c]/15 text-[#167812] px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider">
+                  Match Officiel
+                </span>
+              </div>
+              <h3 class="text-2xl font-black uppercase tracking-tight text-[#101d69]">
+                Contre : {{ currentTeamConvocation()!.opponent }}
+              </h3>
+              <p class="text-xs text-slate-600 mt-1">
+                📅 {{ currentTeamConvocation()!.matchDate }} à <strong>{{ currentTeamConvocation()!.matchTime }}</strong> &bull; 📍 {{ currentTeamConvocation()!.location }}
+              </p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3">
+              <div class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-center">
+                <div class="text-[10px] font-black uppercase text-slate-400">Rendez-vous</div>
+                <div class="text-sm font-black text-[#101d69]">{{ currentTeamConvocation()!.meetingTime }}</div>
+                <div class="text-[10px] text-slate-500">{{ currentTeamConvocation()!.meetingPlace }}</div>
+              </div>
+              <div class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-center">
+                <div class="text-[10px] font-black uppercase text-slate-400">Effectif retenu</div>
+                <div class="text-sm font-black text-[#21ad1c]">
+                  {{ currentTeamConvocation()!.selectedPlayers.length }} Joueurs
+                </div>
+                <div class="text-[10px] text-slate-500">{{ currentTeamConvocation()!.coachName }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Joueurs Convoqués -->
+          <div>
+            <h4 class="text-xs font-black uppercase tracking-wider text-slate-700 mb-3">
+              Joueurs Sélectionnés ({{ currentTeamConvocation()!.selectedPlayers.length }}) :
+            </h4>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5">
+              @for (name of currentTeamConvocation()!.selectedPlayers; track name) {
+                <div class="rounded-xl border border-emerald-200 bg-emerald-50/60 p-3 flex items-center gap-2 text-xs font-bold text-slate-800">
+                  <span class="w-2.5 h-2.5 rounded-full bg-[#21ad1c]"></span>
+                  <span class="truncate">{{ name }}</span>
+                </div>
+              }
+            </div>
+          </div>
+
+          @if (currentTeamConvocation()!.absentPlayers.length > 0) {
+            <div>
+              <h4 class="text-xs font-black uppercase tracking-wider text-slate-500 mb-2">
+                Absents / Non retenus :
+              </h4>
+              <div class="flex flex-wrap gap-2">
+                @for (abs of currentTeamConvocation()!.absentPlayers; track abs) {
+                  <span class="text-xs text-slate-500 bg-slate-100 px-3 py-1 rounded-lg">
+                    {{ abs }}
+                  </span>
+                }
+              </div>
+            </div>
+          }
+
+          @if (currentTeamConvocation()!.notes) {
+            <div class="rounded-xl bg-blue-50/80 border border-blue-200 p-4 text-xs text-[#101d69] space-y-1">
+              <span class="font-bold uppercase tracking-wider text-[10px] text-blue-600 block">Consignes Éducateur</span>
+              <p>{{ currentTeamConvocation()!.notes }}</p>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="rounded-2xl border border-dashed border-slate-300 p-12 text-center bg-white space-y-3">
+          <div class="text-4xl">📢</div>
+          <h3 class="text-base font-bold text-slate-700">Aucune convocation préparée pour cette équipe</h3>
+          <p class="text-xs text-slate-500 max-w-md mx-auto">
+            Cliquez sur le bouton ci-dessous pour composer la liste des joueurs retenus pour le prochain match de l'équipe {{ currentTeam().name }}.
+          </p>
+          <button
+            type="button"
+            (click)="openConvocationModal()"
+            class="inline-flex items-center gap-2 rounded-xl bg-[#101d69] hover:bg-[#1f39cf] text-white px-5 py-2.5 text-xs font-black uppercase tracking-wider transition-all"
+          >
+            Créer la Convocation de Match
+          </button>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- ========================================== -->
+  <!-- TAB: STATISTIQUES & ÉVOLUTION JOUEURS       -->
+  <!-- ========================================== -->
+  @if (activeTab() === 'stats') {
+    <div class="space-y-6">
+      <div class="rounded-2xl border border-slate-200 border-t-4 border-t-[#101d69] bg-white p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <span class="text-[10px] font-black uppercase tracking-widest text-[#21ad1c]">Suivi Individuel & Collectif</span>
+          <h2 class="text-xl font-black uppercase tracking-tight text-[#101d69]">
+            Évolution & Statistiques des Joueurs
+          </h2>
+          <p class="text-xs text-slate-600 mt-0.5">
+            Saisie des performances, assiduité aux entraînements, temps de jeu et appréciations techniques pour chaque joueur.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <label class="text-xs font-bold text-slate-700">Équipe :</label>
+          <select
+            [ngModel]="selectedTeamId()"
+            (ngModelChange)="selectedTeamId.set($event)"
+            class="rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-xs font-bold text-[#101d69] shadow-xs"
+          >
+            @for (team of teams(); track team.id) {
+              <option [value]="team.id">{{ team.name }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <!-- Liste des Joueurs de l'Équipe avec leurs statistiques -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        @for (player of teamRoster(); track player.id) {
+          <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+            <div>
+              <!-- Header Joueur (uniquement prénom ou prénom + initiale si homonymes) -->
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-[#101d69] text-white flex items-center justify-center font-black text-sm">
+                    {{ player.displayName[0] }}
+                  </div>
+                  <div>
+                    <h3 class="font-black text-base text-slate-900 uppercase">
+                      {{ player.displayName }}
+                    </h3>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase">
+                      {{ player.position }}
+                    </span>
+                  </div>
+                </div>
+
+                @if (player.stat) {
+                  <span class="rounded-lg bg-emerald-50 border border-emerald-200 px-2 py-1 text-xs font-black text-emerald-800">
+                    ⭐ {{ player.stat.ratingProgression }}/10
+                  </span>
+                } @else {
+                  <span class="text-[10px] text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md font-semibold">
+                    Non évalué
+                  </span>
+                }
+              </div>
+
+              <!-- Grille des statistiques -->
+              @if (player.stat) {
+                <div class="grid grid-cols-4 gap-2 my-4 text-center">
+                  <div class="bg-slate-50 rounded-xl p-2">
+                    <div class="text-[9px] font-bold uppercase text-slate-400">Matchs</div>
+                    <div class="text-sm font-black text-[#101d69]">{{ player.stat.matchesPlayed }}</div>
+                  </div>
+                  <div class="bg-slate-50 rounded-xl p-2">
+                    <div class="text-[9px] font-bold uppercase text-slate-400">Min.</div>
+                    <div class="text-sm font-black text-[#101d69]">{{ player.stat.minutesPlayed }}'</div>
+                  </div>
+                  <div class="bg-slate-50 rounded-xl p-2">
+                    <div class="text-[9px] font-bold uppercase text-slate-400">Buts</div>
+                    <div class="text-sm font-black text-[#21ad1c]">{{ player.stat.goals }}</div>
+                  </div>
+                  <div class="bg-slate-50 rounded-xl p-2">
+                    <div class="text-[9px] font-bold uppercase text-slate-400">Passes</div>
+                    <div class="text-sm font-black text-[#21ad1c]">{{ player.stat.assists }}</div>
+                  </div>
+                </div>
+
+                <!-- Jauges de Progression -->
+                <div class="space-y-1.5 text-[10px] font-bold text-slate-600">
+                  <div>
+                    <div class="flex justify-between mb-0.5">
+                      <span>Assiduité Entraînements</span>
+                      <span class="text-[#21ad1c]">{{ player.stat.trainingAttendancePct }}%</span>
+                    </div>
+                    <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                      <div class="h-full bg-[#21ad1c] rounded-full" [style.width.%]="player.stat.trainingAttendancePct"></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="flex justify-between mb-0.5">
+                      <span>Niveau Technique</span>
+                      <span class="text-blue-600">{{ player.stat.technicalScore }}/10</span>
+                    </div>
+                    <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                      <div class="h-full bg-blue-600 rounded-full" [style.width.%]="player.stat.technicalScore * 10"></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="flex justify-between mb-0.5">
+                      <span>Tactique & Collectif</span>
+                      <span class="text-amber-500">{{ player.stat.tacticalScore }}/10</span>
+                    </div>
+                    <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                      <div class="h-full bg-amber-500 rounded-full" [style.width.%]="player.stat.tacticalScore * 10"></div>
+                    </div>
+                  </div>
+                </div>
+
+                @if (player.stat.coachFeedback) {
+                  <p class="mt-3 text-[11px] text-slate-600 bg-slate-50 p-2.5 rounded-xl italic border border-slate-100">
+                    "{{ player.stat.coachFeedback }}"
+                  </p>
+                }
+              } @else {
+                <div class="py-6 text-center text-xs text-slate-400">
+                  Aucune statistique saisie pour le moment.
+                </div>
+              }
+            </div>
+
+            <!-- Bouton Évaluer / Modifier -->
+            <button
+              type="button"
+              (click)="openStatModal(player)"
+              class="mt-4 w-full rounded-xl bg-slate-100 hover:bg-[#101d69] hover:text-white py-2 text-xs font-black uppercase tracking-wider text-slate-700 transition-colors"
+            >
+              ⚙️ Saisir / Mettre à jour Stats
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- ========================================== -->
+  <!-- MODAL: CONVOCATION DE MATCH                -->
+  <!-- ========================================== -->
+  @if (showConvocationModal()) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+      <div class="bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto space-y-5">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+          <div>
+            <span class="text-[10px] font-black uppercase tracking-wider text-[#21ad1c]">Sélection Équipe</span>
+            <h3 class="text-lg font-black uppercase text-[#101d69]">
+              Convocation : {{ currentTeam().name }}
+            </h3>
+          </div>
+          <button type="button" (click)="showConvocationModal.set(false)" class="text-2xl text-slate-400 hover:text-slate-700">&times;</button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Adversaire</label>
+            <input
+              type="text"
+              [(ngModel)]="convocationForm.opponent"
+              placeholder="Ex: FC Maintenon 2"
+              class="w-full rounded-xl border border-slate-300 p-2.5 font-bold text-slate-800"
+            />
+          </div>
+
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Date du match</label>
+            <input
+              type="text"
+              [(ngModel)]="convocationForm.matchDate"
+              class="w-full rounded-xl border border-slate-300 p-2.5 font-bold text-slate-800"
+            />
+          </div>
+
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Heure du coup d'envoi</label>
+            <input
+              type="text"
+              [(ngModel)]="convocationForm.matchTime"
+              placeholder="Ex: 15h00"
+              class="w-full rounded-xl border border-slate-300 p-2.5 font-bold text-slate-800"
+            />
+          </div>
+
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Heure de rendez-vous</label>
+            <input
+              type="text"
+              [(ngModel)]="convocationForm.meetingTime"
+              placeholder="Ex: 13h45"
+              class="w-full rounded-xl border border-slate-300 p-2.5 font-bold text-slate-800"
+            />
+          </div>
+
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Lieu de la rencontre</label>
+            <input
+              type="text"
+              [(ngModel)]="convocationForm.location"
+              placeholder="Ex: Stade Municipal de Bû"
+              class="w-full rounded-xl border border-slate-300 p-2.5 font-bold text-slate-800"
+            />
+          </div>
+
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Lieu de rendez-vous</label>
+            <input
+              type="text"
+              [(ngModel)]="convocationForm.meetingPlace"
+              placeholder="Ex: Vestiaires de Bû"
+              class="w-full rounded-xl border border-slate-300 p-2.5 font-bold text-slate-800"
+            />
+          </div>
+        </div>
+
+        <!-- Sélection des joueurs -->
+        <div>
+          <label class="font-bold text-slate-700 block mb-2 text-xs">
+            Sélectionnez les joueurs convoqués pour ce match :
+          </label>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-48 overflow-y-auto p-2 bg-slate-50 rounded-xl border border-slate-200">
+            @for (player of teamRoster(); track player.id) {
+              <button
+                type="button"
+                (click)="togglePlayerInConvocation(player.displayName)"
+                class="flex items-center gap-2 p-2 rounded-lg text-xs font-bold text-left transition-all"
+                [class.bg-[#21ad1c]]="isPlayerInForm(player.displayName)"
+                [class.text-white]="isPlayerInForm(player.displayName)"
+                [class.bg-white]="!isPlayerInForm(player.displayName)"
+                [class.text-slate-700]="!isPlayerInForm(player.displayName)"
+              >
+                <span>{{ isPlayerInForm(player.displayName) ? '✅' : '⚪' }}</span>
+                <span class="truncate">{{ player.displayName }}</span>
+              </button>
+            }
+          </div>
+          <div class="text-[11px] text-slate-500 mt-1.5">
+            {{ convocationForm.selectedPlayers?.length || 0 }} joueur(s) sélectionné(s)
+          </div>
+        </div>
+
+        <!-- Consignes -->
+        <div>
+          <label class="font-bold text-slate-700 block mb-1 text-xs">Consignes & Équipements</label>
+          <textarea
+            [(ngModel)]="convocationForm.notes"
+            rows="2"
+            class="w-full rounded-xl border border-slate-300 p-2.5 text-xs font-medium text-slate-800"
+          ></textarea>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">
+          <button
+            type="button"
+            (click)="showConvocationModal.set(false)"
+            class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100"
+          >
+            Annuler
+          </button>
+          <button
+            type="button"
+            (click)="saveConvocation()"
+            class="px-5 py-2.5 rounded-xl bg-[#21ad1c] hover:bg-[#1b8e17] text-white text-xs font-black uppercase tracking-wider shadow-sm"
+          >
+            Publier la Convocation &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- ========================================== -->
+  <!-- MODAL: SAISIE DES STATISTIQUES JOUEUR      -->
+  <!-- ========================================== -->
+  @if (showStatModal() && selectedPlayerForStat()) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+      <div class="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-200 space-y-5">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+          <div>
+            <span class="text-[10px] font-black uppercase tracking-wider text-[#21ad1c]">Bilan Individuel</span>
+            <h3 class="text-lg font-black uppercase text-[#101d69]">
+              Stats de {{ selectedPlayerForStat().displayName }}
+            </h3>
+          </div>
+          <button type="button" (click)="showStatModal.set(false)" class="text-2xl text-slate-400 hover:text-slate-700">&times;</button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 text-xs">
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Matchs joués</label>
+            <input
+              type="number"
+              [(ngModel)]="statEditForm.matchesPlayed"
+              class="w-full rounded-xl border border-slate-300 p-2 font-bold text-slate-800"
+            />
+          </div>
+
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Minutes de jeu</label>
+            <input
+              type="number"
+              [(ngModel)]="statEditForm.minutesPlayed"
+              class="w-full rounded-xl border border-slate-300 p-2 font-bold text-slate-800"
+            />
+          </div>
+
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Buts inscrits</label>
+            <input
+              type="number"
+              [(ngModel)]="statEditForm.goals"
+              class="w-full rounded-xl border border-slate-300 p-2 font-bold text-slate-800"
+            />
+          </div>
+
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Passes décisives</label>
+            <input
+              type="number"
+              [(ngModel)]="statEditForm.assists"
+              class="w-full rounded-xl border border-slate-300 p-2 font-bold text-slate-800"
+            />
+          </div>
+
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Assiduité (%)</label>
+            <input
+              type="number"
+              min="0"
+              max="100"
+              [(ngModel)]="statEditForm.trainingAttendancePct"
+              class="w-full rounded-xl border border-slate-300 p-2 font-bold text-slate-800"
+            />
+          </div>
+
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Note Progression (/10)</label>
+            <input
+              type="number"
+              step="0.1"
+              min="0"
+              max="10"
+              [(ngModel)]="statEditForm.ratingProgression"
+              class="w-full rounded-xl border border-slate-300 p-2 font-bold text-slate-800"
+            />
+          </div>
+
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Technique (1-10)</label>
+            <input
+              type="number"
+              min="1"
+              max="10"
+              [(ngModel)]="statEditForm.technicalScore"
+              class="w-full rounded-xl border border-slate-300 p-2 font-bold text-slate-800"
+            />
+          </div>
+
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Tactique (1-10)</label>
+            <input
+              type="number"
+              min="1"
+              max="10"
+              [(ngModel)]="statEditForm.tacticalScore"
+              class="w-full rounded-xl border border-slate-300 p-2 font-bold text-slate-800"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label class="font-bold text-slate-700 block mb-1 text-xs">Appréciation / Conseil du Coach</label>
+          <textarea
+            [(ngModel)]="statEditForm.coachFeedback"
+            rows="2"
+            placeholder="Points forts, axes de progression, mot d'encouragement..."
+            class="w-full rounded-xl border border-slate-300 p-2.5 text-xs text-slate-800 font-medium"
+          ></textarea>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">
+          <button
+            type="button"
+            (click)="showStatModal.set(false)"
+            class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100"
+          >
+            Annuler
+          </button>
+          <button
+            type="button"
+            (click)="savePlayerStat()"
+            class="px-5 py-2.5 rounded-xl bg-[#101d69] hover:bg-[#1f39cf] text-white text-xs font-black uppercase tracking-wider shadow-sm"
+          >
+            Enregistrer les Stats &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- TAB 1: TABLEAU TACTIQUE INTERACTIF (CDC 7.2) -->
+  @if (activeTab() === 'tactique') {
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      
+      <!-- Left Column: Session Blocks & Tools -->
+      <div class="lg:col-span-4 flex flex-col gap-5">
+        <div class="rounded-2xl border border-slate-200 border-t-4 border-t-[#101d69] bg-white p-5 shadow-sm">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+            <div>
+              <span class="text-[10px] font-black uppercase tracking-widest text-[#21ad1c]">Structuration de Séance</span>
+              <h2 class="text-sm font-black uppercase tracking-wider text-[#101d69]">Blocs Chronologiques</h2>
+            </div>
+            <span class="rounded bg-[#101d69]/10 px-2 py-0.5 text-xs font-mono font-bold text-[#101d69]">
+              {{ totalSessionDuration() }} min
+            </span>
+          </div>
+
+          <div class="mt-3 space-y-2">
+            @for (block of sessionBlocks(); track block.type; let idx = $index) {
+              <div
+                (click)="activeBlockIndex.set(idx)"
+                [class.border-[#101d69]]="activeBlockIndex() === idx"
+                [class.bg-blue-50/60]="activeBlockIndex() === idx"
+                [class.border-slate-200]="activeBlockIndex() !== idx"
+                [class.bg-white]="activeBlockIndex() !== idx"
+                class="cursor-pointer rounded-lg border p-3 transition-all hover:border-[#101d69]/50"
+              >
+                <div class="flex items-center justify-between text-xs">
+                  <span class="font-bold text-slate-900 uppercase">{{ block.title }}</span>
+                  <span class="font-mono text-[11px] font-bold text-[#101d69]">{{ block.durationMinutes }}'</span>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-1 leading-snug">
+                  {{ block.objective }}
+                </p>
+              </div>
+            }
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-slate-200 flex justify-between items-center text-xs">
+            <span class="text-slate-500 font-medium">Export séance :</span>
+            <div class="flex gap-2">
+              <button
+                type="button"
+                class="rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1 text-xs font-bold text-slate-700 hover:border-[#101d69] hover:text-[#101d69]"
+              >
+                📄 Imprimer PDF
+              </button>
+              <button
+                type="button"
+                class="rounded-lg bg-[#21ad1c] px-3 py-1 text-xs font-bold text-white hover:bg-[#1b8e17]"
+              >
+                💾 Enregistrer
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tool Selection Palette -->
+        <div class="rounded-2xl border border-slate-200 border-t-4 border-t-[#21ad1c] bg-white p-5 shadow-sm">
+          <span class="text-[10px] font-black uppercase tracking-widest text-[#21ad1c]">Palette Tactique</span>
+          <h3 class="text-xs font-black uppercase tracking-wider text-[#101d69] mb-3">Élément à déposer au clic</h3>
+          
+          <div class="grid grid-cols-3 gap-2">
+            <button
+              type="button"
+              (click)="activeTool.set('player')"
+              [class.ring-2]="activeTool() === 'player'"
+              [class.ring-[#101d69]]="activeTool() === 'player'"
+              class="flex flex-col items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 p-2 text-xs font-bold text-slate-700 hover:bg-slate-100"
+            >
+              <div class="flex h-7 w-7 items-center justify-center rounded-full bg-[#101d69] text-xs font-black text-white shadow">
+                RCBA
+              </div>
+              <span class="text-[10px]">Joueur</span>
+            </button>
+
+            <button
+              type="button"
+              (click)="activeTool.set('opponent')"
+              [class.ring-2]="activeTool() === 'opponent'"
+              [class.ring-rose-500]="activeTool() === 'opponent'"
+              class="flex flex-col items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 p-2 text-xs font-bold text-slate-700 hover:bg-slate-100"
+            >
+              <div class="flex h-7 w-7 items-center justify-center rounded-full bg-rose-600 text-xs font-black text-white shadow">
+                ADV
+              </div>
+              <span class="text-[10px]">Adversaire</span>
+            </button>
+
+            <button
+              type="button"
+              (click)="activeTool.set('goalkeeper')"
+              [class.ring-2]="activeTool() === 'goalkeeper'"
+              [class.ring-amber-500]="activeTool() === 'goalkeeper'"
+              class="flex flex-col items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 p-2 text-xs font-bold text-slate-700 hover:bg-slate-100"
+            >
+              <div class="flex h-7 w-7 items-center justify-center rounded-full bg-amber-400 text-xs font-black text-slate-900 shadow">
+                GB
+              </div>
+              <span class="text-[10px]">Gardien</span>
+            </button>
+
+            <button
+              type="button"
+              (click)="activeTool.set('ball')"
+              [class.ring-2]="activeTool() === 'ball'"
+              [class.ring-[#101d69]]="activeTool() === 'ball'"
+              class="flex flex-col items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 p-2 text-xs font-bold text-slate-700 hover:bg-slate-100"
+            >
+              <span class="text-xl leading-none">⚽</span>
+              <span class="text-[10px]">Ballon</span>
+            </button>
+
+            <button
+              type="button"
+              (click)="activeTool.set('cone')"
+              [class.ring-2]="activeTool() === 'cone'"
+              [class.ring-orange-500]="activeTool() === 'cone'"
+              class="flex flex-col items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 p-2 text-xs font-bold text-slate-700 hover:bg-slate-100"
+            >
+              <span class="text-xl leading-none">🔺</span>
+              <span class="text-[10px]">Plot</span>
+            </button>
+
+            <button
+              type="button"
+              (click)="activeTool.set('goal')"
+              [class.ring-2]="activeTool() === 'goal'"
+              [class.ring-[#101d69]]="activeTool() === 'goal'"
+              class="flex flex-col items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 p-2 text-xs font-bold text-slate-700 hover:bg-slate-100"
+            >
+              <span class="text-xl leading-none">🥅</span>
+              <span class="text-[10px]">Mini-But</span>
+            </button>
+          </div>
+
+          <div class="mt-3 flex gap-2">
+            <button
+              type="button"
+              (click)="resetDefaultFormation()"
+              class="w-1/2 rounded-lg border border-slate-300 bg-slate-50 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-100"
+            >
+              ↺ 4-3-3 Standard
+            </button>
+            <button
+              type="button"
+              (click)="clearPitch()"
+              class="w-1/2 rounded-lg border border-rose-200 bg-rose-50 py-1.5 text-xs font-bold text-rose-700 hover:bg-rose-100"
+            >
+              🗑 Tout effacer
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive Pitch Canvas -->
+      <div class="lg:col-span-8 flex flex-col gap-3">
+        <!-- Pitch Controls Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-3 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-black uppercase text-slate-600">Vue :</span>
+            <div class="inline-flex rounded-lg shadow-xs border border-slate-300 overflow-hidden">
+              <button
+                type="button"
+                (click)="pitchType.set('half')"
+                [class.bg-[#101d69]]="pitchType() === 'half'"
+                [class.text-white]="pitchType() === 'half'"
+                [class.bg-white]="pitchType() !== 'half'"
+                [class.text-slate-700]="pitchType() !== 'half'"
+                class="px-3 py-1.5 text-xs font-bold transition-colors"
+              >
+                Demi-Terrain
+              </button>
+              <button
+                type="button"
+                (click)="pitchType.set('full')"
+                [class.bg-[#101d69]]="pitchType() === 'full'"
+                [class.text-white]="pitchType() === 'full'"
+                [class.bg-white]="pitchType() !== 'full'"
+                [class.text-slate-700]="pitchType() !== 'full'"
+                class="px-3 py-1.5 text-xs font-bold transition-colors border-l border-r border-slate-200"
+              >
+                Terrain Entier
+              </button>
+              <button
+                type="button"
+                (click)="pitchType.set('box')"
+                [class.bg-[#101d69]]="pitchType() === 'box'"
+                [class.text-white]="pitchType() === 'box'"
+                [class.bg-white]="pitchType() !== 'box'"
+                [class.text-slate-700]="pitchType() !== 'box'"
+                class="px-3 py-1.5 text-xs font-bold transition-colors"
+              >
+                Zone Réduite
+              </button>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <span class="text-[11px] text-slate-500 hidden sm:inline">
+              💡 Touchez ou cliquez sur la pelouse pour positionner
+            </span>
+            <button
+              type="button"
+              (click)="togglePresentation()"
+              class="inline-flex items-center gap-1.5 rounded-lg bg-[#21ad1c] px-3.5 py-1.5 text-xs font-black uppercase text-white hover:bg-[#1b8e17] shadow-sm"
+            >
+              📺 Mode Causerie
+            </button>
+          </div>
+        </div>
+
+        <!-- The Tactical Pitch Canvas -->
+        <div
+          (click)="onPitchClick($event)"
+          class="relative w-full aspect-[4/3] rounded-2xl border-4 border-[#101d69] bg-gradient-to-b from-[#1b8e17] via-[#167812] to-[#0e4e0b] overflow-hidden shadow-xl cursor-crosshair select-none"
+        >
+          <!-- Pitch Grass Lines Pattern -->
+          <div class="absolute inset-0 opacity-20 bg-[repeating-linear-gradient(0deg,#fff,#fff_40px,transparent_40px,transparent_80px)]"></div>
+
+          <!-- White Markings (SVG Outline) -->
+          <svg class="absolute inset-0 h-full w-full pointer-events-none stroke-white/80 fill-none" stroke-width="2.5">
+            <!-- Outer Boundary -->
+            <rect x="4%" y="4%" width="92%" height="92%" rx="4" />
+
+            <!-- Halfway Line or Goal Area depending on view -->
+            @if (pitchType() === 'full') {
+              <line x1="4%" y1="50%" x2="96%" y2="50%" />
+              <circle cx="50%" cy="50%" r="12%" />
+              <circle cx="50%" cy="50%" r="1%" fill="white" />
+              <!-- Top Box -->
+              <rect x="25%" y="4%" width="50%" height="18%" />
+              <rect x="37%" y="4%" width="26%" height="7%" />
+              <!-- Bottom Box -->
+              <rect x="25%" y="78%" width="50%" height="18%" />
+              <rect x="37%" y="89%" width="26%" height="7%" />
+            } @else {
+              <!-- Half Pitch view -->
+              <path d="M 32% 96% A 18% 18% 0 0 1 68% 96%" />
+              <circle cx="50%" cy="96%" r="1.5%" fill="white" />
+              <!-- Penalty Area -->
+              <rect x="20%" y="4%" width="60%" height="32%" />
+              <rect x="34%" y="4%" width="32%" height="12%" />
+              <!-- Penalty Arc -->
+              <path d="M 40% 36% A 10% 10% 0 0 0 60% 36%" />
+              <circle cx="50%" cy="24%" r="1.5%" fill="white" />
+              <!-- Goal -->
+              <rect x="42%" y="1%" width="16%" height="3%" fill="white" opacity="0.9" />
+            }
+          </svg>
+
+          <!-- Interactive Elements Positioned on Pitch -->
+          @for (item of elements(); track item.id) {
+            <div
+              (click)="removeElement(item.id, $event)"
+              [style.left.%]="item.x"
+              [style.top.%]="item.y"
+              class="absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-transform duration-150 hover:scale-125 group"
+              [title]="'Cliquer pour retirer cet élément'"
+            >
+              @if (item.type === 'player') {
+                <div class="flex h-9 w-9 items-center justify-center rounded-full bg-[#101d69] font-black text-white text-xs shadow-lg border-2 border-white ring-2 ring-[#21ad1c]">
+                  {{ item.label ?? item.number }}
+                </div>
+              } @else if (item.type === 'opponent') {
+                <div class="flex h-9 w-9 items-center justify-center rounded-full bg-rose-600 font-black text-white text-xs shadow-lg border-2 border-white ring-2 ring-rose-950">
+                  {{ item.label ?? item.number }}
+                </div>
+              } @else if (item.type === 'goalkeeper') {
+                <div class="flex h-9 w-9 items-center justify-center rounded-full bg-amber-400 font-black text-slate-950 text-xs shadow-lg border-2 border-white ring-2 ring-amber-950">
+                  {{ item.label }}
+                </div>
+              } @else if (item.type === 'ball') {
+                <div class="text-2xl drop-shadow-md">
+                  ⚽
+                </div>
+              } @else if (item.type === 'cone') {
+                <div class="text-2xl drop-shadow-md">
+                  🔺
+                </div>
+              } @else if (item.type === 'goal') {
+                <div class="flex items-center justify-center px-2 py-1 rounded bg-[#101d69] border border-white text-white font-bold text-[10px] shadow">
+                  🥅 BUT
+                </div>
+              }
+
+              <!-- Tooltip on hover -->
+              <span class="absolute -bottom-5 left-1/2 -translate-x-1/2 hidden group-hover:block bg-slate-900 text-[9px] text-rose-300 font-bold px-1.5 py-0.5 rounded shadow whitespace-nowrap">
+                × Retirer
+              </span>
+            </div>
+          }
+        </div>
+
+        <div class="flex items-center justify-between text-xs text-slate-600 px-1 font-medium">
+          <span>Éléments actifs : <strong class="text-[#101d69]">{{ elements().length }}</strong></span>
+          <span>Exercice sélectionné : <strong class="text-[#167812]">{{ sessionBlocks()[activeBlockIndex()].title }}</strong></span>
+        </div>
+      </div>
+
+    </div>
+  }
+
+  <!-- TAB 2: BIBLIOTHÈQUE DE SÉANCES COMPLÈTES (CDC 7.1) -->
+  @if (activeTab() === 'bibliotheque') {
+    <div class="space-y-6">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 border-t-4 border-t-[#101d69] shadow-sm">
+        <div>
+          <h2 class="text-lg font-black uppercase tracking-tight text-[#101d69]">Bibliothèque Technique RCBA</h2>
+          <p class="text-xs text-slate-600">Modèles d'entraînements validés par la commission technique du club.</p>
+        </div>
+        <button
+          type="button"
+          class="rounded-lg bg-[#21ad1c] px-4 py-2.5 text-xs font-black uppercase tracking-wider text-white hover:bg-[#1b8e17] shadow-sm"
+        >
+          + Créer un nouveau modèle
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        @for (session of sampleSessions(); track session.id) {
+          <div class="rounded-2xl border border-slate-200 border-t-4 border-t-[#101d69] bg-white p-6 space-y-4 shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="rounded bg-[#101d69]/10 px-2.5 py-1 text-xs font-bold text-[#101d69]">
+                {{ session.category }}
+              </span>
+              <span class="text-xs text-slate-500 font-mono font-bold">{{ session.totalDurationMinutes }} min</span>
+            </div>
+
+            <h3 class="text-lg font-black uppercase text-slate-900 tracking-tight">
+              {{ session.title }}
+            </h3>
+
+            <p class="text-xs text-slate-600">
+              Thème : <strong class="text-slate-900">{{ session.theme }}</strong> &bull; Effectif cible : {{ session.targetCount }} joueurs
+            </p>
+
+            <div class="space-y-1.5 pt-3 border-t border-slate-100">
+              <span class="text-[10px] font-black uppercase tracking-wider text-slate-400">Découpage :</span>
+              @for (b of session.blocks; track b.title) {
+                <div class="flex items-center justify-between text-xs text-slate-700">
+                  <span>&bull; {{ b.title }}</span>
+                  <span class="font-mono text-[11px] font-semibold text-slate-500">{{ b.durationMinutes }}'</span>
+                </div>
+              }
+            </div>
+
+            <div class="pt-4 border-t border-slate-100 flex justify-between items-center text-xs">
+              <span class="text-slate-500 text-[11px]">Par {{ session.author }} ({{ session.createdAt }})</span>
+              <button
+                type="button"
+                (click)="activeTab.set('tactique')"
+                class="rounded-lg bg-slate-100 px-3 py-1.5 font-bold text-[#101d69] hover:bg-slate-200"
+              >
+                Ouvrir sur le tableau &rarr;
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- TAB 3: PROJETS DE JEU ET DOCUMENTS CLUBS (CDC 7.1) -->
+  @if (activeTab() === 'documents') {
+    <div class="rounded-2xl border border-slate-200 border-t-4 border-t-[#101d69] bg-white p-8 shadow-sm space-y-6">
+      <div>
+        <h2 class="text-lg font-black uppercase tracking-tight text-[#101d69]">Projets de Jeu & Documents Éducateurs</h2>
+        <p class="text-xs text-slate-600">Principes communs, chartes, programmations annuelles et formulaires officiels.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 space-y-2.5">
+          <span class="text-3xl">📋</span>
+          <h3 class="text-sm font-bold text-slate-900 uppercase">Charte de l'Éducateur RCBA</h3>
+          <p class="text-xs text-slate-600">Règles éthiques, exemplarité, ponctualité et sécurité des licenciés.</p>
+          <button type="button" class="text-xs font-bold text-[#1f39cf] hover:underline">Télécharger PDF &darr;</button>
+        </div>
+
+        <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 space-y-2.5">
+          <span class="text-3xl">⚽</span>
+          <h3 class="text-sm font-bold text-slate-900 uppercase">Projet de Jeu du Club 2025-2028</h3>
+          <p class="text-xs text-slate-600">Principes d'animation offensive et défensive de l'école de foot aux seniors.</p>
+          <button type="button" class="text-xs font-bold text-[#1f39cf] hover:underline">Consulter le dossier &darr;</button>
+        </div>
+
+        <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 space-y-2.5">
+          <span class="text-3xl">📝</span>
+          <h3 class="text-sm font-bold text-slate-900 uppercase">Fiche Feuille de Match & Convocations</h3>
+          <p class="text-xs text-slate-600">Modèles de composition et procédures de saisie Footclubs / TeamPulse.</p>
+          <button type="button" class="text-xs font-bold text-[#1f39cf] hover:underline">Télécharger le guide &darr;</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- TAB 4: PLANNING DES TERRAINS (CDC 7.1) -->
+  @if (activeTab() === 'planning') {
+    <div class="rounded-2xl border border-slate-200 border-t-4 border-t-[#21ad1c] bg-white p-8 shadow-sm space-y-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-lg font-black uppercase tracking-tight text-[#101d69]">Planning des Terrains & Vestiaires</h2>
+          <p class="text-xs text-slate-600">Répartition des créneaux sur Bû, Abondant et Serville pour éviter les conflits d'utilisation.</p>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs text-slate-700">
+          <thead class="border-b border-slate-200 bg-slate-50 text-slate-600 uppercase tracking-wider font-bold">
+            <tr>
+              <th class="p-3.5">Site / Stade</th>
+              <th class="p-3.5">Mardi</th>
+              <th class="p-3.5">Mercredi</th>
+              <th class="p-3.5">Jeudi</th>
+              <th class="p-3.5">Vendredi</th>
+              <th class="p-3.5">Samedi / Dimanche</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            <tr class="hover:bg-slate-50/80">
+              <td class="p-3.5 font-bold text-[#101d69]">Stade de Bû</td>
+              <td class="p-3.5">Seniors (19h30)</td>
+              <td class="p-3.5">U15F (15h00) &bull; U18 (18h00)</td>
+              <td class="p-3.5">Seniors (19h30)</td>
+              <td class="p-3.5">U18 (19h00)</td>
+              <td class="p-3.5 text-[#167812] font-bold">Matchs Seniors & U18</td>
+            </tr>
+            <tr class="hover:bg-slate-50/80">
+              <td class="p-3.5 font-bold text-[#101d69]">Stade d'Abondant</td>
+              <td class="p-3.5 text-slate-400">—</td>
+              <td class="p-3.5">École de Foot (14h00-17h30)</td>
+              <td class="p-3.5">Vétérans (20h00)</td>
+              <td class="p-3.5">U15 (18h00)</td>
+              <td class="p-3.5 text-[#167812] font-bold">Plateaux Jeunes & Vétérans</td>
+            </tr>
+            <tr class="hover:bg-slate-50/80">
+              <td class="p-3.5 font-bold text-[#101d69]">Plateau de Serville</td>
+              <td class="p-3.5 text-slate-400">—</td>
+              <td class="p-3.5">Créneau spécifique Jeunes</td>
+              <td class="p-3.5 text-slate-400">—</td>
+              <td class="p-3.5 text-slate-400">—</td>
+              <td class="p-3.5 text-slate-400">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+
+</div>

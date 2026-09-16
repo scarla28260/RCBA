@@ -1,0 +1,161 @@
+<footer class="mt-16 border-t-4 border-[#21ad1c] bg-[#101d69] text-white">
+  <!-- Partners Banner Section -->
+  <div class="border-b border-white/10 bg-[#0c1650] py-8">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+        <div>
+          <span class="text-[11px] font-black uppercase tracking-[0.25em] text-[#21ad1c]">Soutien & Engagement</span>
+          <h3 class="text-lg font-bold text-white uppercase tracking-wider">Nos Partenaires Officiels</h3>
+        </div>
+        <p class="text-xs text-slate-300 max-w-md">
+          Un grand merci aux entreprises locales et aux institutions qui soutiennent la formation et le développement du Racing Club Bû Abondant.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+        @for (partner of partners(); track partner.name) {
+          <div class="flex flex-col items-center justify-center gap-2 p-3 rounded-xl bg-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
+            @if (partner.logo) {
+              <img
+                [src]="partner.logo"
+                [alt]="partner.name"
+                class="h-10 w-full object-contain"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"
+              />
+              <span class="text-[10px] font-bold text-center text-[#101d69] hidden">{{ partner.name }}</span>
+            } @else {
+              <span class="text-xs font-bold text-center text-[#101d69]">{{ partner.name }}</span>
+            }
+            <span class="text-[9px] text-slate-400 uppercase tracking-wider text-center leading-tight">{{ partner.category }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Footer Content -->
+  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      
+      <!-- Column 1: Identity -->
+      <div class="space-y-4">
+        <div class="flex items-center gap-3">
+          <div class="flex h-12 w-12 items-center justify-center rounded-full bg-white p-1 shadow">
+            <img src="logo.png" alt="Logo RCBA" class="h-full w-full object-contain" onerror="this.style.display='none'" />
+            <span class="text-xs font-black text-[#101d69]">RCBA</span>
+          </div>
+          <div>
+            <h4 class="font-black text-white uppercase tracking-wider text-base">{{ clubName() }}</h4>
+            <p class="text-xs text-sky-200">Affiliation FFF n° 528340</p>
+          </div>
+        </div>
+        <p class="text-xs leading-relaxed text-slate-200">
+          Club de football amateur formateur et familial au nord de l'Eure-et-Loir. Pratique pour toutes les catégories sur les terrains de Bû et Abondant.
+        </p>
+        <div class="flex items-center gap-2 pt-1">
+          <span class="inline-flex items-center rounded bg-[#21ad1c] px-2 py-0.5 text-[11px] font-bold text-white">
+            ⭐ Label Espoir FFF
+          </span>
+          <span class="inline-flex items-center rounded bg-[#21ad1c] px-2 py-0.5 text-[11px] font-bold text-white">
+            🌸 Label Féminin
+          </span>
+        </div>
+      </div>
+
+      <!-- Column 2: Navigation rapide -->
+      <div>
+        <h4 class="text-xs font-black uppercase tracking-[0.2em] text-[#21ad1c] mb-4">Accès Rapide</h4>
+        <ul class="space-y-2 text-xs">
+          <li>
+            <a routerLink="/" class="text-slate-200 hover:text-white transition-colors">Accueil</a>
+          </li>
+          <li>
+            <a routerLink="/club" class="text-slate-200 hover:text-white transition-colors">Le Club, Histoire & Projet</a>
+          </li>
+          <li>
+            <a routerLink="/club" class="text-[#21ad1c] font-bold hover:underline">Organigramme Officiel 2025-2026</a>
+          </li>
+          <li>
+            <a routerLink="/equipes" class="text-slate-200 hover:text-white transition-colors">Équipes & Catégories</a>
+          </li>
+          <li>
+            <a routerLink="/agenda" class="text-slate-200 hover:text-white transition-colors">Calendrier & Matchs</a>
+          </li>
+          <li>
+            <a routerLink="/inscriptions" class="text-slate-200 hover:text-white transition-colors">Inscriptions & Licences</a>
+          </li>
+          <li>
+            <a routerLink="/boutique" class="text-amber-300 font-bold hover:underline">Boutique Officielle RCBA 🛍️</a>
+          </li>
+          <li>
+            <a routerLink="/educateurs" class="text-[#25cf1f] font-bold hover:underline">Portail Coach & Tableau Tactique ⚽</a>
+          </li>
+          <li>
+            <a routerLink="/direction" class="text-sky-300 font-bold hover:underline">Portail Direction & Gouvernance 🏛️</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Column 3: Terrains & Infrastructures -->
+      <div>
+        <h4 class="text-xs font-black uppercase tracking-[0.2em] text-[#21ad1c] mb-4">Infrastructures Sportives</h4>
+        <ul class="space-y-3 text-xs text-slate-200">
+          <li class="flex flex-col">
+            <strong class="text-white">Stade Municipal de Bû</strong>
+            <span class="text-slate-300">Route de Marchezais, 28410 Bû</span>
+          </li>
+          <li class="flex flex-col">
+            <strong class="text-white">Stade d'Abondant</strong>
+            <span class="text-slate-300">Rue du Stade, 28410 Abondant</span>
+          </li>
+
+        </ul>
+      </div>
+
+      <!-- Column 4: Contact & Réseaux -->
+      <div>
+        <h4 class="text-xs font-black uppercase tracking-[0.2em] text-[#21ad1c] mb-4">Communication & Liens</h4>
+        <p class="text-xs text-slate-300 mb-3">
+          Suivez la vie du club au quotidien, les résultats et les convocations.
+        </p>
+        <div class="flex flex-col gap-2.5 text-xs">
+          <a
+            href="https://rcba.footeo.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 text-sky-300 hover:text-white font-semibold"
+          >
+            🌐 Site historique Footeo ↗
+          </a>
+          <a
+            href="https://inscription.rcba.club/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 text-[#21ad1c] hover:text-white font-semibold"
+          >
+            📋 Portail Inscription HelloAsso ↗
+          </a>
+          <a
+            href="https://www.facebook.com/RacingClubBuAbondant/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 text-slate-200 hover:text-white"
+          >
+            📘 Facebook : Racing Club Bû Abondant ↗
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="mt-12 border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-300">
+      <p>&copy; {{ currentYear() }} Racing Club Bû Abondant. Tous droits réservés.</p>
+      <div class="flex gap-4">
+        <span>Couleurs officielles : <strong class="text-sky-300">Bleu Roi</strong> & <strong class="text-[#21ad1c]">Vert</strong></span>
+        <span>&bull;</span>
+        <span>Bû &bull; Abondant</span>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RCBA Expert Portal 🛡️⚽
 
-## Getting Started
+Bienvenue sur le portail expert du **Racing Club Bû Abondant (RCBA)**. Cette plateforme moderne est dédiée à la gestion sportive, administrative et tactique du club.
 
-First, run the development server:
+## 🚀 Fonctionnalités Clés
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Pilotage Global** (Direction) : Suivi des licences, trésorerie (buvette), et KPIs de performance.
+- **Roster Elite** (Public/Coach) : Consultation des effectifs synchronisés en temps réel avec Footeo.
+- **Intelligence Axis & Aura Elite** : Modules de monitoring tactique et d'analyse de performance.
+- **Espace Membre** : Portails dédiés pour les parents, joueurs et coachs.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Stack Technique
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework** : Next.js 15+ (App Router)
+- **Styling** : Tailwind CSS (Design System "Aura Glass v2")
+- **Base de données** : SQLite (Architecture locale `site/rcba.db`)
+- **Branding** : Athletic Prestige, Glassmorphism, Pitch Green & Gold.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🏁 Installation & Démarrage
 
-## Learn More
+1. **Installer les dépendances** :
+   ```bash
+   npm install
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+2. **Démarrer le serveur de développement** :
+   ```bash
+   npm run dev
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. **Synchroniser les données Footeo** :
+   ```bash
+   node scripts/sync_rcba_technical_data.js
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. **Accès** : Ouvrez [http://localhost:3000](http://localhost:3000).
 
-## Deploy on Vercel
+## 🧬 Design System
+Consultez [DESIGN.md](./DESIGN.md) pour plus de détails sur la charte graphique et les tokens "Aura Glass".
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+© 2026 Racing Club Bû Abondant - Portail Expert.

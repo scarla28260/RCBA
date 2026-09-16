@@ -1,0 +1,49 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-rcba-blue: #101d69;
+  --color-rcba-blue-royal: #1f39cf;
+  --color-rcba-blue-light: #eef2ff;
+  --color-rcba-green: #21ad1c;
+  --color-rcba-green-vivid: #25cf1f;
+  --color-rcba-green-light: #f0fdf4;
+}
+
+/* ——————————————————————————————————————
+   Centrage global des images
+   Toutes les images dans l'app sont centrées
+   par défaut (horizontal + vertical).
+—————————————————————————————————————— */
+img {
+  display: block;
+  /* Centre horizontalement dans son conteneur inline */
+  margin-inline: auto;
+}
+
+/* Photos de portrait (staff, équipes) — toujours centrées */
+img.object-cover {
+  object-position: center center;
+}
+
+/* Logos sponsors et badges — centrés dans leur wrapper */
+img.object-contain {
+  object-position: center center;
+}
+
+/* ——————————————————————————————————————
+   Utilitaire scrollbar-hide (filtres nav)
+—————————————————————————————————————— */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ——————————————————————————————————————
+   Smooth scroll global
+—————————————————————————————————————— */
+html {
+  scroll-behavior: smooth;
+}

@@ -1,0 +1,1961 @@
+<div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
+
+  <!-- BANDEAU HAUT INSTITUTIONNEL DIRECTION -->
+  <div class="bg-gradient-to-r from-[#101d69] via-[#0d1652] to-[#101d69] rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-white/10">
+    <!-- Motif filigrane géométrique -->
+    <div class="absolute inset-0 opacity-10 pointer-events-none"
+         style="background-image: repeating-linear-gradient(45deg, #21ad1c 0, #21ad1c 1px, transparent 0, transparent 24px);"></div>
+
+    <div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-[#21ad1c] px-3 py-1 text-xs font-black uppercase tracking-wider text-white shadow-sm">
+            <span>🏛️</span> Portail Direction & Bureau
+          </span>
+          <span class="text-xs text-sky-200 font-bold uppercase tracking-wider">
+            Conseil d'Administration &bull; FFF n° {{ fffNumber() }}
+          </span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white">
+          Espace Gouvernance & Pilotage
+        </h1>
+        <p class="text-xs sm:text-sm text-sky-100 mt-2 max-w-3xl leading-relaxed">
+          Outil centralisé pour les membres du Bureau, du Conseil d'Administration et les responsables de pôles du <strong class="text-white">{{ clubName() }}</strong>. Suivi des licences, budget, convocations du week-end et documents statutaires.
+        </p>
+      </div>
+
+      <!-- Liens rapides / Switch vers Portail Coach -->
+      <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+        @if (isAuthenticated()) {
+          <div class="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-3 py-2 rounded-xl text-xs">
+            <span class="w-2 h-2 rounded-full bg-[#25cf1f]"></span>
+            <span class="font-bold text-white">{{ currentUser()?.name }}</span>
+            <button
+              type="button"
+              (click)="authService.logout()"
+              class="text-rose-300 hover:text-white font-bold ml-1 text-[11px] underline"
+            >
+              Déconnexion
+            </button>
+          </div>
+        } @else {
+          <a
+            routerLink="/login"
+            [queryParams]="{ target: 'direction' }"
+            class="inline-flex items-center gap-1.5 rounded-xl bg-white text-[#101d69] hover:bg-slate-100 px-4 py-2.5 text-xs font-black uppercase tracking-wider transition-all shadow-md"
+          >
+            <span>🔒</span> Se connecter
+          </a>
+        }
+
+        <a
+          routerLink="/educateurs"
+          class="inline-flex items-center gap-2 rounded-xl bg-white/10 hover:bg-white/20 px-4 py-2.5 text-xs font-black uppercase tracking-wider text-white border border-white/20 transition-all shadow-sm"
+        >
+          <span>⚽</span> Portail Coach &rarr;
+        </a>
+        <a
+          href="https://s2.static-footeo.com/uploads/rcba/Medias/RCBA_Organigramme_g%C3%A9n%C3%A9ral_2025_2026_court__t6yqb4.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 rounded-xl bg-[#21ad1c] hover:bg-[#1b8e17] px-4 py-2.5 text-xs font-black uppercase tracking-wider text-white transition-all shadow-md"
+        >
+          <span>📄 Organigramme Officiel PDF ↗</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Statistiques Synthétiques Direction -->
+    <div class="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 pt-6 border-t border-white/15">
+      <div class="bg-white/10 rounded-xl p-3.5 backdrop-blur-sm">
+        <div class="text-2xl sm:text-3xl font-black text-[#25cf1f]">280+</div>
+        <div class="text-[11px] font-bold text-sky-200 uppercase tracking-wider mt-0.5">Licenciés Actifs</div>
+      </div>
+      <div class="bg-white/10 rounded-xl p-3.5 backdrop-blur-sm">
+        <div class="text-2xl sm:text-3xl font-black text-amber-300">{{ bureauMembers().length }}</div>
+        <div class="text-[11px] font-bold text-sky-200 uppercase tracking-wider mt-0.5">Membres du Bureau</div>
+      </div>
+      <div class="bg-white/10 rounded-xl p-3.5 backdrop-blur-sm">
+        <div class="text-2xl sm:text-3xl font-black text-sky-300">30</div>
+        <div class="text-[11px] font-bold text-sky-200 uppercase tracking-wider mt-0.5">Dirigeants & CA</div>
+      </div>
+      <div class="bg-white/10 rounded-xl p-3.5 backdrop-blur-sm">
+        <div class="text-2xl sm:text-3xl font-black text-white">2</div>
+        <div class="text-[11px] font-bold text-sky-200 uppercase tracking-wider mt-0.5">Labels FFF Détenus</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ONGLETS DE NAVIGATION DU PORTAIL DIRECTION -->
+  <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-200 scrollbar-hide">
+    <button
+      type="button"
+      (click)="activeTab.set('dashboard')"
+      [class]="activeTab() === 'dashboard'
+        ? 'inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-wider bg-[#101d69] text-white shadow-md'
+        : 'inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'"
+    >
+      <span>📊</span> Tableau de Bord
+    </button>
+    <button
+      type="button"
+      (click)="activeTab.set('convocations')"
+      [class]="activeTab() === 'convocations'
+        ? 'inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-wider bg-[#101d69] text-white shadow-md'
+        : 'inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'"
+    >
+      <span>📢</span> Convocations du Club
+    </button>
+    <button
+      type="button"
+      (click)="activeTab.set('licences')"
+      [class]="activeTab() === 'licences'
+        ? 'inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-wider bg-[#101d69] text-white shadow-md'
+        : 'inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'"
+    >
+      <span>🪪</span> Licences & Effectifs
+      <span class="rounded-full bg-[#21ad1c] text-white px-2 py-0.5 text-[10px] font-mono font-black">
+        {{ totalLicenciesCount() }}
+      </span>
+    </button>
+    <button
+      type="button"
+      (click)="activeTab.set('buvette')"
+      [class]="activeTab() === 'buvette'
+        ? 'inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-wider bg-[#101d69] text-white shadow-md'
+        : 'inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'"
+    >
+      <span>☕</span> Buvette & Stocks
+    </button>
+    <button
+      type="button"
+      (click)="activeTab.set('minibus')"
+      [class]="activeTab() === 'minibus'
+        ? 'inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-wider bg-[#101d69] text-white shadow-md'
+        : 'inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'"
+    >
+      <span>🚐</span> Mini-Bus Partagé Anet
+    </button>
+    <button
+      type="button"
+      (click)="activeTab.set('finances')"
+      [class]="activeTab() === 'finances'
+        ? 'inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-wider bg-[#101d69] text-white shadow-md'
+        : 'inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'"
+    >
+      <span>💶</span> Finances & Partenariats
+    </button>
+    <button
+      type="button"
+      (click)="activeTab.set('taches')"
+      [class]="activeTab() === 'taches'
+        ? 'inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-wider bg-[#101d69] text-white shadow-md'
+        : 'inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'"
+    >
+      <span>✅</span> Tâches & Projets CA
+    </button>
+    <button
+      type="button"
+      (click)="activeTab.set('documents')"
+      [class]="activeTab() === 'documents'
+        ? 'inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-wider bg-[#101d69] text-white shadow-md'
+        : 'inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'"
+    >
+      <span>📂</span> Documents Officiels
+    </button>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- CONTENU ONGLET 1: TABLEAU DE BORD EXÉCUTIF                -->
+  <!-- ========================================================= -->
+  @if (activeTab() === 'dashboard') {
+    <div class="space-y-8">
+      
+      <!-- Annonce rapide de la Direction -->
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 class="text-base font-black uppercase text-[#101d69] tracking-tight mb-4 flex items-center gap-2">
+          <span>📣</span> Publier une Note Officielle de Direction
+        </h2>
+        <div class="space-y-3">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="sm:col-span-2">
+              <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1">Titre de la note</label>
+              <input
+                type="text"
+                [(ngModel)]="newNotice.title"
+                placeholder="Ex: Réunion du Conseil d'Administration / Arrêté municipal terrains..."
+                class="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-800 focus:border-[#101d69] focus:outline-none"
+              />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1">Destinataires</label>
+              <select
+                [(ngModel)]="newNotice.target"
+                class="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-800 focus:border-[#101d69] focus:outline-none"
+              >
+                <option value="all">Tout le club (Public & Éducateurs)</option>
+                <option value="ca">Membres du Conseil d'Administration</option>
+                <option value="coachs">Éducateurs & Coachs uniquement</option>
+                <option value="parents">Parents & Joueurs</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1">Corps du message</label>
+            <textarea
+              [(ngModel)]="newNotice.content"
+              rows="3"
+              placeholder="Rédigez la note officielle du club ici..."
+              class="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-800 focus:border-[#101d69] focus:outline-none"
+            ></textarea>
+          </div>
+          <div class="flex items-center justify-between pt-2">
+            @if (noticeSuccess()) {
+              <span class="text-xs font-bold text-[#167812] flex items-center gap-1">
+                ✓ Note officielle enregistrée et diffusée aux membres ciblés.
+              </span>
+            } @else {
+              <span class="text-[11px] text-slate-400">Diffusion instantanée sur les portails dédiés du club.</span>
+            }
+            <button
+              type="button"
+              (click)="postNotice()"
+              class="rounded-lg bg-[#101d69] px-5 py-2 text-xs font-black uppercase tracking-wider text-white hover:bg-[#1a2d8a] transition-colors shadow-sm"
+            >
+              Diffuser la note &rarr;
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Membres du Bureau Exécutif & Répartition des Fonctions -->
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-200 gap-2 mb-6">
+          <div>
+            <span class="text-[10px] font-black uppercase tracking-widest text-[#21ad1c]">Gouvernance 2026-2027</span>
+            <h2 class="text-xl font-black uppercase text-[#101d69] tracking-tight mt-0.5">
+              Composition du Bureau Directeur
+            </h2>
+          </div>
+          <a routerLink="/dirigeants" class="text-xs font-bold uppercase text-[#1f39cf] hover:underline flex items-center gap-1">
+            Voir les 30 dirigeants (Cartes Panini) &rarr;
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          @for (member of bureauMembers(); track member.id) {
+            <div class="rounded-xl border border-slate-200 bg-slate-50 p-5 flex items-center gap-4 hover:shadow-md transition-all">
+              <div class="relative w-16 h-16 rounded-full overflow-hidden shrink-0 border-2 border-[#101d69] bg-white shadow">
+                @if (member.photo) {
+                  <img [src]="member.photo" [alt]="member.firstName + ' ' + member.lastName" class="w-full h-full object-cover" />
+                } @else {
+                  <div class="w-full h-full flex items-center justify-center font-black text-sm bg-[#101d69] text-white">
+                    {{ member.firstName[0] }}{{ member.lastName[0] }}
+                  </div>
+                }
+              </div>
+              <div>
+                <span class="inline-block rounded bg-[#101d69] px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-white mb-1">
+                  {{ member.role }}
+                </span>
+                <h3 class="font-black text-sm uppercase text-slate-900 leading-tight">
+                  {{ member.firstName }} {{ member.lastName }}
+                </h3>
+                <span class="text-[11px] text-slate-500 font-medium block mt-0.5">Membre Officiel FFF</span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Vue d'ensemble des Prochains Événements & Calendrier Réunions -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 class="text-base font-black uppercase text-[#101d69] tracking-tight mb-4 flex items-center gap-2">
+            <span>📅</span> Prochaines Échéances du Club
+          </h2>
+          <div class="space-y-3 text-xs">
+            <div class="p-3 rounded-lg border border-slate-200 bg-slate-50 flex items-start justify-between gap-3">
+              <div>
+                <strong class="text-slate-900 font-bold block">Réunion Mensuelle du Conseil d'Administration</strong>
+                <span class="text-slate-500">Mardi 6 Octobre 2026 &bull; 20h00 au Club House de Bû</span>
+              </div>
+              <span class="rounded bg-blue-100 text-[#101d69] font-bold px-2 py-0.5 text-[10px] shrink-0">CA Club</span>
+            </div>
+            <div class="p-3 rounded-lg border border-slate-200 bg-slate-50 flex items-start justify-between gap-3">
+              <div>
+                <strong class="text-slate-900 font-bold block">Clôture des Dépôts de Licences Phase 1</strong>
+                <span class="text-slate-500">Mercredi 30 Septembre 2026 &bull; Enregistrement Footclubs</span>
+              </div>
+              <span class="rounded bg-rose-100 text-rose-800 font-bold px-2 py-0.5 text-[10px] shrink-0">Urgent</span>
+            </div>
+            <div class="p-3 rounded-lg border border-slate-200 bg-slate-50 flex items-start justify-between gap-3">
+              <div>
+                <strong class="text-slate-900 font-bold block">Plateau Festi-Foot U9 à Abondant</strong>
+                <span class="text-slate-500">Samedi 26 Septembre 2026 &bull; 10h00 - 12h00</span>
+              </div>
+              <span class="rounded bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 text-[10px] shrink-0">Sportif</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- État des Installations -->
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 class="text-base font-black uppercase text-[#101d69] tracking-tight mb-4 flex items-center gap-2">
+            <span>🏟️</span> État des Stades & Terrains
+          </h2>
+          <div class="space-y-3 text-xs">
+            @for (site of installations(); track site.id) {
+              <div class="p-3 rounded-lg border border-slate-200 bg-slate-50 flex items-center justify-between">
+                <div>
+                  <strong class="text-slate-900 font-bold block">{{ site.name }}</strong>
+                  <span class="text-slate-500">{{ site.commune }} &bull; {{ site.surface }}</span>
+                </div>
+                <div class="flex items-center gap-1.5 font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full text-[11px]">
+                  <span class="inline-block w-2 h-2 rounded-full bg-emerald-600"></span>
+                  Ouvert & Praticable
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- ========================================================= -->
+  <!-- CONTENU ONGLET 2: CONVOCATIONS OFFICIELLES DU CLUB       -->
+  <!-- ========================================================= -->
+  @if (activeTab() === 'convocations') {
+    <div class="space-y-6">
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+          <div>
+            <span class="text-[10px] font-black uppercase tracking-widest text-[#21ad1c]">Compétition & Matchs</span>
+            <h2 class="text-xl font-black uppercase text-[#101d69] tracking-tight mt-0.5">
+              Convocations & Feuilles de Match du Week-end
+            </h2>
+            <p class="text-xs text-slate-500 mt-1">Consultez et validez les convocations émises par les éducateurs pour chaque équipe.</p>
+          </div>
+
+          <!-- Filtre par équipe -->
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-slate-600">Filtrer :</span>
+            <select
+              [(ngModel)]="selectedTeamFilter"
+              class="rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-800 font-medium focus:border-[#101d69] focus:outline-none"
+            >
+              <option value="all">Toutes les équipes ({{ convocations().length }})</option>
+              <option value="seniors-d3">Seniors D3</option>
+              <option value="u15-d3">U15 Foot à 11</option>
+              <option value="u13-d1">U13 Foot à 8</option>
+              <option value="veterans-d1">Vétérans 1</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Liste des Convocations -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+          @for (conv of getFilteredConvocations(); track conv.id) {
+            <div class="rounded-xl border border-slate-200 bg-slate-50 overflow-hidden shadow-xs hover:shadow-md transition-all">
+              
+              <!-- Header Convocation -->
+              <div class="bg-[#101d69] text-white px-5 py-3.5 flex items-center justify-between">
+                <div>
+                  <span class="text-[10px] font-black uppercase tracking-widest text-[#25cf1f]">RCBA Officiel</span>
+                  <h3 class="font-black text-sm uppercase tracking-wide">{{ conv.teamName }}</h3>
+                </div>
+                <span class="text-xs font-mono font-bold bg-white/10 px-2.5 py-1 rounded">
+                  {{ conv.matchTime }}
+                </span>
+              </div>
+
+              <div class="p-5 space-y-4 text-xs">
+                <!-- Match Details -->
+                <div class="grid grid-cols-2 gap-3 pb-3 border-b border-slate-200">
+                  <div>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase">Adversaire</span>
+                    <p class="font-black text-sm text-[#101d69] mt-0.5">{{ conv.opponent }}</p>
+                  </div>
+                  <div>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase">Date & Lieu</span>
+                    <p class="font-bold text-slate-800 mt-0.5">{{ conv.matchDate }}</p>
+                    <p class="text-slate-500">{{ conv.location }}</p>
+                  </div>
+                </div>
+
+                <!-- Rendez-vous -->
+                <div class="p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-900">
+                  <span class="font-black uppercase text-[10px] block">Rendez-vous obligatoire :</span>
+                  <p class="mt-0.5 font-bold">À {{ conv.meetingTime }} &bull; {{ conv.meetingPlace }}</p>
+                </div>
+
+                <!-- Joueurs Convoqués -->
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="font-black uppercase text-[10px] text-slate-600">
+                      Joueurs Convoqués ({{ conv.selectedPlayers.length }})
+                    </span>
+                    <span class="text-[10px] text-[#167812] font-bold">✓ Licences validées</span>
+                  </div>
+                  <div class="flex flex-wrap gap-1.5">
+                    @for (player of conv.selectedPlayers; track player) {
+                      <span class="rounded bg-white border border-slate-200 px-2 py-1 text-[11px] font-medium text-slate-800">
+                        {{ player }}
+                      </span>
+                    }
+                  </div>
+                </div>
+
+                <!-- Absents / Blessés -->
+                @if (conv.absentPlayers.length > 0) {
+                  <div>
+                    <span class="font-black uppercase text-[10px] text-rose-600 block mb-1">Absents / Blessés :</span>
+                    <div class="flex flex-wrap gap-1.5">
+                      @for (abs of conv.absentPlayers; track abs) {
+                        <span class="rounded bg-rose-50 border border-rose-200 px-2 py-0.5 text-[10px] text-rose-700 font-medium">
+                          {{ abs }}
+                        </span>
+                      }
+                    </div>
+                  </div>
+                }
+
+                <!-- Consignes du Coach -->
+                <div class="pt-3 border-t border-slate-200 text-slate-600 leading-relaxed">
+                  <span class="font-bold text-slate-800">Consignes : </span>
+                  {{ conv.notes }}
+                </div>
+
+                <!-- Contact Coach -->
+                <div class="pt-3 border-t border-slate-200 flex items-center justify-between text-slate-500 text-[11px]">
+                  <span>Éducateur : <strong class="text-slate-800">{{ conv.coachName }}</strong></span>
+                  <span class="font-mono font-bold text-[#101d69]">{{ conv.coachPhone }}</span>
+                </div>
+
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- ========================================================= -->
+  <!-- CONTENU ONGLET 3: GESTION COMPLÈTE DES LICENCIÉS & ÉQUIPES -->
+  <!-- ========================================================= -->
+  @if (activeTab() === 'licences') {
+    <div class="space-y-6">
+
+      <!-- Message de confirmation d'action -->
+      @if (assignmentSuccessMsg()) {
+        <div class="rounded-xl border border-emerald-300 bg-emerald-50 p-4 text-emerald-800 flex items-center justify-between shadow-sm animate-fade-in">
+          <div class="flex items-center gap-3">
+            <span class="text-xl">✅</span>
+            <span class="font-bold text-xs sm:text-sm">{{ assignmentSuccessMsg() }}</span>
+          </div>
+          <button (click)="assignmentSuccessMsg.set(null)" class="text-emerald-600 hover:text-emerald-900 font-black text-xs">✕</button>
+        </div>
+      }
+
+      <!-- Cartes de Statistiques Rapides Licenciés -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <span class="text-[10px] font-black uppercase text-slate-400 tracking-wider">Total Licenciés FFF</span>
+          <div class="text-2xl sm:text-3xl font-black text-[#101d69] mt-1">{{ totalLicenciesCount() }}</div>
+          <span class="text-[11px] text-slate-500 font-medium">Affiliés au District 28</span>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <span class="text-[10px] font-black uppercase text-emerald-600 tracking-wider">Affectés en Équipe</span>
+          <div class="text-2xl sm:text-3xl font-black text-emerald-600 mt-1">{{ assignedLicenciesCount() }}</div>
+          <span class="text-[11px] text-emerald-700 font-medium">Inscrits dans un effectif</span>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <span class="text-[10px] font-black uppercase text-amber-600 tracking-wider">Sans Équipe Attitrée</span>
+          <div class="text-2xl sm:text-3xl font-black text-amber-600 mt-1">{{ unassignedLicenciesCount() }}</div>
+          <span class="text-[11px] text-amber-700 font-medium">À affecter par la direction</span>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <span class="text-[10px] font-black uppercase text-[#21ad1c] tracking-wider">Licences Complètes</span>
+          <div class="text-2xl sm:text-3xl font-black text-[#167812] mt-1">{{ validLicenciesCount() }}</div>
+          <span class="text-[11px] text-slate-500 font-medium">Cotis. + Médical validés</span>
+        </div>
+      </div>
+
+      <!-- Registre Interactif des Licenciés -->
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm space-y-6">
+        
+        <!-- Header & Bouton Nouveau Licencié -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="rounded bg-[#101d69]/10 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-[#101d69]">
+                Portail Direction RCBA
+              </span>
+              <span class="text-xs text-slate-500 font-bold uppercase">Club FFF n° {{ fffNumber() }}</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-black uppercase text-[#101d69] tracking-tight mt-1">
+              Registre Général des Licenciés & Affectation aux Équipes
+            </h2>
+            <p class="text-xs text-slate-500 mt-1">
+              Consultez la fiche individuelle de chaque joueur, gérez le statut de sa licence (cotisation, certificat médical, équipement adidas) et <strong>affectez-le directement dans son équipe respective</strong>.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-2 shrink-0">
+            <button
+              type="button"
+              (click)="showAddLicencieModal.set(true)"
+              class="inline-flex items-center gap-1.5 rounded-xl bg-[#21ad1c] hover:bg-[#1b8e17] text-white px-4 py-2.5 text-xs font-black uppercase tracking-wider transition-all shadow-sm"
+            >
+              <span>➕</span> Nouveau Licencié
+            </button>
+            <a
+              href="https://inscription.rcba.club/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-slate-50 hover:bg-slate-100 text-slate-700 px-3.5 py-2.5 text-xs font-bold uppercase tracking-wider transition-all"
+            >
+              <span>HelloAsso ↗</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Barre de filtres et de recherche avancée -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs">
+          <!-- Recherche Nom / Prénom / N° Licence -->
+          <div>
+            <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">Recherche licencié</label>
+            <input
+              type="text"
+              [(ngModel)]="licenceSearch"
+              placeholder="Nom, prénom, licence..."
+              class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-800 placeholder-slate-400 focus:border-[#101d69] focus:outline-none"
+            />
+          </div>
+
+          <!-- Filtre par Équipe -->
+          <div>
+            <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">Équipe assignée</label>
+            <select
+              [(ngModel)]="licenceTeamFilter"
+              class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-800 focus:border-[#101d69] focus:outline-none"
+            >
+              <option value="all">Toutes les équipes</option>
+              <option value="unassigned">⚠️ Sans équipe (Non affectés)</option>
+              @for (team of allTeams(); track team.id) {
+                <option [value]="team.id">{{ team.name }} ({{ team.ageGroup }})</option>
+              }
+            </select>
+          </div>
+
+          <!-- Filtre par Catégorie d'Âge -->
+          <div>
+            <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">Catégorie FFF</label>
+            <select
+              [(ngModel)]="licenceCategoryFilter"
+              class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-800 focus:border-[#101d69] focus:outline-none"
+            >
+              <option value="all">Toutes catégories</option>
+              <option value="U7">U7 & Baby Foot</option>
+              <option value="U9">U8 - U9</option>
+              <option value="U11">U10 - U11</option>
+              <option value="U13">U12 - U13</option>
+              <option value="U15">U14 - U15</option>
+              <option value="U15F">U15F (Féminines)</option>
+              <option value="Seniors">Seniors D3</option>
+              <option value="Vétérans">Vétérans</option>
+            </select>
+          </div>
+
+          <!-- Filtre par Statut Licence -->
+          <div>
+            <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">Statut administratif</label>
+            <select
+              [(ngModel)]="licenceStatusFilter"
+              class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-800 focus:border-[#101d69] focus:outline-none"
+            >
+              <option value="all">Tous les statuts</option>
+              <option value="validee">✓ Validée</option>
+              <option value="en_attente_paiement">⏳ En attente paiement</option>
+              <option value="certificat_medical_requis">⚠️ Certificat requis</option>
+              <option value="a_renouveler">🔄 À renouveler</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Tableau des Licenciés -->
+        <div class="overflow-x-auto rounded-xl border border-slate-200">
+          <table class="w-full text-left text-xs text-slate-700">
+            <thead class="bg-slate-100 uppercase text-[11px] font-black tracking-wider text-slate-700 border-b border-slate-200">
+              <tr>
+                <th class="p-3.5">Licencié(e)</th>
+                <th class="p-3.5">Catégorie</th>
+                <th class="p-3.5">Équipe Assignée</th>
+                <th class="p-3.5 text-center">Statut Licence</th>
+                <th class="p-3.5 text-center">Cotisation</th>
+                <th class="p-3.5 text-center">Certif. Médical</th>
+                <th class="p-3.5 text-center">Pack adidas</th>
+                <th class="p-3.5 text-right">Actions Direction</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 bg-white">
+              @for (licencie of filteredLicencies(); track licencie.id) {
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                  <!-- Identité du licencié -->
+                  <td class="p-3.5">
+                    <div class="flex items-center gap-3">
+                      <div class="w-9 h-9 rounded-full bg-[#101d69] text-white flex items-center justify-center font-black text-xs shrink-0 shadow-xs">
+                        {{ licencie.prenom[0] }}{{ licencie.nom[0] }}
+                      </div>
+                      <div>
+                        <button
+                          type="button"
+                          (click)="openLicencieDetails(licencie)"
+                          class="font-black text-slate-900 hover:text-[#1f39cf] hover:underline text-left block"
+                        >
+                          {{ licencie.nom }} {{ licencie.prenom }}
+                        </button>
+                        <span class="text-[10px] font-mono text-slate-400 block">
+                          N° {{ licencie.numeroLicence }} &bull; Né(e) le {{ licencie.dateNaissance }}
+                        </span>
+                      </div>
+                    </div>
+                  </td>
+
+                  <!-- Catégorie FFF -->
+                  <td class="p-3.5">
+                    <span class="rounded bg-slate-100 font-bold px-2 py-0.5 text-slate-700 text-[11px]">
+                      {{ licencie.categorieAge }}
+                    </span>
+                    <span class="block text-[10px] text-slate-400 mt-0.5">{{ licencie.commune }}</span>
+                  </td>
+
+                  <!-- Équipe Assignée avec sélecteur direct -->
+                  <td class="p-3.5">
+                    <div class="flex items-center gap-1.5">
+                      <select
+                        [ngModel]="licencie.teamId || ''"
+                        (ngModelChange)="clubService.assignPlayerToTeam(licencie.id, $event)"
+                        class="rounded-lg border px-2 py-1 text-xs font-bold transition-colors focus:outline-none"
+                        [class.border-emerald-300]="licencie.teamId"
+                        [class.bg-emerald-50]="licencie.teamId"
+                        [class.text-emerald-900]="licencie.teamId"
+                        [class.border-amber-300]="!licencie.teamId"
+                        [class.bg-amber-50]="!licencie.teamId"
+                        [class.text-amber-800]="!licencie.teamId"
+                      >
+                        <option value="">⚠️ Sans équipe (Sélectionner)</option>
+                        @for (t of allTeams(); track t.id) {
+                          <option [value]="t.id">{{ t.name }}</option>
+                        }
+                      </select>
+                    </div>
+                    @if (licencie.teamId) {
+                      <span class="text-[10px] text-emerald-700 font-medium block mt-0.5">
+                        ✓ Dans l'effectif
+                      </span>
+                    } @else {
+                      <span class="text-[10px] text-amber-700 font-bold block mt-0.5">
+                        En attente d'affectation
+                      </span>
+                    }
+                  </td>
+
+                  <!-- Statut Licence Badge -->
+                  <td class="p-3.5 text-center">
+                    <span
+                      class="rounded-full border px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider inline-block"
+                      [class]="getLicenceBadgeClass(licencie.statutLicence)"
+                    >
+                      {{ getLicenceBadgeLabel(licencie.statutLicence) }}
+                    </span>
+                  </td>
+
+                  <!-- Cotisation -->
+                  <td class="p-3.5 text-center">
+                    <button
+                      type="button"
+                      (click)="toggleCotisation(licencie)"
+                      title="Cliquer pour basculer l'état"
+                      class="px-2 py-0.5 rounded text-[11px] font-bold transition-all"
+                      [class.bg-emerald-100]="licencie.cotisationReglee"
+                      [class.text-emerald-800]="licencie.cotisationReglee"
+                      [class.bg-rose-100]="!licencie.cotisationReglee"
+                      [class.text-rose-800]="!licencie.cotisationReglee"
+                    >
+                      {{ licencie.cotisationReglee ? '✓ Réglée' : '✗ Non réglée' }}
+                    </button>
+                  </td>
+
+                  <!-- Certificat Médical -->
+                  <td class="p-3.5 text-center">
+                    <button
+                      type="button"
+                      (click)="toggleCertificat(licencie)"
+                      title="Cliquer pour basculer l'état"
+                      class="px-2 py-0.5 rounded text-[11px] font-bold transition-all"
+                      [class.bg-emerald-100]="licencie.certificatMedicalValide"
+                      [class.text-emerald-800]="licencie.certificatMedicalValide"
+                      [class.bg-amber-100]="!licencie.certificatMedicalValide"
+                      [class.text-amber-800]="!licencie.certificatMedicalValide"
+                    >
+                      {{ licencie.certificatMedicalValide ? '✓ Valide' : '⚠️ Manquant' }}
+                    </button>
+                  </td>
+
+                  <!-- Pack adidas -->
+                  <td class="p-3.5 text-center">
+                    <button
+                      type="button"
+                      (click)="togglePackAdidas(licencie)"
+                      title="Cliquer pour basculer l'état de remise du pack"
+                      class="px-2 py-0.5 rounded text-[11px] font-bold transition-all"
+                      [class.bg-emerald-100]="licencie.packAdidasRemis"
+                      [class.text-emerald-800]="licencie.packAdidasRemis"
+                      [class.bg-slate-100]="!licencie.packAdidasRemis"
+                      [class.text-slate-600]="!licencie.packAdidasRemis"
+                    >
+                      {{ licencie.packAdidasRemis ? '✓ Remis' : '📦 À donner' }}
+                    </button>
+                  </td>
+
+                  <!-- Actions Direction -->
+                  <td class="p-3.5 text-right">
+                    <div class="flex items-center justify-end gap-1.5">
+                      <button
+                        type="button"
+                        (click)="openLicencieDetails(licencie)"
+                        class="rounded-lg bg-[#101d69] hover:bg-[#1f39cf] text-white px-2.5 py-1 text-[11px] font-bold uppercase transition-all shadow-xs"
+                        title="Voir la fiche détaillée et affecter"
+                      >
+                        Fiche &rarr;
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="8" class="p-8 text-center text-slate-500">
+                    <div class="text-3xl mb-2">🔍</div>
+                    <p class="font-bold">Aucun licencié ne correspond à votre recherche.</p>
+                    <button
+                      type="button"
+                      (click)="licenceSearch.set(''); licenceCategoryFilter.set('all'); licenceTeamFilter.set('all'); licenceStatusFilter.set('all')"
+                      class="mt-2 text-xs font-bold text-[#1f39cf] underline"
+                    >
+                      Réinitialiser tous les filtres
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Récapitulatif par Catégories (Bilan global conservé) -->
+        <div class="pt-6 border-t border-slate-200">
+          <h3 class="text-sm font-black uppercase tracking-wider text-[#101d69] mb-3">
+            Bilan Financier & Logistique par Catégorie (Saison 2026-2027)
+          </h3>
+          <div class="overflow-x-auto rounded-xl border border-slate-200">
+            <table class="w-full text-left text-xs text-slate-700">
+              <thead class="border-b border-slate-200 bg-slate-50 uppercase text-[11px] font-black tracking-wider text-slate-600">
+                <tr>
+                  <th class="p-3">Catégorie Sportive</th>
+                  <th class="p-3 text-center">Effectif</th>
+                  <th class="p-3 text-center">Dossiers Complets</th>
+                  <th class="p-3 text-center">Packs adidas remis</th>
+                  <th class="p-3 text-right">Volume Cotisations</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                @for (row of licencesSummary; track row.categorie) {
+                  <tr class="hover:bg-slate-50/80 transition-colors">
+                    <td class="p-3 font-bold text-[#101d69]">{{ row.categorie }}</td>
+                    <td class="p-3 text-center font-mono font-bold">{{ row.effectif }}</td>
+                    <td class="p-3 text-center">
+                      <span class="rounded bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 text-[10px]">
+                        {{ row.dossierComplets }}
+                      </span>
+                    </td>
+                    <td class="p-3 text-center text-slate-600 font-medium">{{ row.packDistribue }}</td>
+                    <td class="p-3 text-right font-mono font-bold text-slate-900">{{ row.cotisTotal }}</td>
+                  </tr>
+                }
+              </tbody>
+              <tfoot class="border-t-2 border-[#101d69] bg-slate-50 font-black text-slate-900">
+                <tr>
+                  <td class="p-3 uppercase">Total Général Club</td>
+                  <td class="p-3 text-center font-mono text-sm text-[#101d69]">281</td>
+                  <td class="p-3 text-center text-emerald-700">95.4%</td>
+                  <td class="p-3 text-center">262 / 281</td>
+                  <td class="p-3 text-right font-mono text-sm text-[#101d69]">35 660 €</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  }
+
+  <!-- ========================================================= -->
+  <!-- MODAL / TIROIR: FICHE DÉTAILLÉE DU LICENCIÉ               -->
+  <!-- ========================================================= -->
+  @if (selectedLicencie(); as lic) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+      <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[90vh]">
+        
+        <!-- En-tête Fiche Licencié -->
+        <div class="bg-gradient-to-r from-[#101d69] to-[#1f39cf] p-6 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-white text-[#101d69] flex items-center justify-center font-black text-2xl shadow-md flex-shrink-0">
+              {{ lic.prenom[0] }}{{ lic.nom[0] }}
+            </div>
+            <div>
+              <div class="flex flex-wrap items-center gap-2">
+                @if (lic.numeroLicence && lic.numeroLicence.trim().length > 0) {
+                  <span class="inline-flex items-center gap-1.5 rounded-full bg-[#21ad1c] text-white px-3 py-0.5 text-xs font-black uppercase tracking-wider shadow-xs">
+                    <span>✓</span> LICENCE OK
+                  </span>
+                } @else {
+                  <span class="inline-flex items-center gap-1.5 rounded-full bg-rose-500 text-white px-3 py-0.5 text-xs font-black uppercase tracking-wider shadow-xs animate-pulse">
+                    <span>⚠️</span> N° LICENCE MANQUANT
+                  </span>
+                }
+                <span class="font-mono text-xs text-sky-200">
+                  N° {{ lic.numeroLicence || 'Non renseigné' }}
+                </span>
+              </div>
+              <h3 class="text-2xl font-black uppercase tracking-wide text-white mt-1">
+                {{ lic.nom }} {{ lic.prenom }}
+              </h3>
+              <p class="text-xs text-sky-100">
+                Catégorie {{ lic.categorieAge }} &bull; Né(e) le {{ lic.dateNaissance }} &bull; Commune de {{ lic.commune }}
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            (click)="closeLicencieDetails()"
+            class="text-white/80 hover:text-white rounded-full p-2 hover:bg-white/10 transition-colors self-start sm:self-center text-xl font-bold"
+          >
+            ✕
+          </button>
+        </div>
+
+        <!-- Corps de la fiche -->
+        <div class="p-6 overflow-y-auto space-y-6 text-xs text-slate-700">
+          
+          <!-- SECTION D'AFFECTATION DANS SON ÉQUIPE RESPECTIVE -->
+          <div class="rounded-2xl border-2 border-[#101d69] bg-[#101d69]/5 p-5 space-y-3">
+            <div class="flex items-center justify-between">
+              <h4 class="text-xs font-black uppercase tracking-wider text-[#101d69] flex items-center gap-2">
+                <span>⚽</span> Affectation en Équipe Officielle
+              </h4>
+              <span class="text-[10px] font-bold text-slate-500 uppercase">Action Direction</span>
+            </div>
+
+            <p class="text-slate-600 leading-relaxed">
+              Sélectionnez l'équipe dans laquelle ce joueur doit être inscrit. Son profil et ses coordonnées seront automatiquement rattachés à la feuille d'effectif du coach concerné.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-center pt-1">
+              <div class="sm:col-span-2">
+                <select
+                  [(ngModel)]="selectedTeamForAssignment"
+                  class="w-full rounded-xl border border-[#101d69] bg-white px-3.5 py-2.5 text-xs font-bold text-[#101d69] focus:outline-none focus:ring-2 focus:ring-[#101d69]/20"
+                >
+                  <option value="">⚠️ Aucune équipe (Mettre en réserve)</option>
+                  @for (team of allTeams(); track team.id) {
+                    <option [value]="team.id">
+                      {{ team.name }} &bull; {{ team.ageGroup }} (Coach : {{ team.coach }})
+                    </option>
+                  }
+                </select>
+              </div>
+              <button
+                type="button"
+                (click)="assignSelectedLicencieToTeam(selectedTeamForAssignment())"
+                class="w-full rounded-xl bg-[#101d69] hover:bg-[#1a2d8a] text-white px-4 py-2.5 font-black uppercase tracking-wider transition-all shadow-sm text-center"
+              >
+                Valider l'affectation &rarr;
+              </button>
+            </div>
+
+            @if (lic.teamId) {
+              <div class="mt-2 flex items-center gap-2 text-emerald-800 font-bold bg-emerald-50 border border-emerald-200 p-2.5 rounded-lg">
+                <span>✓</span>
+                <span>Actuellement assigné à : <strong>{{ getTeamName(lic.teamId) }}</strong></span>
+              </div>
+            } @else {
+              <div class="mt-2 flex items-center gap-2 text-amber-800 font-bold bg-amber-50 border border-amber-200 p-2.5 rounded-lg">
+                <span>⚠️</span>
+                <span>Ce licencié n'est pour l'instant affecté à aucune équipe.</span>
+              </div>
+            }
+          </div>
+
+          <!-- SECTION GESTION DU NUMÉRO DE LICENCE FFF -->
+          <div class="rounded-2xl border p-4.5 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+               [class.border-emerald-300]="lic.numeroLicence && lic.numeroLicence.trim().length > 0"
+               [class.bg-emerald-50/40]="lic.numeroLicence && lic.numeroLicence.trim().length > 0"
+               [class.border-rose-300]="!lic.numeroLicence || lic.numeroLicence.trim().length === 0"
+               [class.bg-rose-50/40]="!lic.numeroLicence || lic.numeroLicence.trim().length === 0">
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-black uppercase tracking-wider text-[#101d69]">
+                  Numéro de Licence FFF Officiel
+                </span>
+                @if (lic.numeroLicence && lic.numeroLicence.trim().length > 0) {
+                  <span class="inline-flex items-center gap-1 rounded bg-[#21ad1c] text-white px-2 py-0.5 text-[10px] font-black uppercase">
+                    ✓ LICENCE OK
+                  </span>
+                } @else {
+                  <span class="inline-flex items-center gap-1 rounded bg-rose-600 text-white px-2 py-0.5 text-[10px] font-black uppercase">
+                    ⚠️ À COMPLÉTER
+                  </span>
+                }
+              </div>
+              <p class="text-slate-600 text-[11px]">
+                {{ lic.numeroLicence && lic.numeroLicence.trim().length > 0
+                  ? 'Le numéro de licence est bien enregistré et rattaché au joueur sur Footclubs.'
+                  : 'Veuillez saisir le numéro de licence FFF dès réception du bordereau pour valider définitivement le joueur.' }}
+              </p>
+            </div>
+
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+              <input
+                type="text"
+                [value]="lic.numeroLicence || ''"
+                #numInput
+                placeholder="Ex: 2548901234"
+                class="rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-mono font-bold text-[#101d69] focus:outline-none focus:border-[#101d69] w-44"
+              />
+              <button
+                type="button"
+                (click)="updateLicencieNumero(lic.id, numInput.value)"
+                class="rounded-xl bg-[#101d69] hover:bg-[#1a2d8a] text-white px-3.5 py-2 text-xs font-black uppercase tracking-wider transition-colors flex-shrink-0"
+              >
+                Enregistrer
+              </button>
+            </div>
+          </div>
+
+          <!-- INFORMATIONS DE CONTACT & ÉTAT CIVIL -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-2">
+              <span class="text-[10px] font-black uppercase text-slate-400 block tracking-wider">Coordonnées</span>
+              <div class="space-y-1.5">
+                <div>
+                  <span class="text-slate-500 font-medium">Téléphone :</span>
+                  <strong class="text-slate-900 ml-1.5">{{ lic.telephone }}</strong>
+                </div>
+                <div>
+                  <span class="text-slate-500 font-medium">Email :</span>
+                  <strong class="text-slate-900 ml-1.5">{{ lic.email }}</strong>
+                </div>
+                <div>
+                  <span class="text-slate-500 font-medium">Adresse :</span>
+                  <span class="text-slate-800 ml-1.5">{{ lic.adresse }}, {{ lic.commune }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-2">
+              <span class="text-[10px] font-black uppercase text-slate-400 block tracking-wider">Pratique Sportive</span>
+              <div class="space-y-1.5">
+                <div>
+                  <span class="text-slate-500 font-medium">Poste favori :</span>
+                  <strong class="text-[#101d69] ml-1.5">{{ lic.positionPreferee || 'Non renseigné' }}</strong>
+                </div>
+                <div>
+                  <span class="text-slate-500 font-medium">Catégorie FFF :</span>
+                  <strong class="text-slate-900 ml-1.5">{{ lic.categorieAge }}</strong>
+                </div>
+                <div>
+                  <span class="text-slate-500 font-medium">Date inscription :</span>
+                  <span class="text-slate-800 ml-1.5">{{ lic.dateInscription }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- GESTION ADMINISTRATIVE ET MATÉRIEL -->
+          <div class="rounded-xl border border-slate-200 p-4 space-y-3">
+            <span class="text-[10px] font-black uppercase text-slate-400 block tracking-wider">Gestion Administrative & Équipement</span>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <!-- Cotisation -->
+              <div class="p-3 rounded-lg border flex flex-col justify-between"
+                   [class.bg-emerald-50]="lic.cotisationReglee" [class.border-emerald-200]="lic.cotisationReglee"
+                   [class.bg-rose-50]="!lic.cotisationReglee" [class.border-rose-200]="!lic.cotisationReglee">
+                <div>
+                  <span class="text-[10px] font-bold uppercase text-slate-500">Cotisation annuelle</span>
+                  <p class="font-black text-sm mt-0.5" [class.text-emerald-800]="lic.cotisationReglee" [class.text-rose-800]="!lic.cotisationReglee">
+                    {{ lic.cotisationReglee ? 'Réglée' : 'Non Réglée' }}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  (click)="toggleCotisation(lic)"
+                  class="mt-2 text-[11px] font-bold underline"
+                  [class.text-emerald-700]="lic.cotisationReglee"
+                  [class.text-rose-700]="!lic.cotisationReglee"
+                >
+                  Basculer l'état
+                </button>
+              </div>
+
+              <!-- Certificat Médical -->
+              <div class="p-3 rounded-lg border flex flex-col justify-between"
+                   [class.bg-emerald-50]="lic.certificatMedicalValide" [class.border-emerald-200]="lic.certificatMedicalValide"
+                   [class.bg-amber-50]="!lic.certificatMedicalValide" [class.border-amber-200]="!lic.certificatMedicalValide">
+                <div>
+                  <span class="text-[10px] font-bold uppercase text-slate-500">Certificat Médical</span>
+                  <p class="font-black text-sm mt-0.5" [class.text-emerald-800]="lic.certificatMedicalValide" [class.text-amber-800]="!lic.certificatMedicalValide">
+                    {{ lic.certificatMedicalValide ? 'Validé FFF' : 'Manquant / Requis' }}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  (click)="toggleCertificat(lic)"
+                  class="mt-2 text-[11px] font-bold underline"
+                  [class.text-emerald-700]="lic.certificatMedicalValide"
+                  [class.text-amber-700]="!lic.certificatMedicalValide"
+                >
+                  Basculer l'état
+                </button>
+              </div>
+
+              <!-- Pack adidas -->
+              <div class="p-3 rounded-lg border flex flex-col justify-between"
+                   [class.bg-emerald-50]="lic.packAdidasRemis" [class.border-emerald-200]="lic.packAdidasRemis"
+                   [class.bg-slate-50]="!lic.packAdidasRemis" [class.border-slate-200]="!lic.packAdidasRemis">
+                <div>
+                  <span class="text-[10px] font-bold uppercase text-slate-500">Pack adidas Tiro 24</span>
+                  <p class="font-black text-sm mt-0.5" [class.text-emerald-800]="lic.packAdidasRemis" [class.text-slate-700]="!lic.packAdidasRemis">
+                    {{ lic.packAdidasRemis ? 'Remis au joueur' : 'Non distribué' }}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  (click)="togglePackAdidas(lic)"
+                  class="mt-2 text-[11px] font-bold underline text-slate-700"
+                >
+                  Basculer l'état
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Footer Modal -->
+        <div class="bg-slate-50 px-6 py-4 border-t border-slate-200 flex items-center justify-between">
+          <span class="text-xs text-slate-500">Modifications synchronisées en temps réel.</span>
+          <button
+            type="button"
+            (click)="closeLicencieDetails()"
+            class="rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 px-4 py-2 font-bold text-xs uppercase"
+          >
+            Fermer
+          </button>
+        </div>
+
+      </div>
+    </div>
+  }
+
+  <!-- ========================================================= -->
+  <!-- MODAL D'AJOUT D'UN NOUVEAU LICENCIÉ                       -->
+  <!-- ========================================================= -->
+  @if (showAddLicencieModal()) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+      <div class="bg-white w-full max-w-xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[90vh]">
+        <div class="bg-[#101d69] p-5 text-white flex items-center justify-between">
+          <div>
+            <h3 class="font-black text-lg uppercase tracking-tight">Ajouter un Nouveau Licencié</h3>
+            <p class="text-xs text-sky-200">Enregistrement au registre officiel RCBA & affectation d'équipe</p>
+          </div>
+          <button (click)="showAddLicencieModal.set(false)" class="text-white hover:text-rose-300">✕</button>
+        </div>
+
+        <div class="p-6 overflow-y-auto space-y-4 text-xs">
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Nom *</label>
+              <input type="text" [(ngModel)]="newLicencieForm.nom" placeholder="Ex: DUPONT" class="w-full rounded-lg border border-slate-300 p-2 text-xs" />
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Prénom *</label>
+              <input type="text" [(ngModel)]="newLicencieForm.prenom" placeholder="Ex: Loïs" class="w-full rounded-lg border border-slate-300 p-2 text-xs" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Date de naissance</label>
+              <input type="text" [(ngModel)]="newLicencieForm.dateNaissance" placeholder="JJ/MM/AAAA" class="w-full rounded-lg border border-slate-300 p-2 text-xs" />
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Catégorie d'âge</label>
+              <select [(ngModel)]="newLicencieForm.categorieAge" class="w-full rounded-lg border border-slate-300 p-2 text-xs">
+                <option value="U7">U7 & Baby Foot</option>
+                <option value="U9">U8 - U9</option>
+                <option value="U11">U10 - U11</option>
+                <option value="U13">U12 - U13</option>
+                <option value="U15">U14 - U15</option>
+                <option value="U15F">U15F Féminines</option>
+                <option value="Seniors">Seniors D3</option>
+                <option value="Vétérans">Vétérans</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Équipe d'affectation -->
+          <div>
+            <label class="block font-bold text-[#101d69] mb-1">Équipe respective d'affectation</label>
+            <select [(ngModel)]="newLicencieForm.teamId" class="w-full rounded-lg border-2 border-[#101d69] p-2 text-xs font-bold text-[#101d69]">
+              <option value="">Sélectionner plus tard (Mettre en réserve)</option>
+              @for (team of allTeams(); track team.id) {
+                <option [value]="team.id">{{ team.name }} ({{ team.ageGroup }})</option>
+              }
+            </select>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Téléphone</label>
+              <input type="text" [(ngModel)]="newLicencieForm.telephone" placeholder="06 00 00 00 00" class="w-full rounded-lg border border-slate-300 p-2 text-xs" />
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Email</label>
+              <input type="email" [(ngModel)]="newLicencieForm.email" placeholder="email@exemple.fr" class="w-full rounded-lg border border-slate-300 p-2 text-xs" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Commune</label>
+              <select [(ngModel)]="newLicencieForm.commune" class="w-full rounded-lg border border-slate-300 p-2 text-xs">
+                <option value="Bû">Bû</option>
+                <option value="Abondant">Abondant</option>
+                <option value="Autre">Autre commune</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Poste de prédilection</label>
+              <input type="text" [(ngModel)]="newLicencieForm.positionPreferee" placeholder="Ex: Milieu, Attaquant..." class="w-full rounded-lg border border-slate-300 p-2 text-xs" />
+            </div>
+          </div>
+
+          <!-- Statuts checkboxes -->
+          <div class="grid grid-cols-3 gap-2 pt-2">
+            <label class="flex items-center gap-2 font-medium text-slate-700">
+              <input type="checkbox" [(ngModel)]="newLicencieForm.cotisationReglee" />
+              Cotisation payée
+            </label>
+            <label class="flex items-center gap-2 font-medium text-slate-700">
+              <input type="checkbox" [(ngModel)]="newLicencieForm.certificatMedicalValide" />
+              Certificat médical
+            </label>
+            <label class="flex items-center gap-2 font-medium text-slate-700">
+              <input type="checkbox" [(ngModel)]="newLicencieForm.packAdidasRemis" />
+              Pack adidas remis
+            </label>
+          </div>
+        </div>
+
+        <div class="bg-slate-50 p-4 border-t border-slate-200 flex justify-end gap-2">
+          <button type="button" (click)="showAddLicencieModal.set(false)" class="rounded-lg px-4 py-2 text-slate-600 font-bold hover:bg-slate-200">
+            Annuler
+          </button>
+          <button type="button" (click)="saveNewLicencie()" class="rounded-lg bg-[#21ad1c] hover:bg-[#1b8e17] text-white px-5 py-2 font-black uppercase tracking-wider">
+            Enregistrer le licencié
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- ========================================================= -->
+  <!-- CONTENU ONGLET : GESTION DE LA BUVETTE & DES STOCKS       -->
+  <!-- ========================================================= -->
+  @if (activeTab() === 'buvette') {
+    <div class="space-y-6">
+
+      <!-- Stats Caisse & Vue d'ensemble Buvette -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Caisse Buvette -->
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-black uppercase text-slate-400 tracking-wider">Caisse & Recettes</span>
+            <span class="text-xs">💶</span>
+          </div>
+          <div class="text-2xl sm:text-3xl font-black text-[#101d69] mt-1">{{ buvetteCash() }} €</div>
+          <span class="text-[11px] text-emerald-700 font-bold">Fond de caisse & recettes matchs</span>
+        </div>
+
+        <!-- Références en stock -->
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-black uppercase text-slate-400 tracking-wider">Articles Référencés</span>
+            <span class="text-xs">📦</span>
+          </div>
+          <div class="text-2xl sm:text-3xl font-black text-[#21ad1c] mt-1">{{ buvetteStock().length }}</div>
+          <span class="text-[11px] text-slate-500 font-medium">Boissons, Snacking & Confiseries</span>
+        </div>
+
+        <!-- Sites d'exploitation -->
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-black uppercase text-slate-400 tracking-wider">Points de Vente</span>
+            <span class="text-xs">🏟️</span>
+          </div>
+          <div class="text-2xl sm:text-3xl font-black text-slate-900 mt-1">2 Sites</div>
+          <span class="text-[11px] text-slate-500 font-medium">Club-House Bû & Stade Abondant</span>
+        </div>
+
+        <!-- Licence débit de boisson -->
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-black uppercase text-emerald-600 tracking-wider">Réglementation</span>
+            <span class="text-xs">📋</span>
+          </div>
+          <div class="text-lg font-black text-slate-900 mt-1">Licence III Débit</div>
+          <span class="text-[11px] text-emerald-700 font-bold">Arrêtés municipaux Bû / Abondant</span>
+        </div>
+      </div>
+
+      <!-- Planning des Permanences Buvette -->
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-200">
+          <div>
+            <span class="text-[10px] font-black uppercase tracking-widest text-[#21ad1c]">Bénévolat & Accueil</span>
+            <h2 class="text-xl font-black uppercase text-[#101d69] tracking-tight mt-0.5">
+              Planning des Permanences Buvette (Week-ends & Mercredis)
+            </h2>
+            <p class="text-xs text-slate-500 mt-1">
+              Organisation des bénévoles et membres du bureau pour assurer l'accueil des équipes visiteuses et la vente.
+            </p>
+          </div>
+          <span class="text-xs font-bold text-slate-500">Commission Buvette : Vanessa DESSIRIER & Matthieu VITY</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          @for (perm of buvettePlanning(); track perm.id) {
+            <div class="rounded-xl border p-4 flex flex-col justify-between space-y-3 transition-all"
+                 [class.border-slate-200]="perm.status === 'confirme'"
+                 [class.bg-slate-50]="perm.status === 'confirme'"
+                 [class.border-amber-300]="perm.status === 'a_pourvoir'"
+                 [class.bg-amber-50/50]="perm.status === 'a_pourvoir'">
+              <div>
+                <div class="flex items-center justify-between mb-1.5">
+                  <span class="rounded px-2 py-0.5 text-[10px] font-black uppercase tracking-wider"
+                        [class.bg-emerald-100]="perm.status === 'confirme'"
+                        [class.text-emerald-800]="perm.status === 'confirme'"
+                        [class.bg-amber-100]="perm.status === 'a_pourvoir'"
+                        [class.text-amber-800]="perm.status === 'a_pourvoir'">
+                    {{ perm.status === 'confirme' ? '✓ Équipe Confirmée' : '⚠️ Bénévoles requis' }}
+                  </span>
+                  <span class="text-xs font-mono font-bold text-[#101d69]">{{ perm.site }}</span>
+                </div>
+                <h3 class="font-black text-sm uppercase text-slate-900">{{ perm.match }}</h3>
+                <p class="text-xs text-slate-600 mt-0.5 font-medium">📅 {{ perm.date }}</p>
+              </div>
+
+              <div class="pt-3 border-t border-slate-200/60 text-xs">
+                <span class="text-[10px] font-bold text-slate-400 uppercase block">Responsables de service :</span>
+                <div class="flex flex-wrap gap-1.5 mt-1">
+                  @for (resp of perm.responsables; track resp) {
+                    <span class="rounded bg-white border border-slate-200 px-2 py-0.5 font-semibold text-slate-800 text-[11px]">
+                      👤 {{ resp }}
+                    </span>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Registre des Stocks Buvette & Encaissements -->
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+          <div>
+            <span class="text-[10px] font-black uppercase tracking-widest text-[#21ad1c]">Consommables & Logistique</span>
+            <h2 class="text-xl font-black uppercase text-[#101d69] tracking-tight mt-0.5">
+              Gestion de l'Inventaire & Tarifs de Vente
+            </h2>
+            <p class="text-xs text-slate-500 mt-1">
+              Ajustement des stocks en direct et suivi des seuils de réapprovisionnement pour les jours de match.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3">
+            <!-- Bouton Ajouter un Produit Buvette -->
+            <button
+              type="button"
+              (click)="openAddBuvetteProductModal()"
+              class="inline-flex items-center gap-1.5 rounded-xl bg-[#21ad1c] hover:bg-[#1b8e17] text-white px-4 py-2 text-xs font-black uppercase tracking-wider transition-colors shadow-sm"
+            >
+              <span>➕</span> Nouveau Produit
+            </button>
+
+            <!-- Encaissement Rapide -->
+            <div class="flex items-center gap-2 bg-emerald-50 border border-emerald-200 p-1.5 rounded-xl">
+              <span class="text-xs font-bold text-emerald-900 px-1">Caisse :</span>
+              <button
+                type="button"
+                (click)="recordBuvetteSale(5)"
+                class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black"
+              >
+                +5 €
+              </button>
+              <button
+                type="button"
+                (click)="recordBuvetteSale(10)"
+                class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black"
+              >
+                +10 €
+              </button>
+              <button
+                type="button"
+                (click)="recordBuvetteSale(20)"
+                class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black"
+              >
+                +20 €
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Synthèse financière des stocks -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs">
+          <div>
+            <span class="text-slate-400 font-bold uppercase text-[10px] block">Valeur Stock (Coût d'Achat)</span>
+            <strong class="text-base font-mono font-black text-slate-800">{{ buvetteStockTotalValue() | number:'1.2-2' }} €</strong>
+          </div>
+          <div>
+            <span class="text-slate-400 font-bold uppercase text-[10px] block">Chiffre d'Affaires Potentiel</span>
+            <strong class="text-base font-mono font-black text-[#101d69]">{{ buvettePotentialRevenue() | number:'1.2-2' }} €</strong>
+          </div>
+          <div>
+            <span class="text-slate-400 font-bold uppercase text-[10px] block">Bénéfice Net Estimé Club</span>
+            <strong class="text-base font-mono font-black text-[#21ad1c]">+{{ buvettePotentialMargin() | number:'1.2-2' }} €</strong>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border border-slate-200">
+          <table class="w-full text-left text-xs text-slate-700">
+            <thead class="bg-slate-100 uppercase text-[11px] font-black tracking-wider text-slate-700 border-b border-slate-200">
+              <tr>
+                <th class="p-3.5">Produit / Référence</th>
+                <th class="p-3.5">Rayon</th>
+                <th class="p-3.5 text-center">Niveau de Stock</th>
+                <th class="p-3.5 text-center">Seuil d'Alerte</th>
+                <th class="p-3.5 text-right">Prix Achat</th>
+                <th class="p-3.5 text-right">Prix Vente</th>
+                <th class="p-3.5 text-center">Marge Unitaire</th>
+                <th class="p-3.5 text-center">Ajuster Stock</th>
+                <th class="p-3.5 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 bg-white">
+              @for (prod of buvetteStock(); track prod.id) {
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                  <td class="p-3.5 font-bold text-slate-900">{{ prod.name }}</td>
+                  <td class="p-3.5">
+                    <span class="rounded bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-600">
+                      {{ prod.category }}
+                    </span>
+                  </td>
+                  <td class="p-3.5 text-center">
+                    <span class="font-mono font-black text-sm"
+                          [class.text-emerald-700]="prod.stock > prod.minStock"
+                          [class.text-amber-600]="prod.stock <= prod.minStock && prod.stock > 5"
+                          [class.text-rose-600]="prod.stock <= 5">
+                      {{ prod.stock }}
+                    </span>
+                    @if (prod.stock <= prod.minStock) {
+                      <span class="text-[9px] font-bold text-amber-600 block">⚠️ À réapprovisionner</span>
+                    }
+                  </td>
+                  <td class="p-3.5 text-center font-mono text-slate-400">{{ prod.minStock }}</td>
+                  <td class="p-3.5 text-right font-mono text-slate-500">{{ prod.unitPrice | number:'1.2-2' }} €</td>
+                  <td class="p-3.5 text-right font-mono font-bold text-[#101d69]">{{ prod.priceSell | number:'1.2-2' }} €</td>
+                  <td class="p-3.5 text-center">
+                    <span class="rounded bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 text-[10px]">
+                      +{{ (prod.priceSell - prod.unitPrice) | number:'1.2-2' }} €
+                    </span>
+                  </td>
+                  <td class="p-3.5 text-center">
+                    <div class="inline-flex items-center border border-slate-300 rounded-lg overflow-hidden bg-slate-50">
+                      <button
+                        type="button"
+                        (click)="adjustStock(prod.id, -1)"
+                        class="px-2.5 py-1 hover:bg-slate-200 font-black text-slate-700"
+                        title="Vendre / Sortir 1 unité"
+                      >
+                        −
+                      </button>
+                      <button
+                        type="button"
+                        (click)="adjustStock(prod.id, 1)"
+                        class="px-2.5 py-1 hover:bg-slate-200 font-black text-slate-700 border-l border-slate-300"
+                        title="Ajouter 1 unité"
+                      >
+                        +
+                      </button>
+                      <button
+                        type="button"
+                        (click)="adjustStock(prod.id, 10)"
+                        class="px-2.5 py-1 hover:bg-slate-200 font-bold text-[10px] text-[#101d69] border-l border-slate-300"
+                        title="Ajouter 1 carton (+10)"
+                      >
+                        +10
+                      </button>
+                    </div>
+                  </td>
+                  <td class="p-3.5 text-right">
+                    <div class="inline-flex items-center gap-1.5">
+                      <button
+                        type="button"
+                        (click)="openAddBuvetteProductModal(prod)"
+                        class="p-1.5 text-slate-500 hover:text-[#101d69] hover:bg-slate-100 rounded-lg transition-colors"
+                        title="Modifier ce produit"
+                      >
+                        ✏️
+                      </button>
+                      <button
+                        type="button"
+                        (click)="deleteBuvetteProduct(prod.id)"
+                        class="p-1.5 text-rose-400 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition-colors"
+                        title="Supprimer ce produit"
+                      >
+                        🗑️
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MODALE : AJOUT / MODIFICATION D'UN PRODUIT BUVETTE -->
+      @if (showAddBuvetteProductModal()) {
+        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+          <div class="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 space-y-5">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+              <div>
+                <span class="text-[10px] font-black uppercase tracking-wider text-[#21ad1c]">Buvette & Restauration</span>
+                <h3 class="text-lg font-black uppercase text-[#101d69]">
+                  {{ editingBuvetteProductId() ? 'Modifier le Produit' : 'Nouveau Produit Buvette' }}
+                </h3>
+              </div>
+              <button type="button" (click)="showAddBuvetteProductModal.set(false)" class="text-2xl text-slate-400 hover:text-slate-700">&times;</button>
+            </div>
+
+            <div class="space-y-4 text-xs">
+              <div>
+                <label class="font-bold text-slate-700 block mb-1">Nom du produit / Article *</label>
+                <input
+                  type="text"
+                  [(ngModel)]="buvetteProductForm.name"
+                  placeholder="Ex: Coca-Cola 33cl, Hot-Dog, Crêpe au sucre..."
+                  class="w-full rounded-xl border border-slate-300 p-2.5 font-bold text-slate-800"
+                />
+              </div>
+
+              <div>
+                <label class="font-bold text-slate-700 block mb-1">Rayon / Catégorie</label>
+                <select
+                  [(ngModel)]="buvetteProductForm.category"
+                  class="w-full rounded-xl border border-slate-300 p-2.5 font-bold text-slate-800"
+                >
+                  <option value="Boissons fraîches">Boissons fraîches</option>
+                  <option value="Boissons chaudes">Boissons chaudes</option>
+                  <option value="Snacking">Snacking / Chaud</option>
+                  <option value="Confiserie">Confiserie & Gâteaux</option>
+                  <option value="Consommables">Consommables & Gobelets</option>
+                </select>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="font-bold text-slate-700 block mb-1">Quantité en stock</label>
+                  <input
+                    type="number"
+                    min="0"
+                    [(ngModel)]="buvetteProductForm.stock"
+                    class="w-full rounded-xl border border-slate-300 p-2 font-bold text-slate-800"
+                  />
+                </div>
+                <div>
+                  <label class="font-bold text-slate-700 block mb-1">Seuil d'alerte min.</label>
+                  <input
+                    type="number"
+                    min="0"
+                    [(ngModel)]="buvetteProductForm.minStock"
+                    class="w-full rounded-xl border border-slate-300 p-2 font-bold text-slate-800"
+                  />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="font-bold text-slate-700 block mb-1">Prix d'Achat (€) *</label>
+                  <input
+                    type="number"
+                    step="0.05"
+                    min="0"
+                    [(ngModel)]="buvetteProductForm.unitPrice"
+                    placeholder="0.50"
+                    class="w-full rounded-xl border border-slate-300 p-2 font-bold text-slate-800"
+                  />
+                  <span class="text-[10px] text-slate-400">Coût grossiste/fournisseur</span>
+                </div>
+                <div>
+                  <label class="font-bold text-slate-700 block mb-1">Prix de Vente (€) *</label>
+                  <input
+                    type="number"
+                    step="0.10"
+                    min="0"
+                    [(ngModel)]="buvetteProductForm.priceSell"
+                    placeholder="2.00"
+                    class="w-full rounded-xl border border-slate-300 p-2 font-bold text-[#101d69]"
+                  />
+                  <span class="text-[10px] text-emerald-600 font-bold">
+                    Marge : +{{ (buvetteProductForm.priceSell - buvetteProductForm.unitPrice) | number:'1.2-2' }} €
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">
+              <button
+                type="button"
+                (click)="showAddBuvetteProductModal.set(false)"
+                class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100"
+              >
+                Annuler
+              </button>
+              <button
+                type="button"
+                (click)="saveBuvetteProduct()"
+                class="px-5 py-2.5 rounded-xl bg-[#21ad1c] hover:bg-[#1b8e17] text-white text-xs font-black uppercase tracking-wider shadow-sm"
+              >
+                {{ editingBuvetteProductId() ? 'Enregistrer les Modifications' : 'Ajouter à la Buvette' }} &rarr;
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+
+    </div>
+  }
+
+  <!-- ========================================================================= -->
+  <!-- CONTENU ONGLET : MINI-BUS 9 PLACES PARTAGÉ AVEC LE BADMINTON CLUB D'ANET  -->
+  <!-- ========================================================================= -->
+  @if (activeTab() === 'minibus') {
+    <div class="space-y-6">
+
+      <!-- Fiche d'Identité du Véhicule Partagé -->
+      <div class="rounded-3xl bg-gradient-to-r from-[#101d69] via-[#0d1652] to-[#101d69] p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-white/10">
+        <div class="absolute inset-0 opacity-10 pointer-events-none"
+             style="background-image: repeating-linear-gradient(45deg, #21ad1c 0, #21ad1c 1px, transparent 0, transparent 24px);"></div>
+
+        <div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          <div class="space-y-2">
+            <div class="flex items-center gap-2">
+              <span class="inline-flex items-center gap-1 rounded-full bg-[#21ad1c] px-3 py-1 text-xs font-black uppercase tracking-wider text-white">
+                🚐 Véhicule Club Partagé
+              </span>
+              <span class="text-xs text-sky-200 font-bold uppercase tracking-wider">
+                RCBA Football &bull; Badminton Club d'Anet
+              </span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
+              Mini-Bus 9 Places &bull; Convention Inter-Clubs
+            </h2>
+            <p class="text-xs sm:text-sm text-sky-100 max-w-2xl leading-relaxed">
+              Véhicule acquis en co-propriété (50% RCBA / 50% Badminton d'Anet) pour assurer le transport sécurisé des jeunes et des équipes en déplacement le mercredi et les week-ends de compétition.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3 shrink-0">
+            <button
+              type="button"
+              (click)="showMinibusModal.set(true)"
+              class="inline-flex items-center gap-2 rounded-xl bg-[#21ad1c] hover:bg-[#1b8e17] px-4 py-2.5 text-xs font-black uppercase tracking-wider text-white transition-all shadow-md"
+            >
+              <span>📅 Réserver un Déplacement</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Détails Véhicule -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6 pt-6 border-t border-white/15 text-xs">
+          <div>
+            <span class="text-[10px] font-bold text-sky-200 uppercase">Véhicule</span>
+            <p class="font-bold text-white mt-0.5">{{ minibusInfo.immatriculation }}</p>
+          </div>
+          <div>
+            <span class="text-[10px] font-bold text-sky-200 uppercase">Compteur Actuel</span>
+            <p class="font-bold text-white mt-0.5">{{ minibusInfo.kilometrage }}</p>
+          </div>
+          <div>
+            <span class="text-[10px] font-bold text-sky-200 uppercase">Prochaine Révision</span>
+            <p class="font-bold text-[#25cf1f] mt-0.5">{{ minibusInfo.prochaineRevision }}</p>
+          </div>
+          <div>
+            <span class="text-[10px] font-bold text-sky-200 uppercase">Contact Partenaire Anet</span>
+            <p class="font-bold text-white mt-0.5">{{ minibusInfo.contactBadminton }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Règles de Partage et Convention Anet -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-2">
+          <div class="text-xl">🤝</div>
+          <h3 class="font-black text-sm uppercase text-[#101d69]">Priorité d'Usage Alternée</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Les samedis et dimanches sont répartis équitablement selon les calendriers de compétitions officielles du District 28 (Football) et de la Ligue (Badminton).
+          </p>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-2">
+          <div class="text-xl">⛽</div>
+          <h3 class="font-black text-sm uppercase text-[#101d69]">Carburant & Entretien</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Le véhicule doit impérativement être restitué avec le plein de carburant fait. Les frais d'entretien et d'assurance sont partagés à parts égales à la fin de chaque trimestre.
+          </p>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-2">
+          <div class="text-xl">🪪</div>
+          <h3 class="font-black text-sm uppercase text-[#101d69]">Chauffeurs Agréés</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Seuls les éducateurs et dirigeants titulaires du permis B depuis plus de 3 ans et inscrits au registre de l'assurance sont habilités à conduire le minibus.
+          </p>
+        </div>
+      </div>
+
+      <!-- Calendrier des Réservations et Trajets du Mini-bus -->
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+          <div>
+            <span class="text-[10px] font-black uppercase tracking-widest text-[#21ad1c]">Planning Partagé</span>
+            <h2 class="text-xl font-black uppercase text-[#101d69] tracking-tight mt-0.5">
+              Réservations & Déplacements Confirmés
+            </h2>
+            <p class="text-xs text-slate-500 mt-1">
+              Vue commune des créneaux réservés par le <strong>RCBA (Football)</strong> et le <strong>Club de Badminton d'Anet</strong>.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            (click)="showMinibusModal.set(true)"
+            class="rounded-xl bg-[#101d69] hover:bg-[#1a2d8a] text-white px-4 py-2 text-xs font-black uppercase tracking-wider transition-all shadow-sm"
+          >
+            ➕ Ajouter un créneau
+          </button>
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border border-slate-200">
+          <table class="w-full text-left text-xs text-slate-700">
+            <thead class="bg-slate-100 uppercase text-[11px] font-black tracking-wider text-slate-700 border-b border-slate-200">
+              <tr>
+                <th class="p-3.5">Club Bénéficiaire</th>
+                <th class="p-3.5">Date & Horaires</th>
+                <th class="p-3.5">Destination</th>
+                <th class="p-3.5">Motif du Déplacement</th>
+                <th class="p-3.5">Chauffeur Désigné</th>
+                <th class="p-3.5 text-center">Distance estimée</th>
+                <th class="p-3.5 text-center">Statut</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 bg-white">
+              @for (res of minibusReservations(); track res.id) {
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                  <!-- Club -->
+                  <td class="p-3.5">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wide"
+                          [class.bg-[#101d69]]="res.club === 'RCBA'"
+                          [class.text-white]="res.club === 'RCBA'"
+                          [class.bg-sky-100]="res.club === 'Badminton Anet'"
+                          [class.text-sky-900]="res.club === 'Badminton Anet'">
+                      {{ res.club === 'RCBA' ? '⚽ RCBA Football' : '🏸 Badminton Anet' }}
+                    </span>
+                  </td>
+
+                  <!-- Date -->
+                  <td class="p-3.5 font-bold text-slate-900">{{ res.dateDebut }}</td>
+
+                  <!-- Destination -->
+                  <td class="p-3.5 font-bold text-[#101d69]">{{ res.destination }}</td>
+
+                  <!-- Motif -->
+                  <td class="p-3.5 text-slate-600">{{ res.motif }}</td>
+
+                  <!-- Chauffeur -->
+                  <td class="p-3.5">
+                    <span class="font-medium text-slate-800">👤 {{ res.chauffeur }}</span>
+                  </td>
+
+                  <!-- Km -->
+                  <td class="p-3.5 text-center font-mono font-bold text-slate-700">{{ res.kilometresPrevu }} km</td>
+
+                  <!-- Statut -->
+                  <td class="p-3.5 text-center">
+                    <span class="rounded-full bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 text-[10px]">
+                      ✓ Confirmé
+                    </span>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  }
+
+  <!-- MODAL DE RÉSERVATION DU MINI-BUS -->
+  @if (showMinibusModal()) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+      <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col">
+        <div class="bg-[#101d69] p-5 text-white flex items-center justify-between">
+          <div>
+            <h3 class="font-black text-lg uppercase tracking-tight">Réserver le Mini-Bus 9 Places</h3>
+            <p class="text-xs text-sky-200">Planning partagé RCBA Football & Badminton Club d'Anet</p>
+          </div>
+          <button (click)="showMinibusModal.set(false)" class="text-white hover:text-rose-300 font-bold">✕</button>
+        </div>
+
+        <div class="p-6 space-y-4 text-xs">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Club demandeur *</label>
+            <select [(ngModel)]="newMinibusForm.club" class="w-full rounded-lg border border-slate-300 p-2.5 text-xs font-bold text-[#101d69]">
+              <option value="RCBA">⚽ Racing Club Bû Abondant (Football)</option>
+              <option value="Badminton Anet">🏸 Club de Badminton d'Anet</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Date & Heure de départ *</label>
+              <input type="text" [(ngModel)]="newMinibusForm.dateDebut" placeholder="Ex: Samedi 03 Oct. (13h30)" class="w-full rounded-lg border border-slate-300 p-2 text-xs" />
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Date & Heure de retour</label>
+              <input type="text" [(ngModel)]="newMinibusForm.dateFin" placeholder="Ex: Samedi 03 Oct. (18h30)" class="w-full rounded-lg border border-slate-300 p-2 text-xs" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Destination *</label>
+            <input type="text" [(ngModel)]="newMinibusForm.destination" placeholder="Ex: Stade de Maintenon / Dreux / Chartres" class="w-full rounded-lg border border-slate-300 p-2 text-xs" />
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Motif du déplacement</label>
+            <input type="text" [(ngModel)]="newMinibusForm.motif" placeholder="Ex: Match Championnat U13 / Tournoi Régional" class="w-full rounded-lg border border-slate-300 p-2 text-xs" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Chauffeur responsable (Permis B) *</label>
+              <input type="text" [(ngModel)]="newMinibusForm.chauffeur" placeholder="Nom & Prénom de l'éducateur" class="w-full rounded-lg border border-slate-300 p-2 text-xs" />
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Kilométrage estimé</label>
+              <input type="number" [(ngModel)]="newMinibusForm.kilometresPrevu" placeholder="50" class="w-full rounded-lg border border-slate-300 p-2 text-xs" />
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-slate-50 p-4 border-t border-slate-200 flex justify-end gap-2">
+          <button type="button" (click)="showMinibusModal.set(false)" class="rounded-lg px-4 py-2 text-slate-600 font-bold hover:bg-slate-200">
+            Annuler
+          </button>
+          <button type="button" (click)="saveMinibusReservation()" class="rounded-lg bg-[#21ad1c] hover:bg-[#1b8e17] text-white px-5 py-2 font-black uppercase tracking-wider">
+            Enregistrer la réservation
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- ========================================================= -->
+  <!-- CONTENU ONGLET 4: FINANCES & PARTENARIATS                 -->
+  <!-- ========================================================= -->
+  @if (activeTab() === 'finances') {
+    <div class="space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Pôle Partenaires Officiels -->
+        <div class="lg:col-span-2 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div class="flex items-center justify-between pb-4 border-b border-slate-200 mb-4">
+            <div>
+              <span class="text-[10px] font-black uppercase tracking-widest text-[#21ad1c]">Sponsors & Soutiens</span>
+              <h2 class="text-base font-black uppercase text-[#101d69] tracking-tight mt-0.5">
+                Entreprises Partenaires ({{ partners().length }})
+              </h2>
+            </div>
+            <span class="text-xs text-slate-500 font-medium">Pôle Sponsoring : Vanessa DESSIRIER</span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            @for (partner of partners(); track partner.name) {
+              <div class="p-3 rounded-xl border border-slate-200 bg-slate-50 text-center hover:bg-white hover:shadow-xs transition-all">
+                <p class="font-bold text-xs text-[#101d69]">{{ partner.name }}</p>
+                <span class="text-[10px] text-slate-500 uppercase tracking-wide block mt-1">{{ partner.category }}</span>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Modalités de Paiement & Subventions -->
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-4">
+          <h2 class="text-base font-black uppercase text-[#101d69] tracking-tight flex items-center gap-2">
+            <span>💳</span> Dispositifs & Aides Acceptées
+          </h2>
+          <div class="space-y-2.5 text-xs">
+            <div class="p-3 rounded-lg border border-slate-200 bg-slate-50">
+              <strong class="text-slate-900 block font-bold">Pass'Sport Ministère des Sports</strong>
+              <span class="text-slate-500">Déduction immédiate de 50 € par enfant éligible</span>
+            </div>
+            <div class="p-3 rounded-lg border border-slate-200 bg-slate-50">
+              <strong class="text-slate-900 block font-bold">Chèques Vacances & Coupons ANCV</strong>
+              <span class="text-slate-500">Pris en charge au secrétariat du club</span>
+            </div>
+            <div class="p-3 rounded-lg border border-slate-200 bg-slate-50">
+              <strong class="text-slate-900 block font-bold">Paiement CB en 3 fois sans frais</strong>
+              <span class="text-slate-500">Disponible via le portail en ligne HelloAsso</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  }
+
+  <!-- ========================================================= -->
+  <!-- CONTENU ONGLET 5: TÂCHES & PROJETS DU CA                   -->
+  <!-- ========================================================= -->
+  @if (activeTab() === 'taches') {
+    <div class="space-y-6">
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200 mb-6">
+          <div>
+            <span class="text-[10px] font-black uppercase tracking-widest text-[#21ad1c]">Plan d'action associatif</span>
+            <h2 class="text-xl font-black uppercase text-[#101d69] tracking-tight mt-0.5">
+              Feuille de Route du Conseil d'Administration
+            </h2>
+            <p class="text-xs text-slate-500 mt-1">Suivi opérationnel des missions réparties entre les membres bénévoles du CA.</p>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          @for (task of tasks(); track task.id) {
+            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-white hover:shadow-xs transition-all">
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase border" [class]="getPriorityClass(task.priority)">
+                    Priorité {{ task.priority }}
+                  </span>
+                  <span class="text-xs text-slate-400 font-mono">Échéance : {{ task.deadline }}</span>
+                </div>
+                <h3 class="font-bold text-sm text-slate-900">{{ task.title }}</h3>
+                <p class="text-xs text-slate-500">Responsable(s) : <strong class="text-slate-700">{{ task.assignedTo }}</strong></p>
+              </div>
+
+              <div class="shrink-0 flex items-center gap-2">
+                <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider" [class]="getStatusClass(task.status)">
+                  {{ getStatusLabel(task.status) }}
+                </span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- ========================================================= -->
+  <!-- CONTENU ONGLET 6: DOCUMENTS OFFICIELS & STATUTS JURIDIQUES -->
+  <!-- ========================================================= -->
+  @if (activeTab() === 'documents') {
+    <div class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm space-y-6">
+      <div>
+        <span class="text-[10px] font-black uppercase tracking-widest text-[#21ad1c]">Conformité & Juridique</span>
+        <h2 class="text-xl font-black uppercase text-[#101d69] tracking-tight mt-0.5">
+          Documents Fédéraux & Textes Fondateurs
+        </h2>
+        <p class="text-xs text-slate-500 mt-1">Tous les fichiers officiels déposés auprès de la préfecture, de la FFF et des mairies.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 space-y-3">
+          <span class="text-3xl">⚖️</span>
+          <h3 class="font-black text-sm uppercase text-[#101d69]">Statuts du RCBA (Loi 1901)</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Statuts associatifs officiels régissant le fonctionnement, les assemblées générales et les prérogatives du bureau.
+          </p>
+          <a
+            href="https://s2.static-footeo.com/uploads/rcba/Medias/Statuts%20RCBA__qg1bkg.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 text-xs font-bold text-[#1f39cf] hover:underline"
+          >
+            Télécharger les statuts (PDF) ↗
+          </a>
+        </div>
+
+        <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 space-y-3">
+          <span class="text-3xl">📄</span>
+          <h3 class="font-black text-sm uppercase text-[#101d69]">Organigramme Général FFF</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Synthèse de la gouvernance 2025-2026 en 3 volets transmise aux instances départementales du District 28.
+          </p>
+          <a
+            href="https://s2.static-footeo.com/uploads/rcba/Medias/RCBA_Organigramme_g%C3%A9n%C3%A9ral_2025_2026_court__t6yqb4.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 text-xs font-bold text-[#1f39cf] hover:underline"
+          >
+            Télécharger l'organigramme (PDF) ↗
+          </a>
+        </div>
+
+        <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 space-y-3">
+          <span class="text-3xl">📋</span>
+          <h3 class="font-black text-sm uppercase text-[#101d69]">Règlement Intérieur du Club</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Règles d'assiduité, de fair-play, de tenue sportive et d'usage des vestiaires à Bû et Abondant.
+          </p>
+          <a
+            routerLink="/club"
+            class="inline-flex items-center gap-1.5 text-xs font-bold text-[#1f39cf] hover:underline"
+          >
+            Consulter le règlement complet &rarr;
+          </a>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>

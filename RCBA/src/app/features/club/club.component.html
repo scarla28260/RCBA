@@ -1,0 +1,190 @@
+<div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-12">
+  
+  <!-- Header / Présentation institutionnelle -->
+  <section class="bg-white rounded-2xl border-t-4 border-[#101d69] p-8 sm:p-10 shadow-sm">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="space-y-3 max-w-3xl">
+        <div class="inline-flex items-center gap-2">
+          <app-badge label="Affiliation FFF n° 528340" variant="primary" />
+          <app-badge label="Couleurs : Bleu Roi & Vert" variant="success" />
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-black uppercase text-[#101d69] tracking-tight">
+          L'Organigramme & La Vie du Club
+        </h1>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Retrouvez ici l'ensemble des responsables, éducateurs et bénévoles qui font vivre le <strong>Racing Club Bû Abondant</strong> sur les 2 communes de <strong>Bû</strong> et <strong>Abondant</strong>.
+        </p>
+      </div>
+
+      <div class="flex flex-col items-center p-4 rounded-xl bg-slate-50 border border-slate-200 text-center">
+        <img src="logo.png" alt="Logo RCBA" class="h-16 w-16 object-contain mb-2" onerror="this.style.display='none'" />
+        <span class="text-xs font-black uppercase text-[#101d69]">RCBA 2020</span>
+        <span class="text-[10px] text-slate-500 font-semibold">District Eure-et-Loir</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section Organigramme Officiel (Source Footeo RCBA) -->
+  <section class="bg-white rounded-2xl border-t-4 border-[#21ad1c] p-8 shadow-sm space-y-8">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200">
+      <div>
+        <span class="text-xs font-black uppercase tracking-wider text-[#21ad1c]">Document de Référence 2025 - 2026</span>
+        <h2 class="text-2xl font-black uppercase text-[#101d69] mt-0.5">
+          L'Organigramme Général & Technique
+        </h2>
+        <p class="text-xs text-slate-500 mt-1">
+          Affichez les 3 volets officiels de la gouvernance et de l'encadrement sportif du club.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap gap-2">
+        <button
+          type="button"
+          (click)="activeOrga.set('all')"
+          [class.bg-[#101d69]]="activeOrga() === 'all'"
+          [class.text-white]="activeOrga() === 'all'"
+          [class.bg-slate-100]="activeOrga() !== 'all'"
+          [class.text-slate-700]="activeOrga() !== 'all'"
+          class="rounded-md px-3 py-1.5 text-xs font-bold uppercase transition-colors"
+        >
+          Tous les volets
+        </button>
+        <button
+          type="button"
+          (click)="activeOrga.set('orga1')"
+          [class.bg-[#101d69]]="activeOrga() === 'orga1'"
+          [class.text-white]="activeOrga() === 'orga1'"
+          [class.bg-slate-100]="activeOrga() !== 'orga1'"
+          [class.text-slate-700]="activeOrga() !== 'orga1'"
+          class="rounded-md px-3 py-1.5 text-xs font-bold uppercase transition-colors"
+        >
+          1. Direction & Bureau
+        </button>
+        <button
+          type="button"
+          (click)="activeOrga.set('orga2')"
+          [class.bg-[#101d69]]="activeOrga() === 'orga2'"
+          [class.text-white]="activeOrga() === 'orga2'"
+          [class.bg-slate-100]="activeOrga() !== 'orga2'"
+          [class.text-slate-700]="activeOrga() !== 'orga2'"
+          class="rounded-md px-3 py-1.5 text-xs font-bold uppercase transition-colors"
+        >
+          2. Sportif & Éducateurs
+        </button>
+        <button
+          type="button"
+          (click)="activeOrga.set('orga3')"
+          [class.bg-[#101d69]]="activeOrga() === 'orga3'"
+          [class.text-white]="activeOrga() === 'orga3'"
+          [class.bg-slate-100]="activeOrga() !== 'orga3'"
+          [class.text-slate-700]="activeOrga() !== 'orga3'"
+          class="rounded-md px-3 py-1.5 text-xs font-bold uppercase transition-colors"
+        >
+          3. Animation & Bénévolat
+        </button>
+      </div>
+    </div>
+
+    <!-- Organigramme Images Gallery -->
+    <div class="space-y-10">
+      @for (orga of organigrammes; track orga.id) {
+        @if (activeOrga() === 'all' || activeOrga() === orga.id) {
+          <div class="rounded-xl border border-slate-200 bg-slate-50 p-6 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <h3 class="text-lg font-black uppercase text-[#101d69]">{{ orga.title }}</h3>
+                <p class="text-xs text-slate-500 font-medium">{{ orga.subtitle }}</p>
+              </div>
+              <a
+                [href]="orga.image"
+                target="_blank"
+                class="inline-flex items-center gap-1.5 text-xs font-bold text-[#1f39cf] hover:underline"
+              >
+                <span>🔍 Agrandir en haute résolution</span>
+              </a>
+            </div>
+
+            <!-- Image preview -->
+            <div class="overflow-hidden rounded-lg border border-slate-300 bg-white shadow-xs">
+              <img
+                [src]="orga.image"
+                [alt]="orga.title"
+                class="w-full h-auto object-contain transition-transform duration-200 hover:scale-[1.01]"
+              />
+            </div>
+          </div>
+        }
+      }
+    </div>
+
+    <!-- Direct PDF download -->
+    <div class="pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <span class="text-xs text-slate-600">
+        Vous pouvez également télécharger le document synthétique officiel en format PDF :
+      </span>
+      <a
+        href="https://s2.static-footeo.com/uploads/rcba/Medias/RCBA_Organigramme_g%C3%A9n%C3%A9ral_2025_2026_court__t6yqb4.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 rounded-md bg-[#101d69] px-4 py-2 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#0c1650] transition-colors shadow-sm"
+      >
+        📄 Télécharger l'Organigramme Général (PDF) ↗
+      </a>
+    </div>
+  </section>
+
+  <!-- Labels & Projets FFF Section -->
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="bg-white rounded-2xl border-t-4 border-[#101d69] p-6 shadow-sm space-y-3">
+      <div class="flex items-center gap-3">
+        <span class="text-3xl">⭐</span>
+        <div>
+          <h3 class="text-lg font-black uppercase text-[#101d69]">Label Jeunes FFF — Espoir</h3>
+          <span class="text-xs text-slate-500 font-bold">Encadrement certifié & École de foot</span>
+        </div>
+      </div>
+      <p class="text-xs text-slate-600 leading-relaxed">
+        Ce label fédéral décerné par la FFF et la Ligue Centre-Val de Loire valide la démarche éducative, citoyenne et sportive du RCBA envers tous les jeunes joueurs de U6 à U18.
+      </p>
+    </div>
+
+    <div class="bg-white rounded-2xl border-t-4 border-[#101d69] p-6 shadow-sm space-y-3">
+      <div class="flex items-center gap-3">
+        <span class="text-3xl">🌸</span>
+        <div>
+          <h3 class="text-lg font-black uppercase text-[#101d69]">Label École Féminine de Football</h3>
+          <span class="text-xs text-slate-500 font-bold">Développement du football féminin</span>
+        </div>
+      </div>
+      <p class="text-xs text-slate-600 leading-relaxed">
+        Le club s'engage activement dans la féminisation de la pratique avec une section U15F dynamique et des créneaux dédiés pour accueillir toutes les passionnées de ballon rond.
+      </p>
+    </div>
+  </section>
+
+  <!-- Statuts et Règlement Intérieur -->
+  <section class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6">
+    <div>
+      <h3 class="text-base font-bold text-slate-900 uppercase">Documents Juridiques du Club</h3>
+      <p class="text-xs text-slate-500 mt-0.5">Statuts associatifs (loi 1901) et règlement intérieur applicables à chaque licencié.</p>
+    </div>
+    <div class="flex flex-wrap gap-3">
+      <a
+        href="https://s2.static-footeo.com/uploads/rcba/Medias/Statuts%20RCBA__qg1bkg.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="rounded-md border border-slate-300 bg-slate-50 px-4 py-2 text-xs font-bold text-slate-700 hover:border-[#101d69] hover:text-[#101d69]"
+      >
+        📄 Statuts du RCBA ↗
+      </a>
+      <a
+        href="https://s1.static-footeo.com/uploads/rcba/Medias/R%C3%A8glement%20int%C3%A9rieur%20RCBA__qg1ap8.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="rounded-md border border-slate-300 bg-slate-50 px-4 py-2 text-xs font-bold text-slate-700 hover:border-[#101d69] hover:text-[#101d69]"
+      >
+        📄 Règlement Intérieur ↗
+      </a>
+    </div>
+  </section>
+</div>
