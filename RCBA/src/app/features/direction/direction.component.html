@@ -172,6 +172,18 @@
     >
       <span>🎨</span> Studio Visuel & Réseaux
     </button>
+    <button
+      type="button"
+      (click)="activeTab.set('acces')"
+      [class]="activeTab() === 'acces'
+        ? 'inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-wider bg-[#21ad1c] text-white shadow-md'
+        : 'inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'"
+    >
+      <span>🔐</span> Attributions & Accès
+      <span class="rounded-full bg-[#101d69] text-white px-2 py-0.5 text-[10px] font-mono font-black">
+        {{ authService.accountsList().length }}
+      </span>
+    </button>
   </div>
 
   <!-- ========================================================= -->
@@ -823,9 +835,47 @@
         <!-- En-tête Fiche Licencié -->
         <div class="bg-gradient-to-r from-[#101d69] to-[#1f39cf] p-6 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div class="flex items-center gap-4">
-            <div class="w-16 h-16 rounded-2xl bg-white text-[#101d69] flex items-center justify-center font-black text-2xl shadow-md flex-shrink-0">
-              {{ lic.prenom[0] }}{{ lic.nom[0] }}
+            <!-- Avatar photo du joueur avec bouton d'upload / modification -->
+            <div class="relative group/photo flex-shrink-0">
+              @if (lic.photo) {
+                <img
+                  [src]="lic.photo"
+                  [alt]="lic.prenom + ' ' + lic.nom"
+                  class="w-16 h-16 rounded-2xl object-cover border-2 border-white shadow-md"
+                />
+              } @else {
+                <div class="w-16 h-16 rounded-2xl bg-white text-[#101d69] flex items-center justify-center font-black text-2xl shadow-md">
+                  {{ lic.prenom[0] }}{{ lic.nom[0] }}
+                </div>
+              }
+
+              <!-- Bouton d'upload / changement photo en survol ou clic -->
+              <label
+                class="absolute inset-0 rounded-2xl bg-black/60 opacity-0 group-hover/photo:opacity-100 flex flex-col items-center justify-center cursor-pointer transition-opacity text-white text-[9px] font-black uppercase text-center p-1"
+                title="Changer la photo"
+              >
+                <span>📷</span>
+                <span>Photo</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  (change)="onPlayerPhotoSelected($event, lic.id)"
+                  class="hidden"
+                />
+              </label>
+
+              @if (lic.photo) {
+                <button
+                  type="button"
+                  (click)="removePlayerPhoto(lic.id); $event.stopPropagation()"
+                  class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-rose-600 text-white text-[10px] font-black flex items-center justify-center shadow hover:bg-rose-700"
+                  title="Supprimer la photo"
+                >
+                  ✕
+                </button>
+              }
             </div>
+
             <div>
               <div class="flex flex-wrap items-center gap-2">
                 @if (lic.numeroLicence && lic.numeroLicence.trim().length > 0) {
@@ -2161,6 +2211,282 @@
           </div>
         </div>
       </div>
+    </div>
+  }
+
+  <!-- ========================================================= -->
+  <!-- CONTENU ONGLET 10: GESTION DES ATTRIBUTIONS & ACCÈS        -->
+  <!-- ========================================================= -->
+  @if (activeTab() === 'acces') {
+    <div class="space-y-8">
+
+      <!-- Message de confirmation / feedback -->
+      @if (accountActionFeedback()) {
+        <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center gap-2 shadow-sm animate-fade-in">
+          <span class="text-base">✅</span>
+          <span>{{ accountActionFeedback() }}</span>
+        </div>
+      }
+
+      <!-- En-tête de section -->
+      <div class="bg-gradient-to-r from-[#101d69] to-[#1e329c] rounded-2xl p-6 text-white shadow-md">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="inline-flex items-center gap-1.5 rounded-full bg-[#21ad1c] px-3 py-1 text-xs font-black uppercase text-white shadow-sm mb-2">
+              <span>🔐</span> Sécurité & Gouvernance
+            </div>
+            <h2 class="text-xl font-black uppercase tracking-tight text-white">
+              Gestion des Comptes & Attributions Nominatives
+            </h2>
+            <p class="text-xs text-sky-200 mt-1 max-w-2xl">
+              Conformément à la politique du Club, chaque éducateur et membre du bureau dispose d'un accès nominatif dédié. La Direction peut créer de nouveaux comptes, attribuer des équipes et suspendre ou réactiver un accès en 1 clic.
+            </p>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="bg-white/10 px-4 py-2 rounded-xl text-center backdrop-blur-sm border border-white/15">
+              <span class="block text-2xl font-black text-[#25cf1f]">{{ authService.accountsList().length }}</span>
+              <span class="text-[10px] uppercase font-bold text-sky-200">Comptes Référencés</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulaire d'Attribution d'un Nouvel Accès -->
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
+          <div>
+            <h3 class="text-sm font-black uppercase text-[#101d69] tracking-wider flex items-center gap-2">
+              <span>➕</span> Attribuer un Nouvel Accès Nominatif
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Création immédiate d'un compte avec identifiant, mot de passe et affectation d'équipe ou de fonction.
+            </p>
+          </div>
+        </div>
+
+        <form (ngSubmit)="createAccount()" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-slate-700 mb-1">
+                Identifiant de Connexion *
+              </label>
+              <input
+                type="text"
+                [(ngModel)]="newAccountForm.identifier"
+                name="acc_identifier"
+                placeholder="Ex: alexandre"
+                class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-xs text-slate-900 focus:border-[#101d69] focus:outline-none"
+                required
+              />
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-slate-700 mb-1">
+                Mot de Passe Provisoire *
+              </label>
+              <input
+                type="text"
+                [(ngModel)]="newAccountForm.password"
+                name="acc_password"
+                placeholder="Ex: coach2026"
+                class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-xs text-slate-900 focus:border-[#101d69] focus:outline-none"
+                required
+              />
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-slate-700 mb-1">
+                Nom & Prénom *
+              </label>
+              <input
+                type="text"
+                [(ngModel)]="newAccountForm.name"
+                name="acc_name"
+                placeholder="Ex: Alexandre DUPONT"
+                class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-xs text-slate-900 focus:border-[#101d69] focus:outline-none"
+                required
+              />
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-slate-700 mb-1">
+                Rôle & Portail Attribué *
+              </label>
+              <select
+                [(ngModel)]="newAccountForm.role"
+                name="acc_role"
+                class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-xs text-slate-900 focus:border-[#101d69] focus:outline-none bg-white"
+              >
+                <option value="coach">⚽ Coach / Éducateur (Portail Coach)</option>
+                <option value="direction">🏛️ Direction / Bureau (Portail Direction)</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-slate-700 mb-1">
+                Équipe ou Fonction Assignée
+              </label>
+              <input
+                type="text"
+                [(ngModel)]="newAccountForm.assignedTeamName"
+                name="acc_team"
+                placeholder="Ex: U11 Reprise / Trésorier Adjoint..."
+                class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-xs text-slate-900 focus:border-[#101d69] focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-slate-700 mb-1">
+                Email Professionnel / Personnel
+              </label>
+              <input
+                type="email"
+                [(ngModel)]="newAccountForm.email"
+                name="acc_email"
+                placeholder="Ex: alexandre@rcba.fr"
+                class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-xs text-slate-900 focus:border-[#101d69] focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-slate-700 mb-1">
+                Téléphone portable
+              </label>
+              <input
+                type="tel"
+                [(ngModel)]="newAccountForm.phone"
+                name="acc_phone"
+                placeholder="Ex: 06 12 34 56 78"
+                class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-xs text-slate-900 focus:border-[#101d69] focus:outline-none"
+              />
+            </div>
+
+          </div>
+
+          <div class="flex justify-end pt-2">
+            <button
+              type="submit"
+              class="inline-flex items-center gap-2 rounded-xl bg-[#21ad1c] hover:bg-[#1b8e17] px-6 py-2.5 text-xs font-black uppercase tracking-wider text-white shadow-md transition-all"
+            >
+              <span>💾</span> Valider et Activer l'Accès
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Tableau Récapitulatif des Comptes Attribués -->
+      <div class="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm">
+        <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h3 class="text-sm font-black uppercase text-[#101d69] tracking-wider">
+              Répertoire Officiel des Comptes Attribués (2026–2027)
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Attributions certifiées par le Bureau Directeur du RCBA.
+            </p>
+          </div>
+          <span class="text-xs font-bold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-lg">
+            Total : {{ authService.accountsList().length }} personnes autorisées
+          </span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-200 text-left text-xs">
+            <thead class="bg-slate-50 text-slate-600 font-bold uppercase text-[10px] tracking-wider">
+              <tr>
+                <th class="px-5 py-3">Bénéficiaire / Nom</th>
+                <th class="px-4 py-3">Identifiant & Mot de passe</th>
+                <th class="px-4 py-3">Portail & Rôle</th>
+                <th class="px-4 py-3">Attribution d'Équipe</th>
+                <th class="px-4 py-3">Contact</th>
+                <th class="px-4 py-3 text-center">Statut d'Accès</th>
+                <th class="px-4 py-3 text-right">Action Direction</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 bg-white">
+              @for (acc of authService.accountsList(); track acc.identifier) {
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                  
+                  <td class="px-5 py-3.5">
+                    <div class="font-bold text-slate-900 text-xs flex items-center gap-2">
+                      <span class="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-black"
+                            [class]="acc.user.role === 'direction' ? 'bg-[#101d69] text-white' : 'bg-[#21ad1c] text-white'">
+                        {{ acc.user.role === 'direction' ? 'DIR' : 'COA' }}
+                      </span>
+                      <div>
+                        <div>{{ acc.user.name }}</div>
+                        <div class="text-[10px] text-slate-400 font-normal">Accordé par : {{ acc.user.accessGrantedBy || 'Direction' }}</div>
+                      </div>
+                    </div>
+                  </td>
+
+                  <td class="px-4 py-3.5 font-mono text-[11px]">
+                    <div class="font-bold text-[#101d69]">{{ acc.identifier }}</div>
+                    <div class="text-slate-400 text-[10px]">pass: {{ acc.password }}</div>
+                  </td>
+
+                  <td class="px-4 py-3.5">
+                    @if (acc.user.role === 'direction') {
+                      <span class="inline-flex items-center gap-1 rounded-md bg-blue-50 border border-blue-200 px-2 py-1 text-[10px] font-black uppercase text-[#101d69]">
+                        🏛️ Direction
+                      </span>
+                    } @else {
+                      <span class="inline-flex items-center gap-1 rounded-md bg-emerald-50 border border-emerald-200 px-2 py-1 text-[10px] font-black uppercase text-emerald-700">
+                        ⚽ Coach
+                      </span>
+                    }
+                  </td>
+
+                  <td class="px-4 py-3.5">
+                    <span class="font-bold text-slate-800 text-[11px] block">
+                      {{ acc.user.assignedTeamName || 'Gouvernance globale' }}
+                    </span>
+                  </td>
+
+                  <td class="px-4 py-3.5 text-slate-600">
+                    <div class="text-[11px]">{{ acc.user.email }}</div>
+                    @if (acc.user.phone) {
+                      <div class="text-[10px] text-slate-400 font-mono">{{ acc.user.phone }}</div>
+                    }
+                  </td>
+
+                  <td class="px-4 py-3.5 text-center">
+                    @if (acc.user.active) {
+                      <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Actif
+                      </span>
+                    } @else {
+                      <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-200">
+                        <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Suspendu
+                      </span>
+                    }
+                  </td>
+
+                  <td class="px-4 py-3.5 text-right">
+                    <button
+                      type="button"
+                      (click)="toggleAccount(acc.identifier)"
+                      [class]="acc.user.active
+                        ? 'inline-flex items-center gap-1 rounded-lg border border-rose-300 bg-rose-50 hover:bg-rose-100 px-2.5 py-1 text-[10px] font-bold text-rose-700 transition-all'
+                        : 'inline-flex items-center gap-1 rounded-lg border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 text-[10px] font-bold text-emerald-700 transition-all'"
+                    >
+                      {{ acc.user.active ? '🚫 Suspendre' : '✅ Réactiver' }}
+                    </button>
+                  </td>
+
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
     </div>
   }
 

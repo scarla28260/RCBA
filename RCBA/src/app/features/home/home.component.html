@@ -69,15 +69,19 @@
           <span class="text-xs font-bold text-[#25cf1f] mt-0.5">Fondé en 2020 &bull; Eure-et-Loir</span>
 
           <div class="mt-5 pt-5 border-t border-white/20 w-full">
-            <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[#21ad1c] text-center mb-3">Labels Nationaux FFF</p>
+            <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[#25cf1f] text-center mb-3">Labels Nationaux FFF</p>
             <div class="flex items-center justify-around gap-4">
               <div class="flex flex-col items-center gap-2">
-                <img src="/label-espoir.png" alt="Label Espoir FFF" class="h-20 w-auto object-contain" />
-                <span class="text-[10px] font-bold text-white uppercase tracking-wide">Label Espoir</span>
+                <div class="p-2 rounded-xl bg-white/95 shadow-md flex items-center justify-center">
+                  <img src="/label-espoir.png" alt="Label Espoir FFF" class="h-16 w-auto object-contain filter contrast-125" />
+                </div>
+                <span class="text-[11px] font-black text-white uppercase tracking-wide">Label Espoir</span>
               </div>
               <div class="flex flex-col items-center gap-2">
-                <img src="/label-feminine.png" alt="Label École Féminine FFF" class="h-20 w-auto object-contain" />
-                <span class="text-[10px] font-bold text-white uppercase tracking-wide">Label Féminin</span>
+                <div class="p-2 rounded-xl bg-white/95 shadow-md flex items-center justify-center">
+                  <img src="/label-feminine.png" alt="Label École Féminine FFF" class="h-16 w-auto object-contain filter contrast-125" />
+                </div>
+                <span class="text-[11px] font-black text-white uppercase tracking-wide">Label Féminin</span>
               </div>
             </div>
           </div>
@@ -115,53 +119,79 @@
     </div>
   </section>
 
-  <!-- Section Labels FFF — Mise en valeur institutionnelle -->
+  <!-- Section Labels FFF — Mise en valeur institutionnelle avec contraste maximal -->
   <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="rounded-2xl bg-[#101d69] overflow-hidden shadow-lg">
+    <div class="rounded-3xl bg-gradient-to-br from-[#0c164f] via-[#101d69] to-[#0a1240] p-6 sm:p-10 shadow-2xl border border-white/15 relative overflow-hidden">
+      <!-- Glow decoratif subtil -->
+      <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#21ad1c]/15 blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-sky-500/15 blur-3xl pointer-events-none"></div>
+
       <!-- Header -->
-      <div class="px-8 pt-8 pb-4 text-center">
-        <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em] text-sky-200">Distinction Nationale</span>
-        <h2 class="text-2xl sm:text-3xl font-black uppercase text-white tracking-tight mt-3">
+      <div class="relative z-10 max-w-3xl mx-auto text-center space-y-3 pb-8 border-b border-white/15">
+        <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em] text-[#25cf1f] border border-white/10 shadow-sm">
+          ⭐ Reconnaissance Officielle FFF
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-black uppercase text-white tracking-tight">
           Club Labellisé par la Fédération Française de Football
         </h2>
-        <p class="text-sm text-sky-200 mt-2 max-w-2xl mx-auto leading-relaxed">
-          Le RCBA est l'un des rares clubs du district &agrave; détenir <strong class="text-white">deux labels nationaux FFF</strong>, gage d’engagement envers la formation des jeunes et le développement du football féminin.
+        <p class="text-xs sm:text-sm text-sky-100 leading-relaxed font-medium">
+          Le Racing Club Bû Abondant est fier de détenir <strong class="text-white underline decoration-[#25cf1f] decoration-2">deux labels nationaux d'excellence FFF</strong>, garantissant la qualité de notre formation, la sécurité et l'encadrement diplômé de nos jeunes.
         </p>
       </div>
 
-      <!-- Labels -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-0 divide-y sm:divide-y-0 sm:divide-x divide-white/10">
+      <!-- Labels Grid avec Cartes à fort contraste -->
+      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
 
         <!-- Label Espoir -->
-        <div class="flex flex-col sm:flex-row items-center gap-6 px-8 py-8">
-          <img src="/label-espoir.png" alt="Label Espoir FFF" class="h-32 w-auto object-contain shrink-0" />
-          <div class="text-center sm:text-left">
-            <span class="text-[10px] font-black uppercase tracking-[0.2em] text-[#21ad1c]">Label Jeunes FFF</span>
-            <h3 class="text-xl font-black uppercase text-white mt-1">Label Espoir</h3>
-            <p class="text-xs text-sky-100 mt-2 leading-relaxed">
-              Attribué aux clubs dont le projet de formation des jeunes joueurs répond aux critères de qualité définis par la FFF : encadrement qualifié, éducation sportive et épanouissement de chaque enfant.
+        <div class="rounded-2xl bg-white/10 hover:bg-white/15 border border-white/20 p-6 sm:p-8 backdrop-blur-md transition-all duration-200 flex flex-col sm:flex-row items-center gap-6 shadow-lg">
+          <div class="shrink-0 p-4 rounded-2xl bg-white/95 shadow-xl flex items-center justify-center">
+            <img
+              src="/label-espoir.png"
+              alt="Label Espoir FFF"
+              class="h-32 w-auto object-contain filter contrast-125"
+            />
+          </div>
+          <div class="text-center sm:text-left space-y-2">
+            <span class="inline-block rounded-full bg-[#25cf1f] text-slate-950 px-3 py-0.5 text-[10px] font-black uppercase tracking-wider">
+              Label Jeunes FFF • 2023–2026
+            </span>
+            <h3 class="text-2xl font-black uppercase text-white tracking-tight">
+              Label Espoir FFF
+            </h3>
+            <p class="text-xs sm:text-sm text-sky-100 leading-relaxed">
+              Attribué aux clubs dont le projet d'accueil, sportif et éducatif répond aux exigences de la FFF : encadrement qualifié, fair-play et progression de chaque enfant.
             </p>
-            <div class="mt-3 flex flex-wrap gap-2 justify-center sm:justify-start">
-              <span class="rounded bg-white/10 px-2 py-0.5 text-[10px] font-bold text-sky-200 uppercase">U6 &rarr; U18</span>
-              <span class="rounded bg-white/10 px-2 py-0.5 text-[10px] font-bold text-sky-200 uppercase">Éducateurs Diplomés</span>
-              <span class="rounded bg-white/10 px-2 py-0.5 text-[10px] font-bold text-sky-200 uppercase">Projet Formateur</span>
+            <div class="pt-2 flex flex-wrap gap-2 justify-center sm:justify-start">
+              <span class="rounded-lg bg-black/40 border border-white/20 px-2.5 py-1 text-[11px] font-black text-white uppercase">U6 → U18</span>
+              <span class="rounded-lg bg-black/40 border border-white/20 px-2.5 py-1 text-[11px] font-black text-white uppercase">Éducateurs Diplômés</span>
+              <span class="rounded-lg bg-[#25cf1f]/20 border border-[#25cf1f]/40 px-2.5 py-1 text-[11px] font-black text-[#25cf1f] uppercase">Projet FFF</span>
             </div>
           </div>
         </div>
 
         <!-- Label Féminin -->
-        <div class="flex flex-col sm:flex-row items-center gap-6 px-8 py-8">
-          <img src="/label-feminine.png" alt="Label École Féminine FFF" class="h-32 w-auto object-contain shrink-0" />
-          <div class="text-center sm:text-left">
-            <span class="text-[10px] font-black uppercase tracking-[0.2em] text-[#21ad1c]">École Féminine FFF</span>
-            <h3 class="text-xl font-black uppercase text-white mt-1">Label Féminin</h3>
-            <p class="text-xs text-sky-100 mt-2 leading-relaxed">
-              Reconnaissance de l’engagement du club dans le développement du football féminin : structures dédiées, encadrement spécifique et promotion de la pratique du football pour les jeunes filles.
+        <div class="rounded-2xl bg-white/10 hover:bg-white/15 border border-white/20 p-6 sm:p-8 backdrop-blur-md transition-all duration-200 flex flex-col sm:flex-row items-center gap-6 shadow-lg">
+          <div class="shrink-0 p-4 rounded-2xl bg-white/95 shadow-xl flex items-center justify-center">
+            <img
+              src="/label-feminine.png"
+              alt="Label École Féminine FFF"
+              class="h-32 w-auto object-contain filter contrast-125"
+            />
+          </div>
+          <div class="text-center sm:text-left space-y-2">
+            <span class="inline-block rounded-full bg-amber-400 text-slate-950 px-3 py-0.5 text-[10px] font-black uppercase tracking-wider">
+              Label École Féminine • Bronze
+            </span>
+            <h3 class="text-2xl font-black uppercase text-white tracking-tight">
+              Label Féminin FFF
+            </h3>
+            <p class="text-xs sm:text-sm text-sky-100 leading-relaxed">
+              Reconnaissance de l'engagement du RCBA dans le développement du football féminin : équipes dédiées (U11F, U13F, Seniors Féminines Loisir) et encadrement attentif.
             </p>
-            <div class="mt-3 flex flex-wrap gap-2 justify-center sm:justify-start">
-              <span class="rounded bg-white/10 px-2 py-0.5 text-[10px] font-bold text-sky-200 uppercase">U6F &rarr; U15F</span>
-              <span class="rounded bg-white/10 px-2 py-0.5 text-[10px] font-bold text-sky-200 uppercase">Football Féminin</span>
-              <span class="rounded bg-white/10 px-2 py-0.5 text-[10px] font-bold text-sky-200 uppercase">Mixte & Féminin</span>
+            <div class="pt-2 flex flex-wrap gap-2 justify-center sm:justify-start">
+              <span class="rounded-lg bg-black/40 border border-white/20 px-2.5 py-1 text-[11px] font-black text-white uppercase">U6F → Séniors F</span>
+              <span class="rounded-lg bg-black/40 border border-white/20 px-2.5 py-1 text-[11px] font-black text-white uppercase">Pratique Dédiée</span>
+              <span class="rounded-lg bg-amber-400/20 border border-amber-400/40 px-2.5 py-1 text-[11px] font-black text-amber-300 uppercase">École Féminine</span>
             </div>
           </div>
         </div>
@@ -169,13 +199,13 @@
       </div>
 
       <!-- Footer bar -->
-      <div class="px-8 py-4 bg-black/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-        <span class="text-slate-300">Labels décernés par la <strong class="text-white">Fédération Française de Football</strong> &bull; Saison 2026-2027</span>
+      <div class="relative z-10 mt-8 pt-6 border-t border-white/15 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+        <span class="text-sky-200 font-medium">Distinctions officielles décernées par la <strong class="text-white font-black">Fédération Française de Football</strong></span>
         <a
           routerLink="/inscriptions"
-          class="inline-flex items-center gap-1.5 rounded-lg bg-[#21ad1c] px-5 py-2 text-xs font-black uppercase tracking-wider text-white hover:bg-[#1b8e17] transition-colors"
+          class="inline-flex items-center gap-2 rounded-xl bg-[#21ad1c] hover:bg-[#1b8e17] px-5 py-2.5 text-xs font-black uppercase tracking-wider text-white shadow-md transition-all active:scale-95"
         >
-          Rejoindre le club &rarr;
+          <span>📋</span> Inscriptions & Tarifs 2026–2027 &rarr;
         </a>
       </div>
     </div>
@@ -238,6 +268,225 @@
           </div>
         }
       </div>
+    </div>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- 📢 PÔLE COMMUNICATION : CLUB À L'HONNEUR, RÉSEAUX & VIE DU CLUB -->
+  <!-- ================================================================= -->
+  <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
+    
+    <!-- En-tête de la section avec style éditorial sportif -->
+    <div class="rounded-3xl bg-gradient-to-r from-[#101d69] via-[#162788] to-[#0c164f] p-8 sm:p-10 text-white shadow-xl relative overflow-hidden">
+      <!-- Glow & décorations -->
+      <div class="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-[#21ad1c]/20 blur-3xl pointer-events-none"></div>
+      <div class="absolute left-1/3 -bottom-16 w-48 h-48 rounded-full bg-sky-400/15 blur-2xl pointer-events-none"></div>
+
+      <div class="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+        <div class="space-y-3 max-w-3xl">
+          <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1 text-xs font-black uppercase tracking-[0.2em] text-[#25cf1f] border border-white/15">
+            <span>📢</span> Pôle Communication & Animation
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-black uppercase italic tracking-tight text-white">
+            Le Club à l'Honneur &bull; Vie du Club &bull; Réseaux Sociaux
+          </h2>
+          <p class="text-sm sm:text-base text-slate-200 leading-relaxed font-normal">
+            Suivez en direct les temps forts du <strong>Racing Club Bû Abondant</strong> : reportages terrain, animations du week-end, vie associative et flux social officiel.
+          </p>
+        </div>
+
+        <!-- Boutons d'accès direct réseaux sociaux -->
+        <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+          <a
+            href="https://rcba.footeo.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 px-4 py-2.5 text-xs font-black uppercase text-white transition-all hover:scale-105"
+          >
+            <span>🌐</span> Footeo Officiel ↗
+          </a>
+          <a
+            href="https://facebook.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 rounded-xl bg-[#1877F2] hover:bg-[#166fe5] px-4 py-2.5 text-xs font-black uppercase text-white shadow-md transition-all hover:scale-105"
+          >
+            <span>👍</span> Facebook ↗
+          </a>
+          <a
+            href="https://instagram.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 hover:opacity-90 px-4 py-2.5 text-xs font-black uppercase text-white shadow-md transition-all hover:scale-105"
+          >
+            <span>📸</span> Instagram ↗
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 Colonnes : À la Une (Club à l'Honneur) & Fil des Réseaux Sociaux -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+      <!-- COLONNE GAUCHE (7/12) : LE CLUB À L'HONNEUR & ANIMATIONS -->
+      <div class="lg:col-span-7 space-y-6">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+          <div class="flex items-center gap-2">
+            <span class="text-lg">⭐</span>
+            <h3 class="text-xl font-black uppercase tracking-tight text-[#101d69]">
+              À la Une du RCBA
+            </h3>
+          </div>
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Actualités Officielles</span>
+        </div>
+
+        <div class="space-y-4">
+          @for (item of clubHighlights(); track item.id; let idx = $index) {
+            <article
+              class="group rounded-2xl bg-white border border-slate-200 p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative overflow-hidden"
+              [class.border-l-8]="true"
+              [class.border-l-[#101d69]]="idx % 2 === 0"
+              [class.border-l-[#21ad1c]]="idx % 2 !== 0"
+            >
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                <span
+                  class="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full w-fit"
+                  [class]="idx % 2 === 0
+                    ? 'bg-blue-50 text-[#101d69] border border-blue-200'
+                    : 'bg-emerald-50 text-[#167812] border border-emerald-200'"
+                >
+                  {{ item.badge }}
+                </span>
+                <span class="text-xs font-semibold text-slate-400">{{ item.date }}</span>
+              </div>
+
+              <h4 class="text-lg sm:text-xl font-black text-slate-900 group-hover:text-[#101d69] transition-colors leading-snug">
+                {{ item.title }}
+              </h4>
+
+              <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+                {{ item.summary }}
+              </p>
+
+              <!-- Tags & Auteur -->
+              <div class="mt-4 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex flex-wrap gap-1.5">
+                  @for (tag of item.tags; track tag) {
+                    <span class="rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-600">
+                      #{{ tag }}
+                    </span>
+                  }
+                </div>
+
+                @if (item.linkText && item.linkUrl) {
+                  <a
+                    [routerLink]="item.linkUrl"
+                    class="inline-flex items-center gap-1 text-xs font-black uppercase tracking-wider text-[#101d69] group-hover:text-[#21ad1c] transition-colors"
+                  >
+                    <span>{{ item.linkText }}</span>
+                    <span>&rarr;</span>
+                  </a>
+                }
+              </div>
+            </article>
+          }
+        </div>
+      </div>
+
+      <!-- COLONNE DROITE (5/12) : FLUX RÉSEAUX SOCIAUX & VIE DU CLUB EN DIRECT -->
+      <div class="lg:col-span-5 space-y-6">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+          <div class="flex items-center gap-2">
+            <span class="text-lg">📱</span>
+            <h3 class="text-xl font-black uppercase tracking-tight text-[#101d69]">
+              Social Wall &bull; En Direct
+            </h3>
+          </div>
+          <span class="inline-flex items-center gap-1 rounded-full bg-rose-100 text-rose-700 px-2 py-0.5 text-[10px] font-black uppercase">
+            <span class="h-1.5 w-1.5 rounded-full bg-rose-600 animate-ping"></span> Live
+          </span>
+        </div>
+
+        <div class="space-y-4">
+          @for (post of socialFeed(); track post.id) {
+            <div class="rounded-2xl bg-white border border-slate-200 p-5 shadow-sm hover:shadow-md transition-all space-y-3">
+              <!-- En-tête profil post -->
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                  <div
+                    class="h-9 w-9 rounded-full flex items-center justify-center text-white text-sm font-black shadow-sm"
+                    [class.bg-[#1877F2]]="post.network === 'facebook'"
+                    [class.bg-gradient-to-tr]="post.network === 'instagram'"
+                    [class.from-purple-600]="post.network === 'instagram'"
+                    [class.to-amber-500]="post.network === 'instagram'"
+                    [class.bg-[#101d69]]="post.network === 'footeo'"
+                  >
+                    @if (post.network === 'facebook') { f }
+                    @else if (post.network === 'instagram') { 📷 }
+                    @else { ⚽ }
+                  </div>
+                  <div>
+                    <div class="text-xs font-black text-slate-900 leading-none">{{ post.author }}</div>
+                    <div class="text-[10px] text-slate-400 font-semibold mt-0.5">{{ post.handle }} &bull; {{ post.date }}</div>
+                  </div>
+                </div>
+
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                  {{ post.badgeText }}
+                </span>
+              </div>
+
+              <!-- Contenu du message -->
+              <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-normal">
+                {{ post.content }}
+              </p>
+
+              <!-- Stats sociales & Lien -->
+              <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                <div class="flex items-center gap-4 text-xs font-semibold">
+                  <span class="flex items-center gap-1 hover:text-rose-600 transition-colors cursor-pointer">
+                    ❤️ {{ post.likesCount }}
+                  </span>
+                  <span class="flex items-center gap-1 hover:text-[#101d69] transition-colors cursor-pointer">
+                    💬 {{ post.commentsCount }}
+                  </span>
+                  <span class="flex items-center gap-1">
+                    🔁 {{ post.sharesCount }}
+                  </span>
+                </div>
+                <a
+                  [href]="post.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="font-black text-[11px] uppercase tracking-wider text-[#101d69] hover:text-[#21ad1c] transition-colors"
+                >
+                  Voir le post ↗
+                </a>
+              </div>
+            </div>
+          }
+
+          <!-- Bannière rejoignez la communauté -->
+          <div class="rounded-2xl bg-gradient-to-br from-emerald-500 to-[#21ad1c] p-6 text-white text-center shadow-md space-y-3">
+            <span class="text-2xl">📸</span>
+            <h4 class="text-base font-black uppercase tracking-wide">
+              Partagez vos photos avec le hashtag #TeamRCBA !
+            </h4>
+            <p class="text-xs text-emerald-100 leading-relaxed max-w-sm mx-auto">
+              Joueurs, parents, supporters : taguez le club sur vos photos de match pour être relayé par le pôle communication !
+            </p>
+            <div class="pt-1">
+              <a
+                routerLink="/contact"
+                class="inline-flex items-center gap-1.5 rounded-lg bg-white px-4 py-2 text-xs font-black uppercase text-[#167812] hover:bg-slate-100 transition-colors shadow"
+              >
+                <span>Envoyer un contenu au club &rarr;</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 

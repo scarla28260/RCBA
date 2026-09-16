@@ -66,6 +66,14 @@ export class LoginComponent {
     }
   }
 
+  fillSpecificAccount(identifier: string, password: string, portal: 'coach' | 'direction'): void {
+    this.selectedPortal.set(portal);
+    this.identifier = identifier;
+    this.password = password;
+    this.errorMessage.set('');
+    this.onSubmit();
+  }
+
   fillQuickAccount(role: 'coach' | 'direction') {
     if (role === 'coach') {
       this.selectedPortal.set('coach');

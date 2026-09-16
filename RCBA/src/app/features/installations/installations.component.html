@@ -7,13 +7,13 @@
         Nos Installations Sportives
       </h1>
       <p class="text-sm text-slate-600 mt-2 leading-relaxed">
-        Le Racing Club Bû Abondant s'appuie sur les infrastructures de 2 communes : <strong class="text-[#101d69]">Bû</strong> et <strong class="text-[#167812]">Abondant</strong>.
+        Le Racing Club Bû Abondant s'appuie sur les infrastructures de ses communes partenaires : <strong class="text-[#101d69]">Bû</strong>, <strong class="text-[#167812]">Abondant</strong> et <strong class="text-sky-800">Serville</strong>.
       </p>
     </div>
   </div>
 
   <!-- Installations Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     @for (site of installations(); track site.id; let idx = $index) {
       <div
         class="rounded-2xl bg-white p-6 shadow-sm border border-slate-200 flex flex-col justify-between space-y-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-md"

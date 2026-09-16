@@ -31,6 +31,7 @@ export interface MatchResult {
   date: string;
   location?: string;
   isVictory?: boolean;
+  footeoUrl?: string;
 }
 
 export interface UpcomingMatch {
@@ -45,6 +46,7 @@ export interface UpcomingMatch {
   stade: string;
   isHome: boolean;
   convocationTime?: string;
+  footeoUrl?: string;
 }
 
 export interface ClubEvent {
@@ -67,7 +69,7 @@ export interface ClubMetric {
 export interface Installation {
   id: string;
   name: string;
-  commune: 'Bû' | 'Abondant';
+  commune: 'Bû' | 'Abondant' | 'Serville';
   address: string;
   surface: string;
   features: string[];
@@ -94,8 +96,20 @@ export interface TeamCategory {
   ageGroup: string;
   description?: string;
   players?: TeamPlayer[];
-  pole?: 'ecole-foot' | 'foot-a-11'; // École de foot (Foot à 8 / animation) vs Foot à 11 (compétition)
+  pole?: 'ecole-foot' | 'foot-a-11' | 'foot-feminin'; // Pôles officiels 2026-2027
   format?: 'Foot à 8' | 'Foot à 5' | 'Foot à 11' | 'Baby-Foot';
+  birthYears?: string; // ex: '2015 - 2014'
+  fee?: number; // ex: 135, 150, 90
+  contactPrincipal?: { name: string; phone: string };
+  badgeDistrict?: {
+    categoryText: string;
+    divisionText: string;
+    levelSubtext?: string;
+    badgeColor: 'red' | 'blue' | 'green'; // Red for U13/U15, Blue for Senior, Green for Veteran
+    wins: number;
+    draws: number;
+    losses: number;
+  };
 }
 
 export interface PlayerOfMonth {
@@ -134,10 +148,41 @@ export interface StaffMember {
   firstName: string;
   lastName: string;
   role: string;
+  roles?: string[]; // Toutes les fonctions exercées regroupées
   category: 'bureau' | 'administration' | 'technique' | 'communication';
+  categories?: ('bureau' | 'administration' | 'technique' | 'communication')[];
   photo?: string; // URL Footeo ou local
+  phone?: string;
   email?: string;
   teamId?: string; // liaison avec l'équipe encadrée
+}
+
+export interface ClubHighlight {
+  id: string;
+  badge: string;
+  title: string;
+  summary: string;
+  author: string;
+  date: string;
+  imageUrl?: string;
+  linkText?: string;
+  linkUrl?: string;
+  tags: string[];
+}
+
+export interface SocialFeedPost {
+  id: string;
+  network: 'facebook' | 'instagram' | 'footeo' | 'tiktok';
+  author: string;
+  handle: string;
+  date: string;
+  content: string;
+  mediaUrl?: string;
+  likesCount?: number;
+  commentsCount?: number;
+  sharesCount?: number;
+  url: string;
+  badgeText?: string;
 }
 
 export interface TrainingSession {

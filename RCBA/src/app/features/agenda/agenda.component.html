@@ -216,6 +216,19 @@
                       <span>Rdv convocation : {{ match.convocationTime }}</span>
                     </div>
                   }
+                  @if (match.footeoUrl) {
+                    <div class="pt-2 border-t border-slate-100 flex justify-end">
+                      <a
+                        [href]="match.footeoUrl"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-1.5 text-[11px] font-black uppercase text-[#101d69] hover:text-[#21ad1c] transition-colors"
+                      >
+                        <span>Fiche Match Footeo</span>
+                        <span>↗</span>
+                      </a>
+                    </div>
+                  }
                 </div>
               </div>
             }
@@ -266,7 +279,18 @@
                 } @else {
                   <app-badge label="Match Nul" variant="muted" />
                 }
-                <span class="text-slate-400">Terrain officiel FFF</span>
+                @if (match.footeoUrl) {
+                  <a
+                    [href]="match.footeoUrl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="font-black text-[11px] uppercase tracking-wider text-[#101d69] hover:text-[#21ad1c] transition-colors"
+                  >
+                    Résumé Footeo ↗
+                  </a>
+                } @else {
+                  <span class="text-slate-400">Terrain officiel FFF</span>
+                }
               </div>
             </div>
           }
@@ -279,14 +303,32 @@
   <!-- SECTION 2 : PLANNING DES ENTRAÎNEMENTS HEBDOMADAIRE -->
   @if (activeSection() === 'planning') {
     <div class="rounded-2xl bg-white border border-slate-200 border-t-4 border-t-[#101d69] p-6 sm:p-8 shadow-sm space-y-6">
-      <div class="pb-4 border-b border-slate-200">
-        <span class="text-xs font-black uppercase tracking-wider text-[#21ad1c]">Créneaux Hebdomadaires 2026–2027</span>
-        <h2 class="text-2xl font-black uppercase text-[#101d69] tracking-tight mt-0.5">
-          Horaires & Stades par Équipe
-        </h2>
-        <p class="text-xs sm:text-sm text-slate-600 mt-1">
-          Tous les entraînements sont encadrés par des éducateurs diplômés sur les complexes sportifs de <strong>Bû</strong> et <strong>Abondant</strong>.
-        </p>
+      <div class="pb-4 border-b border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-black uppercase tracking-wider text-[#21ad1c]">Grille Officielle des Créneaux 2026–2027</span>
+          <h2 class="text-2xl font-black uppercase text-[#101d69] tracking-tight mt-0.5">
+            Horaires, Lieux & Contacts par Catégorie
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-600 mt-1">
+            Les séances se déroulent sur les terrains de <strong>Bû</strong>, <strong>Abondant</strong> et <strong>Serville</strong> sous la conduite d'éducateurs diplômés.
+          </p>
+        </div>
+        <a
+          href="/planning-ecole-foot-2026-2027.png"
+          target="_blank"
+          class="inline-flex items-center gap-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-[#101d69] px-4 py-2 text-xs font-black uppercase tracking-wider transition-all shadow-xs shrink-0"
+        >
+          🔍 Voir le Tableau Officiel FFF ↗
+        </a>
+      </div>
+
+      <!-- Grille Officielle FFF Image Banner -->
+      <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 overflow-hidden flex flex-col items-center">
+        <img
+          src="/planning-ecole-foot-2026-2027.png"
+          alt="Tableau Officiel des Horaires RCBA 2026-2027"
+          class="max-w-full h-auto rounded-xl shadow-md border border-slate-200 object-contain"
+        />
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

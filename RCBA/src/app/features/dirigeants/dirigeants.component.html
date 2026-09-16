@@ -199,16 +199,43 @@
               </div>
             </div>
 
-            <!-- CARTUCHE NOM & POSTE (STYLE CARTE À COLLECTIONNER) -->
+            <!-- CARTUCHE NOM & TOUTES LES FONCTIONS EXERCÉES -->
             <div class="p-4 flex-1 flex flex-col justify-between text-center bg-gradient-to-b from-white to-slate-50">
               <div>
                 <h2 class="font-black text-slate-900 text-base uppercase tracking-tight leading-tight">
                   {{ member.firstName }} <br />
                   <span class="text-[#101d69]">{{ member.lastName }}</span>
                 </h2>
-                <div class="inline-block mt-2 px-2.5 py-1 rounded-md bg-slate-100 border border-slate-200 text-xs font-bold text-slate-700">
-                  {{ member.role }}
+
+                <!-- Affichage de toutes les fonctions exercées sous une seule carte -->
+                <div class="mt-2.5 flex flex-col gap-1.5 items-center">
+                  @if (member.roles && member.roles.length > 1) {
+                    @for (r of member.roles; track r; let i = $index) {
+                      <div class="w-full text-center px-2.5 py-1 rounded-md text-xs font-bold leading-tight"
+                           [class]="i === 0
+                             ? 'bg-slate-100 border border-slate-300 text-slate-900 font-extrabold shadow-2xs'
+                             : 'bg-blue-50/60 border border-blue-100 text-[#101d69] text-[11px]'">
+                        {{ r }}
+                      </div>
+                    }
+                  } @else {
+                    <div class="w-full text-center px-2.5 py-1 rounded-md bg-slate-100 border border-slate-200 text-xs font-bold text-slate-700">
+                      {{ member.role }}
+                    </div>
+                  }
                 </div>
+
+                @if (member.phone) {
+                  <div class="mt-2.5">
+                    <a
+                      [href]="'tel:' + member.phone.replace(' ', '')"
+                      class="inline-flex items-center gap-1 text-[11px] font-bold text-[#101d69] bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-md hover:bg-[#101d69] hover:text-white transition-colors"
+                    >
+                      <span>📞</span>
+                      <span>{{ member.phone }}</span>
+                    </a>
+                  </div>
+                }
               </div>
 
               <!-- Pied de carte Panini avec identifiant officiel -->

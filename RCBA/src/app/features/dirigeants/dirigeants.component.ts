@@ -29,30 +29,80 @@ export class DirigeantsComponent {
     { key: 'communication', label: 'Communication', icon: '📣' },
   ];
 
-  readonly filteredStaff = computed<StaffMember[]>(() => {
-    const cat = this.activeCategory();
-    if (cat === 'all') return this.allStaff();
-    if (cat === 'direction') {
-      return this.allStaff().filter((m) => m.category === 'bureau' || m.category === 'administration');
+  // Regroupement des personnes uniques avec cumul de toutes leurs fonctions exercées
+  readonly uniqueStaff = computed<StaffMember[]>(() => {
+    const rawList = this.allStaff();
+    const map = new Map<string, StaffMember>();
+
+    for (const member of rawList) {
+      // Clé unique insensible à la casse et aux espaces
+      const key = `${member.firstName.trim().toLowerCase()}_${member.lastName.trim().toLowerCase()}`;
+
+      if (!map.has(key)) {
+        map.set(key, {
+          ...member,
+          roles: [member.role],
+          categories: [member.category],
+        });
+      } else {
+        const existing = map.get(key)!;
+        // Cumul des rôles distincts
+        const existingRoles = existing.roles || [existing.role];
+        if (!existingRoles.includes(member.role)) {
+          existingRoles.push(member.role);
+        }
+        existing.roles = existingRoles;
+        // Le rôle principal reste le plus prestigieux (bureau > administration > technique > communication)
+        const priorityOrder: Record<string, number> = { bureau: 4, administration: 3, technique: 2, communication: 1 };
+        if ((priorityOrder[member.category] || 0) > (priorityOrder[existing.category] || 0)) {
+          existing.category = member.category;
+          existing.role = member.role;
+        }
+
+        // Cumul des catégories distinctes
+        const existingCats = existing.categories || [existing.category];
+        if (!existingCats.includes(member.category)) {
+          existingCats.push(member.category);
+        }
+        existing.categories = existingCats;
+
+        // Préserver photo, téléphone, teamId si manquants
+        if (!existing.photo && member.photo) existing.photo = member.photo;
+        if (!existing.phone && member.phone) existing.phone = member.phone;
+        if (!existing.email && member.email) existing.email = member.email;
+        if (!existing.teamId && member.teamId) existing.teamId = member.teamId;
+      }
     }
-    return this.allStaff().filter((m) => m.category === cat);
+
+    return Array.from(map.values());
   });
 
-  readonly totalCount = computed(() => this.allStaff().length);
-  readonly bureauCount = computed(() => this.allStaff().filter((m) => m.category === 'bureau').length);
-  readonly directionCount = computed(() => this.allStaff().filter((m) => m.category === 'bureau' || m.category === 'administration').length);
-  readonly techniqueCount = computed(() => this.allStaff().filter((m) => m.category === 'technique').length);
+  readonly filteredStaff = computed<StaffMember[]>(() => {
+    const cat = this.activeCategory();
+    const list = this.uniqueStaff();
+    if (cat === 'all') return list;
+    if (cat === 'direction') {
+      return list.filter((m) => (m.categories || [m.category]).some((c) => c === 'bureau' || c === 'administration'));
+    }
+    return list.filter((m) => (m.categories || [m.category]).includes(cat));
+  });
+
+  readonly totalCount = computed(() => this.uniqueStaff().length);
+  readonly bureauCount = computed(() => this.uniqueStaff().filter((m) => (m.categories || [m.category]).includes('bureau')).length);
+  readonly directionCount = computed(() => this.uniqueStaff().filter((m) => (m.categories || [m.category]).some((c) => c === 'bureau' || c === 'administration')).length);
+  readonly techniqueCount = computed(() => this.uniqueStaff().filter((m) => (m.categories || [m.category]).includes('technique')).length);
 
   setCategory(cat: Category): void {
     this.activeCategory.set(cat);
   }
 
   getCategoryCount(cat: Category): number {
-    if (cat === 'all') return this.allStaff().length;
+    const list = this.uniqueStaff();
+    if (cat === 'all') return list.length;
     if (cat === 'direction') {
-      return this.allStaff().filter((m) => m.category === 'bureau' || m.category === 'administration').length;
+      return list.filter((m) => (m.categories || [m.category]).some((c) => c === 'bureau' || c === 'administration')).length;
     }
-    return this.allStaff().filter((m) => m.category === cat).length;
+    return list.filter((m) => (m.categories || [m.category]).includes(cat)).length;
   }
 
   getCategoryLabel(category: string): string {

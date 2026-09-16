@@ -15,14 +15,17 @@ export class EquipesComponent {
   readonly teams = this.clubService.teams;
   readonly recentResults = this.clubService.recentResults;
 
-  readonly activePole = signal<'all' | 'ecole-foot' | 'foot-a-11'>('all');
+  readonly activePole = signal<'all' | 'competition' | 'ecole-foot' | 'foot-feminin' | 'foot-a-11'>('all');
 
   readonly filteredTeams = computed(() => {
     const pole = this.activePole();
     if (pole === 'all') return this.teams();
+    if (pole === 'competition') return this.teams().filter((t) => !!t.badgeDistrict);
     return this.teams().filter((t) => t.pole === pole);
   });
 
+  readonly competitionCount = computed(() => this.teams().filter((t) => !!t.badgeDistrict).length);
   readonly ecoleFootCount = computed(() => this.teams().filter((t) => t.pole === 'ecole-foot').length);
+  readonly footFemininCount = computed(() => this.teams().filter((t) => t.pole === 'foot-feminin').length);
   readonly foot11Count = computed(() => this.teams().filter((t) => t.pole === 'foot-a-11').length);
 }

@@ -26,8 +26,17 @@ export class EducateursComponent {
   readonly convocations = this.clubService.convocations;
   readonly playerStats = this.clubService.playerStats;
 
-  // Tabs: Convocations, Stats Joueurs, Tableau interactif, Bibliothèque, Documents, Planning, Video
   readonly activeTab = signal<'convocations' | 'stats' | 'tactique' | 'video' | 'bibliotheque' | 'documents' | 'planning'>('convocations');
+
+  ngOnInit(): void {
+    const user = this.currentUser();
+    if (user && user.assignedTeamId && user.assignedTeamId !== 'all') {
+      const exists = this.teams().some((t) => t.id === user.assignedTeamId);
+      if (exists) {
+        this.selectedTeamId.set(user.assignedTeamId);
+      }
+    }
+  }
 
   // Analyse Vidéo (source coach/video-analysis de l'ancien projet)
   readonly videoAnalysisList = signal([
@@ -278,7 +287,7 @@ export class EducateursComponent {
         meetingPlace: team.site || 'Vestiaires du stade',
         coachName: team.coach,
         coachPhone: '06 12 34 56 78',
-        selectedPlayers: this.teamRoster().slice(0, 8).map((p) => p.displayName),
+        selectedPlayers: this.teamRoster().slice(0, team.format === 'Foot à 11' ? 14 : (team.format === 'Foot à 5' ? 5 : 8)).map((p) => p.displayName),
         absentPlayers: [],
         notes: 'Tenue complète du club, bouteille d\'eau individuelle.',
         published: true,

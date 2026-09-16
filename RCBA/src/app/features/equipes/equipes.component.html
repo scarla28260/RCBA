@@ -8,27 +8,36 @@
           <span class="rounded-full bg-[#21ad1c]/15 px-3 py-1 text-xs font-black uppercase tracking-wider text-[#167812]">
             Saison 2026–2027
           </span>
-          <span class="text-xs font-bold text-slate-500 uppercase">District Eure-et-Loir & Ligue</span>
+          <span class="text-xs font-bold text-slate-500 uppercase">District Eure-et-Loir & Ligue FFF</span>
         </div>
         <h1 class="text-3xl sm:text-4xl font-black uppercase text-[#101d69] tracking-tight">
-          Nos Équipes & Pôles de Pratique
+          Nos Équipes & Engagements Officiels
         </h1>
         <p class="text-sm text-slate-600 leading-relaxed">
-          Le Racing Club Bû Abondant s'articule autour de 2 grands pôles de formation et de compétition :
-          <strong class="text-[#101d69]">L'École de Football</strong> (Foot à 8, Foot à 5 & Éveil) et <strong class="text-[#101d69]">Le Pôle Foot à 11</strong> (U15, Seniors & Vétérans).
+          Le Racing Club Bû Abondant compte <strong class="text-[#101d69]">5 équipes engagées en championnat de District</strong> (U13 D1, U15 D3, Seniors D3, Vétérans D1 et Vétérans D3) ainsi que son École de Foot labellisée Espoir FFF et sa section Féminine.
         </p>
       </div>
 
       <!-- Quick stats -->
-      <div class="flex gap-4 shrink-0">
-        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center">
+      <div class="flex flex-wrap sm:flex-nowrap gap-3 shrink-0">
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-center min-w-[90px]">
+          <div class="text-2xl font-black text-rose-600">{{ competitionCount() }}</div>
+          <div class="text-[10px] font-black text-slate-600 uppercase tracking-wider mt-0.5">Compétitions</div>
+          <div class="text-[9px] text-slate-400">District 28</div>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-center min-w-[90px]">
           <div class="text-2xl font-black text-[#21ad1c]">{{ ecoleFootCount() }}</div>
-          <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mt-0.5">École de Foot</div>
+          <div class="text-[10px] font-black text-slate-600 uppercase tracking-wider mt-0.5">École de Foot</div>
           <div class="text-[9px] text-slate-400">Foot à 8 & 5</div>
         </div>
-        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center">
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-center min-w-[90px]">
+          <div class="text-2xl font-black text-amber-500">{{ footFemininCount() }}</div>
+          <div class="text-[10px] font-black text-slate-600 uppercase tracking-wider mt-0.5">Féminines</div>
+          <div class="text-[9px] text-slate-400">Label Bronze</div>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-center min-w-[90px]">
           <div class="text-2xl font-black text-[#101d69]">{{ foot11Count() }}</div>
-          <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mt-0.5">Foot à 11</div>
+          <div class="text-[10px] font-black text-slate-600 uppercase tracking-wider mt-0.5">Foot à 11</div>
           <div class="text-[9px] text-slate-400">Compétition</div>
         </div>
       </div>
@@ -40,28 +49,46 @@
         type="button"
         (click)="activePole.set('all')"
         [class]="activePole() === 'all'
-          ? 'px-5 py-2 rounded-full font-black text-xs uppercase tracking-wider bg-[#101d69] text-white shadow-sm transition-all'
-          : 'px-5 py-2 rounded-full font-bold text-xs uppercase tracking-wider bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all'"
+          ? 'px-4 py-2 rounded-full font-black text-xs uppercase tracking-wider bg-[#101d69] text-white shadow-sm transition-all'
+          : 'px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all'"
       >
         Toutes les équipes ({{ teams().length }})
       </button>
       <button
         type="button"
+        (click)="activePole.set('competition')"
+        [class]="activePole() === 'competition'
+          ? 'px-4 py-2 rounded-full font-black text-xs uppercase tracking-wider bg-rose-600 text-white shadow-sm transition-all'
+          : 'px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all'"
+      >
+        🏆 Équipes Engagées District 28 ({{ competitionCount() }})
+      </button>
+      <button
+        type="button"
         (click)="activePole.set('ecole-foot')"
         [class]="activePole() === 'ecole-foot'
-          ? 'px-5 py-2 rounded-full font-black text-xs uppercase tracking-wider bg-[#21ad1c] text-white shadow-sm transition-all'
-          : 'px-5 py-2 rounded-full font-bold text-xs uppercase tracking-wider bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all'"
+          ? 'px-4 py-2 rounded-full font-black text-xs uppercase tracking-wider bg-[#21ad1c] text-white shadow-sm transition-all'
+          : 'px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all'"
       >
-        🌱 École de Football — Foot à 8 ({{ ecoleFootCount() }})
+        🌱 École de Football ({{ ecoleFootCount() }})
+      </button>
+      <button
+        type="button"
+        (click)="activePole.set('foot-feminin')"
+        [class]="activePole() === 'foot-feminin'
+          ? 'px-4 py-2 rounded-full font-black text-xs uppercase tracking-wider bg-amber-500 text-white shadow-sm transition-all'
+          : 'px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all'"
+      >
+        👩 Football Féminin ({{ footFemininCount() }})
       </button>
       <button
         type="button"
         (click)="activePole.set('foot-a-11')"
         [class]="activePole() === 'foot-a-11'
-          ? 'px-5 py-2 rounded-full font-black text-xs uppercase tracking-wider bg-[#101d69] text-white shadow-sm transition-all'
-          : 'px-5 py-2 rounded-full font-bold text-xs uppercase tracking-wider bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all'"
+          ? 'px-4 py-2 rounded-full font-black text-xs uppercase tracking-wider bg-[#101d69] text-white shadow-sm transition-all'
+          : 'px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all'"
       >
-        ⚽ Foot à 11 — Compétition ({{ foot11Count() }})
+        ⚽ Foot à 11 ({{ foot11Count() }})
       </button>
     </div>
   </div>
@@ -106,12 +133,56 @@
             </span>
           </div>
 
+          <!-- District Competition Hexagonal Badge (if engaged in official competition) -->
+          @if (team.badgeDistrict; as badge) {
+            <div class="mb-4 flex items-center justify-center p-3 rounded-2xl bg-gradient-to-b from-slate-50 to-slate-100 border border-slate-200">
+              <div class="flex flex-col items-center">
+                <!-- Hexagon badge mimic FFF District -->
+                <div
+                  class="w-28 h-28 flex flex-col items-center justify-center text-white text-center shadow-lg relative"
+                  style="clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);"
+                  [class]="badge.badgeColor === 'red' ? 'bg-gradient-to-b from-[#b81d24] to-[#800f15]' : (badge.badgeColor === 'blue' ? 'bg-gradient-to-b from-[#101d69] to-[#0a1240]' : 'bg-gradient-to-b from-[#1b8e17] to-[#125e10]')"
+                >
+                  <span class="text-[9px] font-black uppercase tracking-widest opacity-80">DISTRICT</span>
+                  <span class="text-2xl font-black uppercase tracking-tight leading-none my-0.5">{{ badge.categoryText }}</span>
+                  <span class="text-[8px] font-black uppercase tracking-wider bg-black/20 px-1.5 py-0.5 rounded">{{ badge.divisionText }}</span>
+                  @if (badge.levelSubtext) {
+                    <span class="text-[7px] font-bold uppercase tracking-tight opacity-75 mt-0.5">{{ badge.levelSubtext }}</span>
+                  }
+                </div>
+
+                <!-- Record pill [0G] [1N] [0P] -->
+                <div class="mt-2 inline-flex items-center gap-1 bg-white border border-slate-200 px-2.5 py-0.5 rounded-full text-[10px] font-black shadow-xs">
+                  <span class="px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800">{{ badge.wins }}G</span>
+                  <span class="px-1.5 py-0.2 rounded bg-amber-100 text-amber-800">{{ badge.draws }}N</span>
+                  <span class="px-1.5 py-0.2 rounded bg-rose-100 text-rose-800">{{ badge.losses }}P</span>
+                </div>
+              </div>
+            </div>
+          }
+
           <h2 class="text-xl font-black uppercase tracking-wider text-slate-900 leading-snug">
             {{ team.name }}
           </h2>
           <div class="text-xs text-[#21ad1c] font-black uppercase tracking-wider mt-0.5">
             {{ team.division }}
           </div>
+
+          <!-- Année de naissance & Tarif officiel -->
+          @if (team.birthYears || team.fee) {
+            <div class="flex items-center gap-2 mt-2">
+              @if (team.birthYears) {
+                <span class="text-[11px] font-semibold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md border border-slate-200">
+                  📅 Nés en {{ team.birthYears }}
+                </span>
+              }
+              @if (team.fee) {
+                <span class="text-[11px] font-black bg-emerald-50 text-[#167812] px-2 py-0.5 rounded-md border border-emerald-200">
+                  💶 {{ team.fee }} € / an
+                </span>
+              }
+            </div>
+          }
 
           <!-- Description courte -->
           @if (team.description) {
@@ -143,6 +214,15 @@
               <span class="text-slate-400">📍 Site principal :</span>
               <span class="font-medium text-slate-800">{{ team.site }}</span>
             </div>
+
+            @if (team.contactPrincipal; as contact) {
+              <div class="flex items-center justify-between text-xs pt-2 border-t border-slate-100">
+                <span class="text-slate-500">📞 Contact : <strong class="text-slate-800">{{ contact.name }}</strong></span>
+                <a [href]="'tel:' + contact.phone.replaceAll(' ', '')" class="text-[#101d69] font-black hover:underline">
+                  {{ contact.phone }}
+                </a>
+              </div>
+            }
           </div>
         </div>
 

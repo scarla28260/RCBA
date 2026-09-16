@@ -40,8 +40,60 @@ export class DirectionComponent {
   readonly partners = this.clubService.partners;
   readonly installations = this.clubService.installations;
 
-  // Active Tab: Tableau de bord, Licences & Effectifs, Buvette, Mini-Bus Partagé, Finances, Convocations, Tâches, Documents, Studio Visuel
-  readonly activeTab = signal<'dashboard' | 'licences' | 'buvette' | 'minibus' | 'finances' | 'convocations' | 'taches' | 'documents' | 'studio'>('dashboard');
+  // Active Tab: Tableau de bord, Convocations, Licences, Buvette, Minibus, Finances, Tâches, Documents, Studio, et Gestion des Accès
+  readonly activeTab = signal<'dashboard' | 'licences' | 'buvette' | 'minibus' | 'finances' | 'convocations' | 'taches' | 'documents' | 'studio' | 'acces'>('dashboard');
+
+  // Gestion des Comptes & Attributions Nominatives
+  readonly newAccountForm = {
+    identifier: '',
+    password: '',
+    name: '',
+    role: 'coach' as 'coach' | 'direction',
+    email: '',
+    phone: '',
+    assignedTeamName: '',
+    accessGrantedBy: 'Bureau Directeur',
+  };
+  readonly accountActionFeedback = signal<string | null>(null);
+
+  createAccount(): void {
+    if (!this.newAccountForm.identifier || !this.newAccountForm.password || !this.newAccountForm.name) {
+      this.accountActionFeedback.set('Veuillez renseigner au minimum l\'identifiant, le mot de passe et le nom.');
+      setTimeout(() => this.accountActionFeedback.set(null), 3500);
+      return;
+    }
+
+    this.authService.grantAccount({
+      identifier: this.newAccountForm.identifier.trim().toLowerCase(),
+      password: this.newAccountForm.password,
+      user: {
+        id: `user-${Date.now()}`,
+        name: this.newAccountForm.name.trim(),
+        role: this.newAccountForm.role,
+        email: this.newAccountForm.email.trim() || `${this.newAccountForm.identifier.trim().toLowerCase()}@rcba.fr`,
+        phone: this.newAccountForm.phone.trim() || undefined,
+        assignedTeamName: this.newAccountForm.assignedTeamName.trim() || undefined,
+        accessGrantedBy: this.newAccountForm.accessGrantedBy || 'Bureau Directeur',
+        active: true,
+      },
+    });
+
+    this.accountActionFeedback.set(`Accès accordé avec succès pour ${this.newAccountForm.name} (${this.newAccountForm.identifier}) !`);
+    setTimeout(() => this.accountActionFeedback.set(null), 4000);
+
+    this.newAccountForm.identifier = '';
+    this.newAccountForm.password = '';
+    this.newAccountForm.name = '';
+    this.newAccountForm.email = '';
+    this.newAccountForm.phone = '';
+    this.newAccountForm.assignedTeamName = '';
+  }
+
+  toggleAccount(identifier: string): void {
+    this.authService.toggleAccountStatus(identifier);
+    this.accountActionFeedback.set(`Statut du compte ${identifier} mis à jour.`);
+    setTimeout(() => this.accountActionFeedback.set(null), 3000);
+  }
 
   // Studio Visuel Match & Réseaux Sociaux (Portage de direction/studio du projet original)
   readonly studioTheme = signal<'match' | 'resultat' | 'annonce'>('match');
@@ -310,6 +362,37 @@ export class DirectionComponent {
       statutLicence: trimmed.length > 0 ? 'validee' : 'a_renouveler',
     });
 
+    const updated = this.allLicencies().find((l) => l.id === licencieId);
+    if (updated && this.selectedLicencie()?.id === licencieId) {
+      this.selectedLicencie.set(updated);
+    }
+  }
+
+  /**
+   * Importation d'une photo pour la fiche du licencié (fichier local converti en base64 DataURL)
+   */
+  onPlayerPhotoSelected(event: Event, licencieId: string): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
+
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      const photoUrl = reader.result as string;
+      this.clubService.updateLicencie(licencieId, { photo: photoUrl });
+      const updated = this.allLicencies().find((l) => l.id === licencieId);
+      if (updated && this.selectedLicencie()?.id === licencieId) {
+        this.selectedLicencie.set(updated);
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  /**
+   * Suppression de la photo du joueur
+   */
+  removePlayerPhoto(licencieId: string): void {
+    this.clubService.updateLicencie(licencieId, { photo: undefined });
     const updated = this.allLicencies().find((l) => l.id === licencieId);
     if (updated && this.selectedLicencie()?.id === licencieId) {
       this.selectedLicencie.set(updated);

@@ -91,29 +91,74 @@
         </button>
       </form>
 
-      <!-- Accès en 1 Clic / Raccourcis Démo Pratiques -->
-      <div class="mt-8 pt-6 border-t border-slate-200">
-        <span class="text-[10px] font-black uppercase tracking-wider text-slate-400 block text-center mb-3">
-          ⚡ Connexion Rapide (1 clic)
+      <!-- Accès Nominatifs & Raccourcis Attribués par la Direction -->
+      <div class="mt-8 pt-6 border-t border-slate-200 space-y-3">
+        <span class="text-[10px] font-black uppercase tracking-wider text-slate-400 block text-center">
+          ⚡ Accès Nominatifs Attribués (1 clic)
         </span>
-        <div class="grid grid-cols-2 gap-2">
-          <button
-            type="button"
-            (click)="fillQuickAccount('coach')"
-            class="rounded-lg border border-slate-200 bg-slate-50 p-2 text-center hover:bg-slate-100 transition-all"
-          >
-            <strong class="text-xs font-bold text-[#101d69] block">⚽ Accès Coach</strong>
-            <span class="text-[10px] text-slate-500">coach / coach</span>
-          </button>
-          <button
-            type="button"
-            (click)="fillQuickAccount('direction')"
-            class="rounded-lg border border-slate-200 bg-slate-50 p-2 text-center hover:bg-slate-100 transition-all"
-          >
-            <strong class="text-xs font-bold text-[#101d69] block">🏛️ Direction & Tout le Site</strong>
-            <span class="text-[10px] text-slate-500 font-mono font-bold">admin / rcba2026</span>
-          </button>
+        
+        <!-- Éducateurs Principaux -->
+        <div class="space-y-1.5">
+          <span class="text-[9px] font-black uppercase text-[#21ad1c] tracking-wider block">Éducateurs & Coachs d'Équipe :</span>
+          <div class="grid grid-cols-2 gap-1.5">
+            <button
+              type="button"
+              (click)="fillSpecificAccount('quentin', 'coach', 'coach')"
+              class="rounded-lg border border-slate-200 bg-slate-50 p-1.5 text-left hover:bg-slate-100 transition-all text-xs"
+            >
+              <strong class="text-[11px] font-bold text-slate-900 block truncate">Quentin (U13 D1)</strong>
+              <span class="text-[9px] text-slate-500 font-mono">quentin / coach</span>
+            </button>
+            <button
+              type="button"
+              (click)="fillSpecificAccount('lucas', 'coach', 'coach')"
+              class="rounded-lg border border-slate-200 bg-slate-50 p-1.5 text-left hover:bg-slate-100 transition-all text-xs"
+            >
+              <strong class="text-[11px] font-bold text-slate-900 block truncate">Lucas (U15 D3)</strong>
+              <span class="text-[9px] text-slate-500 font-mono">lucas / coach</span>
+            </button>
+            <button
+              type="button"
+              (click)="fillSpecificAccount('matthieu', 'coach', 'coach')"
+              class="rounded-lg border border-slate-200 bg-slate-50 p-1.5 text-left hover:bg-slate-100 transition-all text-xs"
+            >
+              <strong class="text-[11px] font-bold text-slate-900 block truncate">Matthieu (Seniors D3)</strong>
+              <span class="text-[9px] text-slate-500 font-mono">matthieu / coach</span>
+            </button>
+            <button
+              type="button"
+              (click)="fillSpecificAccount('guillaume', 'coach', 'coach')"
+              class="rounded-lg border border-slate-200 bg-slate-50 p-1.5 text-left hover:bg-slate-100 transition-all text-xs"
+            >
+              <strong class="text-[11px] font-bold text-slate-900 block truncate">Guillaume (Vétérans)</strong>
+              <span class="text-[9px] text-slate-500 font-mono">guillaume / coach</span>
+            </button>
+          </div>
         </div>
+
+        <!-- Direction & Bureau -->
+        <div class="space-y-1.5 pt-1">
+          <span class="text-[9px] font-black uppercase text-[#101d69] tracking-wider block">Bureau & Gouvernance :</span>
+          <div class="grid grid-cols-2 gap-1.5">
+            <button
+              type="button"
+              (click)="fillSpecificAccount('president', 'rcba', 'direction')"
+              class="rounded-lg border border-blue-200 bg-blue-50/50 p-1.5 text-left hover:bg-blue-100/50 transition-all text-xs"
+            >
+              <strong class="text-[11px] font-bold text-[#101d69] block truncate">Marc (Président)</strong>
+              <span class="text-[9px] text-slate-500 font-mono">president / rcba</span>
+            </button>
+            <button
+              type="button"
+              (click)="fillSpecificAccount('admin', 'rcba2026', 'direction')"
+              class="rounded-lg border border-blue-200 bg-blue-50/50 p-1.5 text-left hover:bg-blue-100/50 transition-all text-xs"
+            >
+              <strong class="text-[11px] font-bold text-[#101d69] block truncate">Direction Générale</strong>
+              <span class="text-[9px] text-slate-500 font-mono font-bold">admin / rcba2026</span>
+            </button>
+          </div>
+        </div>
+
       </div>
 
     </div>

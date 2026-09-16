@@ -20,6 +20,8 @@ export class HomeComponent {
   readonly playerOfMonth = this.clubService.playerOfMonth;
   readonly coachOfMonth = this.clubService.coachOfMonth;
   readonly partners = this.clubService.partners;
+  readonly clubHighlights = this.clubService.clubHighlights;
+  readonly socialFeed = this.clubService.socialFeed;
 }
 
 
