@@ -42,11 +42,11 @@ export class Hero3DComponent implements AfterViewInit, OnDestroy {
   private camera!: THREE.PerspectiveCamera;
   private renderer!: THREE.WebGLRenderer;
   private animFrameId: number | null = null;
+  private clock = new THREE.Clock();
 
-  // Objets 3D du Token / Écusson
-  private tokenGroup = new THREE.Group();
-  private targetRotationX = 0;
-  private targetRotationY = 0;
+  // Mesh unique du Token / Logo RCBA
+  private tokenMesh!: THREE.Mesh;
+  private mouseParallaxY = 0;
 
   @HostListener('window:resize')
   onResize(): void {
@@ -63,9 +63,8 @@ export class Hero3DComponent implements AfterViewInit, OnDestroy {
   onMouseMove(event: MouseEvent): void {
     const rect = this.canvasRef().nativeElement.getBoundingClientRect();
     const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-    const y = -(((event.clientY - rect.top) / rect.height) * 2 - 1);
-    this.targetRotationY = x * 0.8;
-    this.targetRotationX = -y * 0.4;
+    // Subtile influence parallaxe sur l'axe Y
+    this.mouseParallaxY = x * 0.25;
   }
 
   ngAfterViewInit(): void {
@@ -89,14 +88,15 @@ export class Hero3DComponent implements AfterViewInit, OnDestroy {
     const width = canvas.clientWidth || 400;
     const height = canvas.clientHeight || 350;
 
-    // 1. Scène avec fond transparent pour se fondre dans le Dark Mode abyssal
+    // 1. Scène épurée (uniquement mesh du logo, éclairage et caméra)
     this.scene = new THREE.Scene();
 
-    // 2. Caméra
+    // 2. Caméra parfaitement axée
     this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    this.camera.position.z = 5.2;
+    this.camera.position.set(0, 0, 5.0);
+    this.camera.lookAt(0, 0, 0);
 
-    // 3. Renderer avec antialiasing et transparence
+    // 3. Renderer avec antialiasing et transparence Dark Abyssal
     this.renderer = new THREE.WebGLRenderer({
       canvas,
       alpha: true,
@@ -106,115 +106,96 @@ export class Hero3DComponent implements AfterViewInit, OnDestroy {
     this.renderer.setSize(width, height, false);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // 4. Éclairages
-    // A. Lumière d'ambiance très faible
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    // 4. Système d'Éclairage
+    // A. Lumière d'ambiance très faible pour conserver la profondeur et les ombres
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.45);
     this.scene.add(ambientLight);
 
     // B. Lumière directionnelle blanche légèrement bleutée pour éclairer la face du logo
-    const dirLightFront = new THREE.DirectionalLight(0xe0f2fe, 2.2);
-    dirLightFront.position.set(2, 4, 6);
+    const dirLightFront = new THREE.DirectionalLight(0xe0f2fe, 2.4);
+    dirLightFront.position.set(2, 3, 5);
     this.scene.add(dirLightFront);
 
-    // C. PointLight vert néon (#00FF66) positionné juste DERRIÈRE l'objet pour un halo lumineux
-    const pointLightBackGlow = new THREE.PointLight(0x00ff66, 6, 12);
-    pointLightBackGlow.position.set(0, 0, -1.2);
+    // C. PointLight vert néon (#00FF66) placé juste DERRIÈRE l'objet pour un halo subtil
+    const pointLightBackGlow = new THREE.PointLight(0x00ff66, 5, 10);
+    pointLightBackGlow.position.set(0, 0, -1.0);
     this.scene.add(pointLightBackGlow);
 
-    // D. PointLight d'appoint bleu nuit/cyan sur le côté
-    const pointLightSide = new THREE.PointLight(0x38bdf8, 2.5, 10);
-    pointLightSide.position.set(-4, -1, 3);
-    this.scene.add(pointLightSide);
-
-    // 5. Chargement de la Texture du Logo RCBA
+    // 5. Chargement de la Texture du Logo RCBA & Correction UV (Miroir)
     const textureLoader = new THREE.TextureLoader();
-    const logoTexture = textureLoader.load('/logo.png');
-    logoTexture.colorSpace = THREE.SRGBColorSpace;
-    logoTexture.generateMipmaps = true;
-    logoTexture.minFilter = THREE.LinearMipmapLinearFilter;
+    
+    // Texture Face Avant (normale, lisible de gauche à droite)
+    const logoTextureFront = textureLoader.load('/logo.png');
+    logoTextureFront.colorSpace = THREE.SRGBColorSpace;
+    logoTextureFront.generateMipmaps = true;
+    logoTextureFront.minFilter = THREE.LinearMipmapLinearFilter;
 
-    // Texture pour le dos (avec flip horizontal pour préserver le sens de lecture à la rotation)
-    const logoTextureBack = logoTexture.clone();
+    // Texture Face Arrière (inversion de l'axe X pour contrer l'effet miroir)
+    const logoTextureBack = logoTextureFront.clone();
     logoTextureBack.wrapS = THREE.RepeatWrapping;
     logoTextureBack.repeat.x = -1;
 
-    // 6. Matériaux du Token / Palet
-    // Matériau tranche : métallique sombre avec bordure émissive vert néon (#00FF66)
+    // 6. Matériaux du Token (Material Array)
+    // [0]: Tranche (Cylindre rim) - métallique sombre avec bordure émissive vert néon
     const rimMaterial = new THREE.MeshStandardMaterial({
-      color: 0x0a1020,
+      color: 0x070B14,
       metalness: 0.95,
-      roughness: 0.15,
+      roughness: 0.2,
       emissive: 0x00ff66,
-      emissiveIntensity: 0.85,
+      emissiveIntensity: 0.7,
     });
 
-    // Matériau face avant (dessus du cylindre)
+    // [1]: Face avant - texture orientée correctement
     const frontMaterial = new THREE.MeshStandardMaterial({
-      map: logoTexture,
-      metalness: 0.2,
-      roughness: 0.4,
+      map: logoTextureFront,
+      metalness: 0.15,
+      roughness: 0.35,
       transparent: true,
     });
 
-    // Matériau face arrière (dessous du cylindre)
+    // [2]: Face arrière - texture inversée sur X pour lisibilité
     const backMaterial = new THREE.MeshStandardMaterial({
       map: logoTextureBack,
-      metalness: 0.2,
-      roughness: 0.4,
+      metalness: 0.15,
+      roughness: 0.35,
       transparent: true,
     });
 
-    // Ordre des matériaux pour CylinderGeometry : [0: tranche (rim), 1: top (face avant), 2: bottom (face arrière)]
     const materials = [rimMaterial, frontMaterial, backMaterial];
 
-    // 7. Géométrie : Palet cylindrique aplati (Token de collection 3D)
-    // Rayon: 1.6, Épaisseur: 0.22, 64 segments
-    const tokenGeometry = new THREE.CylinderGeometry(1.6, 1.6, 0.22, 64);
+    // 7. Géométrie : Cylindre aplati (Token / Écusson)
+    // Rayon: 1.55, Épaisseur: 0.18, 64 segments
+    const tokenGeometry = new THREE.CylinderGeometry(1.55, 1.55, 0.18, 64);
     
-    // Le cylindre natif Three.js a son axe sur Y ; on l'incline pour que les faces soient face caméra (Z)
+    // Basculer la géométrie du cylindre (axe Y -> Z) pour que les faces soient face caméra
     tokenGeometry.rotateX(Math.PI / 2);
 
-    const tokenMesh = new THREE.Mesh(tokenGeometry, materials);
-    this.tokenGroup.add(tokenMesh);
+    this.tokenMesh = new THREE.Mesh(tokenGeometry, materials);
 
-    // 8. Anneaux d'énergie orbitaux Cyberpunk & Halo
-    // Anneau externe vert néon
-    const glowRingGeo = new THREE.TorusGeometry(1.75, 0.03, 16, 100);
-    const glowRingMat = new THREE.MeshBasicMaterial({
-      color: 0x00ff66,
-      transparent: true,
-      opacity: 0.75,
-    });
-    const glowRing = new THREE.Mesh(glowRingGeo, glowRingMat);
-    this.tokenGroup.add(glowRing);
+    // Verrouillage strict des angles d'Euler initiaux
+    this.tokenMesh.position.set(0, 0, 0);
+    this.tokenMesh.rotation.set(0, 0, 0);
 
-    // Anneau d'énergie orbitale cyan tournant autour du token
-    const orbitRingGeo = new THREE.TorusGeometry(2.1, 0.015, 16, 100);
-    const orbitRingMat = new THREE.MeshBasicMaterial({
-      color: 0x38bdf8,
-      transparent: true,
-      opacity: 0.45,
-    });
-    const orbitRing = new THREE.Mesh(orbitRingGeo, orbitRingMat);
-    orbitRing.rotation.x = Math.PI / 3.5;
-    this.tokenGroup.add(orbitRing);
-
-    this.scene.add(this.tokenGroup);
+    // Ajout du seul mesh à la scène (suppression de tout anneau/torus/line)
+    this.scene.add(this.tokenMesh);
   }
 
   private animate = (): void => {
     this.animFrameId = requestAnimationFrame(this.animate);
 
-    // 1. Rotation lente et continue sur l'axe Y
-    this.tokenGroup.rotation.y += 0.006;
+    const elapsedTime = this.clock.getElapsedTime();
 
-    // 2. Parallax tracking fluide vers la position de la souris avec amorti (lerp)
-    this.tokenGroup.rotation.x += (this.targetRotationX - this.tokenGroup.rotation.x) * 0.05;
-    this.tokenGroup.position.x += (this.targetRotationY * 0.3 - this.tokenGroup.position.x) * 0.05;
+    // 1. Oscillation fluide sinusoïdale sur l'axe vertical Y (amplitude 0.6 rad)
+    // Le logo oscille de gauche à droite sans jamais faire un tour complet
+    const oscillation = Math.sin(elapsedTime * 1.2) * 0.6;
+    this.tokenMesh.rotation.y = oscillation + this.mouseParallaxY;
 
-    // 3. Flottement vertical sinusoïdal
-    const time = performance.now() * 0.0015;
-    this.tokenGroup.position.y = Math.sin(time) * 0.12;
+    // 2. Blocage absolu de toute rotation sur les axes X et Z
+    this.tokenMesh.rotation.x = 0;
+    this.tokenMesh.rotation.z = 0;
+
+    // 3. Flottement vertical sinusoïdal très doux
+    this.tokenMesh.position.y = Math.sin(elapsedTime * 1.5) * 0.08;
 
     this.renderer.render(this.scene, this.camera);
   };
