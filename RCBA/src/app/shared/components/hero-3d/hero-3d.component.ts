@@ -110,39 +110,39 @@ export class Hero3DComponent implements AfterViewInit, OnDestroy {
     textureLogo.colorSpace = THREE.SRGBColorSpace;
 
     // =========================================================================
-    // PHASE 15 : INTÉGRITÉ ABSOLUE DE L'ASSET (PLANEGEOMETRY ET CANAL ALPHA)
+    // PHASE 16 : EXTRUSION 3D VIA "SPRITE STACKING" (100% BASÉ SUR L'ALPHA DU PNG)
     // =========================================================================
 
-    // 1. Le Groupe Principal (Le seul élément qui sera animé)
     this.badgeGroup = new THREE.Group();
+
+    // Paramètres du volume
+    const layers = 15; // Nombre de couches (finesse de la tranche)
+    const thickness = 0.2; // Épaisseur totale du logo 3D
+    const planeGeo = new THREE.PlaneGeometry(3, 3);
+
+    for (let i = 0; i < layers; i++) {
+      // Assombrit les couches internes pour simuler l'ombre de la tranche (effet 3D)
+      // La face avant et arrière gardent leurs couleurs d'origine
+      const isEdge = (i !== 0 && i !== layers - 1);
+      const colorTint = isEdge ? 0x444444 : 0xffffff;
+
+      const material = new THREE.MeshBasicMaterial({
+        map: textureLogo,
+        transparent: true,
+        alphaTest: 0.5, // CRITIQUE : Découpe le maillage selon la transparence du PNG
+        color: colorTint,
+        side: THREE.DoubleSide,
+      });
+
+      const plane = new THREE.Mesh(planeGeo, material);
+
+      // Décalage millimétrique sur l'axe Z pour créer l'épaisseur
+      plane.position.z = (i - layers / 2) * (thickness / layers);
+
+      this.badgeGroup.add(plane);
+    }
+
     this.scene.add(this.badgeGroup);
-
-    // 2. Le Plan Invisible s'appuyant sur le canal Alpha (Zéro bordure géométrique parasite)
-    const logoGeo = new THREE.PlaneGeometry(3.2, 3.2);
-    const logoMat = new THREE.MeshBasicMaterial({
-      map: textureLogo,
-      transparent: true,
-      alphaTest: 0.05,
-      side: THREE.FrontSide,
-    });
-    const logoMesh = new THREE.Mesh(logoGeo, logoMat);
-    logoMesh.position.set(0, 0, 0);
-    this.badgeGroup.add(logoMesh);
-
-    // 3. Dôme de Résine subtil en superposition pour l'effet de vernis brillant
-    const domeGeo = new THREE.SphereGeometry(2.3, 64, 64, 0, Math.PI * 2, 0, Math.PI / 2);
-    const domeMat = new THREE.MeshPhysicalMaterial({
-      transparent: true,
-      opacity: 0.08,
-      depthWrite: false,
-      roughness: 0.0,
-      clearcoat: 1.0,
-    });
-    const domeMesh = new THREE.Mesh(domeGeo, domeMat);
-    domeMesh.rotation.x = Math.PI / 2;
-    domeMesh.scale.set(1, 0.15, 1);
-    domeMesh.position.set(0, 0, 0.02);
-    this.badgeGroup.add(domeMesh);
 
     // Orientation initiale à zéro
     this.badgeGroup.position.set(0, 0, 0);
@@ -152,9 +152,8 @@ export class Hero3DComponent implements AfterViewInit, OnDestroy {
   private animate = (): void => {
     this.animFrameId = requestAnimationFrame(this.animate);
 
-    // 5. L'Animation (Garde-fou strict)
-    // Oscillation UNIQUEMENT sur l'axe Y du groupe principal
-    this.badgeGroup.rotation.y = Math.sin(this.clock.getElapsedTime() * 1.5) * 0.35;
+    // Consigne d'Animation : Oscillation UNIQUEMENT sur l'axe Y du groupe principal
+    this.badgeGroup.rotation.y = Math.sin(this.clock.getElapsedTime() * 1.5) * 0.4;
 
     // Aucun autre axe de rotation
     this.badgeGroup.rotation.x = 0;
