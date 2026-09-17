@@ -103,6 +103,18 @@ export const routes: Routes = [
             (m) => m.DirigeantsComponent
           ),
       },
+      {
+        path: 'album',
+        loadComponent: () =>
+          import('./features/panini-album/panini-album.component').then(
+            (m) => m.PaniniAlbumComponent
+          ),
+      },
+      {
+        path: 'panini',
+        redirectTo: 'album',
+        pathMatch: 'full',
+      },
     ],
   },
   {

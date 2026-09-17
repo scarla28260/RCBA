@@ -103,17 +103,17 @@
     </div>
   </div>
 
-  <!-- Lower Navigation Bar (Clean & Sporty avec accents vifs) -->
-  <nav class="hidden lg:block bg-white/95 backdrop-blur-md border-b-2 border-slate-200">
+  <!-- Lower Navigation Bar (Next-Gen Glassmorphism & Cyberpunk Neon) -->
+  <nav class="hidden lg:block bg-[#070B14]/80 backdrop-blur-xl border-b border-white/10">
     <div class="mx-auto flex h-13 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
       <div class="flex items-center gap-1 xl:gap-2 py-1">
         @for (link of navLinks(); track link.label) {
           <a
             [routerLink]="link.path"
-            [routerLinkActive]="'text-white font-black bg-[#101d69] shadow-sm shadow-[#101d69]/30 rounded-xl'"
+            [routerLinkActive]="'text-[#070B14] font-black bg-[#00FF66] shadow-[0_0_20px_rgba(0,255,102,0.4)] rounded-xl'"
             [routerLinkActiveOptions]="{ exact: link.exact ?? false }"
-            class="inline-flex items-center px-3.5 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider text-slate-700 transition-all duration-200 hover:text-[#101d69] hover:bg-slate-100/80 active:scale-95"
-            [class.text-[#1faa18]]="link.isPrivate"
+            class="inline-flex items-center px-3.5 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider text-slate-300 transition-all duration-200 hover:text-[#00FF66] hover:bg-white/5 active:scale-95"
+            [class.text-[#00FF66]]="link.isPrivate"
           >
             @if (link.isPrivate) {
               <span class="mr-1 text-[11px]">🔒</span>
@@ -123,31 +123,27 @@
         }
       </div>
 
-      <div class="flex items-center gap-2.5 text-xs font-black text-slate-600 bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
-        <span class="inline-block h-2.5 w-2.5 rounded-full bg-[#29db22] shadow-[0_0_8px_#29db22]"></span>
-        <span class="font-sport tracking-wider text-[11px] uppercase text-slate-800">Saison 2026–2027</span>
+      <div class="flex items-center gap-2.5 text-xs font-black text-slate-300 bg-white/5 px-3 py-1 rounded-full border border-white/10">
+        <span class="inline-block h-2.5 w-2.5 rounded-full bg-[#00FF66] shadow-[0_0_10px_#00FF66]"></span>
+        <span class="font-sport tracking-wider text-[11px] uppercase text-white">Saison 2026–2027</span>
       </div>
     </div>
   </nav>
 
   <!-- Mobile Dropdown -->
   @if (isMobileMenuOpen()) {
-    <div class="border-b-4 border-[#101d69] bg-white px-4 py-4 lg:hidden shadow-xl">
-      <nav class="flex flex-col divide-y divide-slate-100">
+    <div class="border-b border-[#00FF66]/40 bg-[#070B14]/95 backdrop-blur-2xl px-4 py-4 lg:hidden shadow-2xl">
+      <nav class="flex flex-col divide-y divide-white/10">
         @for (link of navLinks(); track link.label) {
           <a
             [routerLink]="link.path"
             (click)="closeMobileMenu()"
-            [routerLinkActive]="'text-[#101d69] font-black bg-slate-50 pl-3'"
+            [routerLinkActive]="'text-[#00FF66] font-black pl-2 border-l-2 border-[#00FF66]'"
             [routerLinkActiveOptions]="{ exact: link.exact ?? false }"
-            class="flex items-center justify-between py-3 text-sm font-bold uppercase text-slate-700 hover:text-[#101d69] transition-all"
+            class="flex items-center justify-between py-3 text-sm font-black uppercase tracking-wider text-slate-200 transition-colors hover:text-[#00FF66]"
           >
             <span>{{ link.label }}</span>
-            @if (link.isPrivate) {
-              <span class="rounded bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-[#167812]">
-                Privé
-              </span>
-            }
+            <span class="text-xs text-slate-500">&rarr;</span>
           </a>
         }
       </nav>

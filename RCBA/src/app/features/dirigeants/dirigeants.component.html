@@ -75,26 +75,69 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7">
       @for (member of filteredStaff(); track member.id; let idx = $index) {
-        <!-- VÉRITABLE CARTE PANINI FOOTBALL OFFICIELLE -->
-        <article class="panini-card panini-foil group overflow-hidden border-2 border-amber-300/60 hover:border-[#3bf733] flex flex-col justify-between">
+        <!-- VÉRITABLE CARTE PANINI FOOTBALL OFFICIELLE (DORÉE POUR LA DIRECTION 👑) -->
+        <article
+          class="panini-card panini-foil group overflow-hidden flex flex-col justify-between transition-all duration-300"
+          [class.border-4]="isDirectionMember(member)"
+          [class.border-amber-400]="isDirectionMember(member)"
+          [class.gold-border-glow]="isDirectionMember(member)"
+          [class.border-2]="!isDirectionMember(member)"
+          [class.border-amber-300/60]="!isDirectionMember(member)"
+          [class.hover:border-[#3bf733]]="!isDirectionMember(member)"
+        >
           
-          <!-- Liseré supérieur collector or & vert néon -->
-          <div class="h-1.5 w-full bg-gradient-to-r from-amber-400 via-[#3bf733] to-[#162eb8]"></div>
+          <!-- Liseré supérieur collector or & vert néon (ou 100% or scintillant si direction) -->
+          <div
+            class="h-2 w-full transition-all"
+            [class.bg-gradient-to-r]="true"
+            [class.from-amber-300]="isDirectionMember(member)"
+            [class.via-yellow-100]="isDirectionMember(member)"
+            [class.to-amber-500]="isDirectionMember(member)"
+            [class.from-amber-400]="!isDirectionMember(member)"
+            [class.via-[#3bf733]]="!isDirectionMember(member)"
+            [class.to-[#162eb8]]="!isDirectionMember(member)"
+          ></div>
 
           <!-- EN-TÊTE PANINI OFFICIEL : Année, Sticker n°, Badge Catégorie -->
-          <header class="bg-gradient-to-r from-[#060b28] via-[#101d69] to-[#0a1548] px-3.5 py-2 flex items-center justify-between text-white border-b-2 border-[#3bf733]/40">
+          <header
+            class="px-3.5 py-2 flex items-center justify-between text-white border-b-2"
+            [class.bg-gradient-to-r]="true"
+            [class.from-amber-950]="isDirectionMember(member)"
+            [class.via-[#78350f]]="isDirectionMember(member)"
+            [class.to-amber-900]="isDirectionMember(member)"
+            [class.border-amber-400/80]="isDirectionMember(member)"
+            [class.from-[#060b28]]="!isDirectionMember(member)"
+            [class.via-[#101d69]]="!isDirectionMember(member)"
+            [class.to-[#0a1548]]="!isDirectionMember(member)"
+            [class.border-[#3bf733]/40]="!isDirectionMember(member)"
+          >
             <div class="flex items-center gap-1.5">
-              <span class="text-xs">⚡</span>
-              <span class="text-[9px] font-black uppercase tracking-[0.2em] font-sport text-white">
-                RCBA • 2026-27
-              </span>
+              @if (isDirectionMember(member)) {
+                <span class="text-xs text-amber-300">👑</span>
+                <span class="text-[9px] font-black uppercase tracking-[0.2em] font-sport text-amber-200">
+                  RCBA • DIRECTION OR
+                </span>
+              } @else {
+                <span class="text-xs">⚡</span>
+                <span class="text-[9px] font-black uppercase tracking-[0.2em] font-sport text-white">
+                  RCBA • 2026-27
+                </span>
+              }
             </div>
             
             <div class="flex items-center gap-1.5">
               <span class="text-[9px] font-mono font-black text-amber-300 bg-black/40 px-1.5 py-0.5 rounded border border-amber-300/30">
                 #{{ idx < 9 ? '0' + (idx + 1) : (idx + 1) }}
               </span>
-              <span class="text-[8px] font-black uppercase px-2 py-0.5 rounded-full text-white shadow-xs font-sport" [style.background]="getCategoryColor(member.category)">
+              <span
+                class="text-[8px] font-black uppercase px-2 py-0.5 rounded-full shadow-xs font-sport"
+                [class.bg-amber-400]="isDirectionMember(member)"
+                [class.text-slate-950]="isDirectionMember(member)"
+                [class.border]="isDirectionMember(member)"
+                [class.border-yellow-200]="isDirectionMember(member)"
+                [class.text-white]="!isDirectionMember(member)"
+                [style.background]="!isDirectionMember(member) ? getCategoryColor(member.category) : null"
+              >
                 {{ getCategoryLabel(member.category) }}
               </span>
             </div>
@@ -150,12 +193,29 @@
             </div>
           </div>
 
-          <!-- BANDEAU / RUBAN BISEAUTÉ DU NOM (STYLE VIGNETTE DE FOOTBALL) -->
-          <div class="panini-ribbon mx-2 -mt-3.5 py-1.5 px-3 rounded-lg text-center shadow-lg relative z-20 border border-emerald-400/40">
-            <span class="text-[11px] font-bold text-sky-200 tracking-wider uppercase block leading-none">
+          <!-- BANDEAU / RUBAN BISEAUTÉ DU NOM (STYLE VIGNETTE DE FOOTBALL - DORÉ POUR DIRECTION) -->
+          <div
+            class="mx-2 -mt-3.5 py-1.5 px-3 rounded-lg text-center shadow-lg relative z-20 border transition-all"
+            [class.panini-ribbon]="!isDirectionMember(member)"
+            [class.border-emerald-400/40]="!isDirectionMember(member)"
+            [class.bg-gradient-to-r]="isDirectionMember(member)"
+            [class.from-[#78350f]]="isDirectionMember(member)"
+            [class.via-[#b45309]]="isDirectionMember(member)"
+            [class.to-[#78350f]]="isDirectionMember(member)"
+            [class.border-amber-300]="isDirectionMember(member)"
+          >
+            <span
+              class="text-[11px] font-bold tracking-wider uppercase block leading-none"
+              [class.text-amber-200]="isDirectionMember(member)"
+              [class.text-sky-200]="!isDirectionMember(member)"
+            >
               {{ member.firstName }}
             </span>
-            <span class="text-base sm:text-lg font-black text-white uppercase tracking-wide font-display leading-tight block drop-shadow-sm">
+            <span
+              class="text-base sm:text-lg font-black uppercase tracking-wide font-display leading-tight block drop-shadow-sm"
+              [class.text-yellow-100]="isDirectionMember(member)"
+              [class.text-white]="!isDirectionMember(member)"
+            >
               {{ member.lastName }}
             </span>
           </div>

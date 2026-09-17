@@ -1,0 +1,133 @@
+<div
+  class="boutique-card-wrapper group relative flex flex-col justify-between rounded-2xl p-3 bg-white border-2 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl select-none"
+  [class.border-amber-300]="isFeatured()"
+  [class.border-slate-200]="!isFeatured()"
+  [class.hover:border-[#3bf733]]="true"
+  [class.shadow-xl]="isFeatured()"
+  [class.shadow-md]="!isFeatured()"
+>
+  <!-- COEUR DE LA CARTE DE COLLECTION (FOND DÉGRADÉ BLEU & VERT RCBA) -->
+  <div
+    class="relative rounded-xl p-3 flex flex-col justify-between overflow-hidden bg-gradient-to-br from-[#09113d] via-[#101d69] to-[#0f4019]"
+    [class.holographic-featured]="isFeatured()"
+  >
+    <!-- Texture terrain de football subtile en arrière-plan -->
+    <div class="absolute inset-0 bg-pitch-grid-subtle opacity-30 pointer-events-none"></div>
+    <div class="absolute inset-0 bg-jersey-stripes opacity-15 pointer-events-none"></div>
+
+    <!-- 1. HAUT DE LA CARTE : BADGE RARETÉ / NOUVEAUTÉ & PASTILLE PRIX MÉTALLIQUE DORÉE -->
+    <div class="relative z-20 flex items-center justify-between gap-2 mb-2">
+      <!-- Badge Rareté / Catégorie -->
+      <div class="flex items-center gap-1.5">
+        @if (isFeatured()) {
+          <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400 text-slate-950 text-[10px] font-black uppercase font-sport tracking-wider shadow-md border border-amber-200">
+            <span>⭐</span> ÉDITION RARE
+          </span>
+        } @else if (product().badge) {
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#29db22]/20 border border-[#29db22]/50 text-[#3bf733] text-[10px] font-black uppercase font-sport tracking-wide">
+            {{ product().badge }}
+          </span>
+        } @else {
+          <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-white/10 text-slate-200 text-[10px] font-bold font-sport uppercase">
+            RCBA • OFFICIEL
+          </span>
+        }
+      </div>
+
+      <!-- Pastille Prix Métallique / Dorée (Indice de Rareté) -->
+      <div class="relative">
+        <div class="px-2.5 py-1 rounded-xl bg-gradient-to-tr from-amber-400 via-yellow-200 to-amber-500 text-slate-950 font-black text-xs sm:text-sm font-sport tracking-wider shadow-lg border border-yellow-100 flex items-center gap-1">
+          <span>{{ product().price }}€</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. ZONE CENTRALE : MISE EN VALEUR DE L'ARTICLE (ngSrc avec object-contain & fond transparent) -->
+    <div class="relative h-44 sm:h-48 w-full flex items-center justify-center my-1 rounded-xl bg-gradient-to-b from-white/5 to-white/10 backdrop-blur-xs border border-white/10 p-2 overflow-hidden">
+      <!-- Halo lumineux subtil -->
+      <div
+        class="absolute w-32 h-32 rounded-full blur-2xl opacity-40 pointer-events-none"
+        [class.bg-[#3bf733]]="!isFeatured()"
+        [class.bg-amber-300]="isFeatured()"
+      ></div>
+
+      <!-- Image du produit avec directive ngSrc et object-contain sans déformation -->
+      <img
+        [ngSrc]="product().image"
+        [alt]="product().name"
+        width="220"
+        height="220"
+        class="relative z-10 max-h-full max-w-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,0.5)] transition-transform duration-500 group-hover:scale-110"
+        priority
+      />
+
+      <!-- Logo officiel RCBA en miniature filigrane -->
+      <div class="absolute bottom-2 left-2 z-10 flex items-center gap-1 bg-black/40 backdrop-blur-xs px-1.5 py-0.5 rounded text-[8px] font-mono text-emerald-300 font-bold border border-white/10">
+        RCBA 528340
+      </div>
+    </div>
+
+    <!-- 3. BANDEAU DE NOM DU PRODUIT (STYLE TITRE DE CARTE PANINI) -->
+    <div class="relative z-20 my-1">
+      <div class="flex items-center justify-between text-[10px] font-bold text-sky-200 uppercase font-sport mb-0.5">
+        <span>{{ product().brand }}</span>
+        <span class="text-emerald-400 font-mono">100% ADIDAS</span>
+      </div>
+      <h3 class="text-sm sm:text-base font-black text-white uppercase tracking-tight font-display leading-tight line-clamp-2 drop-shadow-sm h-10">
+        {{ product().name }}
+      </h3>
+    </div>
+  </div>
+
+  <!-- 4. ZONE D'ACTION : LE "PIED" E-COMMERCE DE LA CARTE -->
+  <div class="pt-3 flex flex-col justify-between gap-2.5">
+    <!-- Sélection des tailles sous forme de petites pastilles cliquables -->
+    <div>
+      <div class="flex items-center justify-between text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 font-sport">
+        <span>Taille sélectionnée :</span>
+        <span class="text-[#101d69] font-black">{{ selectedSize() || 'Standard' }}</span>
+      </div>
+
+      <!-- Grille des pastilles de tailles -->
+      <div class="flex flex-wrap gap-1 max-h-16 overflow-y-auto pr-0.5 scrollbar-thin">
+        @for (size of product().availableSizes; track size) {
+          <button
+            type="button"
+            (click)="selectSize(size)"
+            class="px-2 py-1 rounded-md text-[10px] font-bold uppercase transition-all duration-150 border"
+            [class.bg-[#101d69]]="selectedSize() === size"
+            [class.text-white]="selectedSize() === size"
+            [class.border-[#101d69]]="selectedSize() === size"
+            [class.shadow-xs]="selectedSize() === size"
+            [class.scale-105]="selectedSize() === size"
+            [class.bg-slate-100]="selectedSize() !== size"
+            [class.text-slate-700]="selectedSize() !== size"
+            [class.border-slate-200]="selectedSize() !== size"
+            [class.hover:bg-slate-200]="selectedSize() !== size"
+          >
+            {{ size }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Bouton d'action "Ajouter au panier" avec retour visuel immédiat -->
+    <button
+      type="button"
+      (click)="addToCart()"
+      class="w-full relative overflow-hidden rounded-xl py-2.5 px-4 font-black text-xs uppercase tracking-wider text-white transition-all duration-200 shadow-md flex items-center justify-center gap-2 active:scale-95"
+      [class.bg-[#21ad1c]]="!justAdded()"
+      [class.hover:bg-[#1faa18]]="!justAdded()"
+      [class.hover:shadow-[0_0_15px_rgba(41,219,34,0.4)]]="!justAdded()"
+      [class.bg-[#101d69]]="justAdded()"
+    >
+      @if (justAdded()) {
+        <span class="text-sm">✓</span>
+        <span>Ajouté au panier !</span>
+      } @else {
+        <span class="text-sm">🛒</span>
+        <span>Ajouter au panier</span>
+      }
+    </button>
+  </div>
+</div>

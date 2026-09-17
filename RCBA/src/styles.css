@@ -1,101 +1,172 @@
 @import 'tailwindcss';
 
 @theme {
-  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-display: 'Outfit', 'Plus Jakarta Sans', sans-serif;
-  --font-sport: 'Chakra Petch', 'Outfit', sans-serif;
-  --font-hero: 'Syne', sans-serif;
+  --font-sans: 'Inter', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-display: 'Teko', 'Space Grotesk', 'Outfit', sans-serif;
+  --font-sport: 'Space Grotesk', 'Chakra Petch', sans-serif;
+  --font-brutal: 'Teko', sans-serif;
+  --font-hero: 'Teko', 'Syne', sans-serif;
 
-  --color-rcba-blue: #0b154d;
-  --color-rcba-blue-royal: #162eb8;
-  --color-rcba-blue-electric: #2563eb;
-  --color-rcba-blue-light: #eef4ff;
-  
-  --color-rcba-green: #1faa18;
-  --color-rcba-green-vivid: #29db22;
-  --color-rcba-green-neon: #3bf733;
-  --color-rcba-green-light: #f0fdf4;
+  /* Palette Dark Mode Exclusif "Next-Gen & E-Sport" */
+  --color-rcba-abyss: #070B14;
+  --color-rcba-abyss-card: rgba(13, 20, 36, 0.7);
+  --color-rcba-blue: #0A122C;
+  --color-rcba-blue-royal: #132577;
+  --color-rcba-blue-electric: #2563EB;
+  --color-rcba-blue-glow: rgba(37, 99, 235, 0.25);
+
+  /* Vert Néon Cyberpunk Éclatant pour CTA & Scores */
+  --color-rcba-neon: #00FF66;
+  --color-rcba-neon-hover: #10ff75;
+  --color-rcba-neon-glow: rgba(0, 255, 102, 0.35);
+  --color-rcba-green: #00FF66;
+  --color-rcba-green-neon: #00FF66;
 }
 
 /* ——————————————————————————————————————
-   Design System Ambitieux & Dynamique RCBA
-   Club amateur jeune, audacieux et moderne
+   DIRECTION ARTISTIQUE "NEXT-GEN & E-SPORT" (RCBA 2026-2027)
+   Inspirée de EA FC, Nike FC, Sorare et de l'e-sport
 —————————————————————————————————————— */
 
 body {
   font-family: var(--font-sans);
-  background-color: #f1f5f9;
-  color: #0f172a;
+  background-color: #070B14;
+  color: #F8FAFC;
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(37, 99, 235, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 85% 75%, rgba(0, 255, 102, 0.08) 0%, transparent 45%),
+    linear-gradient(to bottom, #070B14, #05080F);
+  background-attachment: fixed;
 }
 
-h1, h2, h3, .font-heading {
-  font-family: var(--font-display);
-  letter-spacing: -0.02em;
+/* Typographie Cinétique : Brutaliste, Condensée, Uppercase et Italic pour sensation de vitesse */
+h1, h2, h3, .font-kinetic {
+  font-family: var(--font-brutal);
+  text-transform: uppercase;
+  font-style: italic;
+  letter-spacing: 0.02em;
 }
 
-.font-sport {
-  font-family: var(--font-sport);
+/* Bento Grid & Glassmorphism Next-Gen */
+.bento-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
 }
 
-.font-hero {
-  font-family: var(--font-hero);
+.bento-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 255, 102, 0.45);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 255, 102, 0.2);
 }
 
-/* Texture Pelouse & Vitesse Dynamique */
+/* Boutons "Skew" E-Sport : Conteneur incliné (-skew-x-12) & texte redressé (skew-x-12) */
+.btn-skew {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform: skewX(-12deg);
+  background: #00FF66;
+  color: #070B14;
+  font-family: var(--font-brutal);
+  font-weight: 700;
+  font-size: 1.15rem;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.65rem 1.75rem;
+  border-radius: 0.35rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 20px rgba(0, 255, 102, 0.4);
+  cursor: pointer;
+  border: none;
+}
+
+.btn-skew > * {
+  transform: skewX(12deg);
+}
+
+.btn-skew:hover {
+  background: #26ff7b;
+  transform: skewX(-12deg) translateY(-2px);
+  box-shadow: 0 0 30px rgba(0, 255, 102, 0.7);
+}
+
+.btn-skew-blue {
+  transform: skewX(-12deg);
+  background: #1D4ED8;
+  color: #FFFFFF;
+  box-shadow: 0 0 20px rgba(29, 78, 216, 0.4);
+}
+
+.btn-skew-blue:hover {
+  background: #2563EB;
+  box-shadow: 0 0 30px rgba(37, 99, 235, 0.7);
+}
+
+/* Glow Ambiant Flouté */
+.ambient-glow-blue {
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  background: rgba(37, 99, 235, 0.18);
+  border-radius: 9999px;
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambient-glow-green {
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  background: rgba(0, 255, 102, 0.12);
+  border-radius: 9999px;
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Texture terrain & lignes cinétiques */
 .bg-pitch-grid {
   background-image: 
-    radial-gradient(circle at center, rgba(41, 219, 34, 0.12) 1px, transparent 1px),
-    linear-gradient(to right, rgba(16, 29, 105, 0.04) 1px, transparent 1px);
-  background-size: 28px 28px, 56px 56px;
+    radial-gradient(circle at center, rgba(0, 255, 102, 0.1) 1px, transparent 1px),
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 32px 32px, 64px 64px;
 }
 
-.bg-hero-glow {
-  background: radial-gradient(circle at 85% 15%, rgba(41, 219, 34, 0.28) 0%, transparent 45%),
-              radial-gradient(circle at 10% 85%, rgba(22, 46, 184, 0.45) 0%, transparent 55%),
-              linear-gradient(135deg, #060b28 0%, #101d69 55%, #08113b 100%);
-}
-
-/* Motif Jersey Sportif (Rayures diagonales de maillot) */
 .bg-jersey-stripes {
   background-image: repeating-linear-gradient(
     -45deg,
-    rgba(255, 255, 255, 0.03),
-    rgba(255, 255, 255, 0.03) 12px,
+    rgba(255, 255, 255, 0.02),
+    rgba(255, 255, 255, 0.02) 12px,
     transparent 12px,
     transparent 24px
   );
 }
 
-/* Liseré dynamique néon vert */
-.border-neon-glow {
-  box-shadow: 0 0 20px rgba(41, 219, 34, 0.45), 0 0 2px rgba(41, 219, 34, 0.8);
-}
-
-.border-gold-glow {
-  box-shadow: 0 0 18px rgba(245, 158, 11, 0.35);
-}
-
-/* CARTE PANINI DE COLLECTION AUTHENTIQUE */
+/* Effets Panini & Holographiques compatibles Next-Gen */
 .panini-card {
   position: relative;
-  border-radius: 18px;
-  background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-  box-shadow: 
-    0 10px 25px -5px rgba(10, 20, 74, 0.15),
-    0 8px 10px -6px rgba(10, 20, 74, 0.1),
-    0 0 0 1px rgba(226, 232, 240, 0.8);
+  border-radius: 20px;
+  background: rgba(13, 20, 36, 0.85);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.6);
   transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .panini-card:hover {
   transform: translateY(-8px) scale(1.02);
   box-shadow: 
-    0 25px 35px -10px rgba(16, 29, 105, 0.25),
-    0 0 25px rgba(41, 219, 34, 0.35),
-    0 0 0 2px rgba(41, 219, 34, 0.6);
+    0 25px 45px -10px rgba(0, 0, 0, 0.9),
+    0 0 25px rgba(0, 255, 102, 0.3);
 }
 
-/* Reflet Holographique Panini Foil */
 .panini-foil {
   position: relative;
   overflow: hidden;
@@ -111,9 +182,9 @@ h1, h2, h3, .font-heading {
   background: linear-gradient(
     60deg,
     transparent 35%,
-    rgba(255, 255, 255, 0.25) 45%,
-    rgba(59, 247, 51, 0.2) 50%,
-    rgba(56, 189, 248, 0.2) 55%,
+    rgba(255, 255, 255, 0.3) 45%,
+    rgba(0, 255, 102, 0.3) 50%,
+    rgba(56, 189, 248, 0.3) 55%,
     transparent 65%
   );
   transform: rotate(25deg) translateY(-100%);
@@ -127,42 +198,21 @@ h1, h2, h3, .font-heading {
   opacity: 1;
 }
 
-/* Ruban Panini Biseauté pour Nom de Joueur / Dirigeant */
 .panini-ribbon {
-  background: linear-gradient(135deg, #091244 0%, #101d69 70%, #162eb8 100%);
+  background: linear-gradient(135deg, #050b1f 0%, #0d1b4d 70%, #1e3a8a 100%);
   clip-path: polygon(0 0, 100% 0, 96% 100%, 4% 100%);
 }
 
-.card-dynamic {
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.card-dynamic:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 30px -10px rgba(16, 29, 105, 0.16), 0 0 0 1px rgba(33, 173, 28, 0.35);
+.gold-border-glow {
+  box-shadow: 0 0 25px rgba(245, 158, 11, 0.6), inset 0 0 15px rgba(254, 240, 138, 0.3);
 }
 
-/* Badge Match / Score Sportif */
-.badge-sport {
-  font-family: var(--font-sport);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-/* Centrage global des images */
+/* Centrage d'images */
 img {
   display: block;
   margin-inline: auto;
 }
 
-img.object-cover {
-  object-position: center center;
-}
-
-img.object-contain {
-  object-position: center center;
-}
-
-/* Scrollbar discrète */
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;

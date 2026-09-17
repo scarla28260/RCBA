@@ -1,30 +1,30 @@
-<footer class="mt-20 border-t-4 border-[#3bf733] bg-gradient-to-b from-[#0a123d] to-[#050920] text-white">
+<footer class="mt-20 border-t-2 border-[#00FF66] bg-gradient-to-b from-[#070B14] via-[#05080F] to-[#020408] text-white">
   <!-- Partners Banner Section -->
-  <div class="border-b border-white/10 bg-[#0c1650]/80 backdrop-blur-sm py-8">
+  <div class="border-b border-white/10 bg-white/2 backdrop-blur-md py-8">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
         <div>
-          <span class="text-[11px] font-black uppercase tracking-[0.25em] text-[#3bf733] font-sport">Soutien & Engagement Partenaires</span>
-          <h3 class="text-xl font-black text-white uppercase tracking-wider font-display">Ils Soutiennent l'Aventure RCBA</h3>
+          <span class="text-[11px] font-black uppercase tracking-[0.25em] text-[#00FF66] font-sport">Soutien & Engagement Partenaires</span>
+          <h3 class="text-2xl font-black text-white uppercase tracking-wider font-display italic">Ils Soutiennent l'Aventure RCBA</h3>
         </div>
-        <p class="text-xs text-slate-300 max-w-md">
+        <p class="text-xs text-slate-400 max-w-md">
           Un grand merci aux entreprises locales et aux institutions qui croient en l'énergie et aux ambitions de notre jeunesse sportive.
         </p>
       </div>
 
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
         @for (partner of partners(); track partner.name) {
-          <div class="flex flex-col items-center justify-center gap-2 p-3 rounded-xl bg-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
+          <div class="flex flex-col items-center justify-center gap-2 p-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#00FF66]/50 hover:shadow-[0_0_15px_rgba(0,255,102,0.2)]">
             @if (partner.logo) {
               <img
                 [src]="partner.logo"
                 [alt]="partner.name"
-                class="h-10 w-full object-contain"
+                class="h-10 w-full object-contain filter brightness-95 contrast-105"
                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"
               />
-              <span class="text-[10px] font-bold text-center text-[#101d69] hidden">{{ partner.name }}</span>
+              <span class="text-[10px] font-bold text-center text-white hidden">{{ partner.name }}</span>
             } @else {
-              <span class="text-xs font-bold text-center text-[#101d69]">{{ partner.name }}</span>
+              <span class="text-xs font-bold text-center text-white">{{ partner.name }}</span>
             }
             <span class="text-[9px] text-slate-400 uppercase tracking-wider text-center leading-tight">{{ partner.category }}</span>
           </div>

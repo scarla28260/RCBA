@@ -1,16 +1,24 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { BoutiqueItem, CartItem } from '../../core/models/boutique.model';
+import { BoutiqueItem } from '../../core/models/boutique.model';
+import { CartService } from '../../core/services/cart.service';
+import { BoutiqueCardComponent } from '../../shared/components/boutique-card/boutique-card.component';
 
 @Component({
   selector: 'app-boutique',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, BoutiqueCardComponent],
   templateUrl: './boutique.component.html',
   styleUrl: './boutique.component.css',
 })
 export class BoutiqueComponent {
+  private readonly cartService = inject(CartService);
+
+  // Panier réactif via le service
+  readonly cart = this.cartService.items;
+  readonly cartTotal = this.cartService.total;
+  readonly cartCount = this.cartService.count;
   // Liste officielle des articles officiels du club (adidas & équipementier Les 3S Sports)
   readonly articles = signal<BoutiqueItem[]>([
     {
@@ -136,8 +144,6 @@ export class BoutiqueComponent {
     'gourde-club': { size: '750 ml', quantity: 1 },
   });
 
-  // Panier
-  readonly cart = signal<CartItem[]>([]);
   readonly orderSuccess = signal<boolean>(false);
 
   // Formulaire d'information commande
@@ -157,69 +163,16 @@ export class BoutiqueComponent {
     return this.articles().filter((a) => a.category === cat);
   });
 
-  // Calcul du montant total du panier
-  readonly cartTotal = computed(() => {
-    return this.cart().reduce((sum, item) => sum + item.item.price * item.quantity, 0);
-  });
-
-  readonly cartCount = computed(() => {
-    return this.cart().reduce((sum, item) => sum + item.quantity, 0);
-  });
-
-  // Mise à jour de la taille sélectionnée
-  onSizeChange(itemId: string, size: string): void {
-    const current = this.itemSelections()[itemId] || { size, quantity: 1 };
-    this.itemSelections.update((map) => ({
-      ...map,
-      [itemId]: { ...current, size },
-    }));
-  }
-
-  // Mise à jour de la quantité
-  onQuantityChange(itemId: string, delta: number): void {
-    const current = this.itemSelections()[itemId] || { size: 'M', quantity: 1 };
-    const newQty = Math.max(1, current.quantity + delta);
-    this.itemSelections.update((map) => ({
-      ...map,
-      [itemId]: { ...current, quantity: newQty },
-    }));
-  }
-
-  getSelection(itemId: string, defaultSize: string) {
-    return this.itemSelections()[itemId] || { size: defaultSize, quantity: 1 };
-  }
-
-  // Ajouter au panier
-  addToCart(item: BoutiqueItem): void {
-    const selection = this.getSelection(item.id, item.availableSizes[0]);
-    const existingIndex = this.cart().findIndex(
-      (c) => c.item.id === item.id && c.size === selection.size
-    );
-
-    if (existingIndex > -1) {
-      this.cart.update((list) => {
-        const updated = [...list];
-        updated[existingIndex].quantity += selection.quantity;
-        return updated;
-      });
-    } else {
-      this.cart.update((list) => [
-        ...list,
-        { item, size: selection.size, quantity: selection.quantity },
-      ]);
-    }
-  }
-
   // Supprimer du panier
   removeFromCart(index: number): void {
-    this.cart.update((list) => list.filter((_, i) => i !== index));
+    this.cartService.removeItem(index);
   }
 
   // Validation commande
   submitOrder(): void {
     if (this.cart().length === 0) return;
     this.orderSuccess.set(true);
-    this.cart.set([]);
+    this.cartService.clearCart();
     setTimeout(() => {
       this.orderSuccess.set(false);
       this.customer = {

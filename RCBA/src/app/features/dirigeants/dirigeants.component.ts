@@ -131,4 +131,9 @@ export class DirigeantsComponent {
   getInitials(member: StaffMember): string {
     return `${member.firstName[0]}${member.lastName[0]}`.toUpperCase();
   }
+
+  isDirectionMember(member: StaffMember): boolean {
+    const cats = member.categories || [member.category];
+    return cats.includes('bureau') || cats.includes('administration');
+  }
 }

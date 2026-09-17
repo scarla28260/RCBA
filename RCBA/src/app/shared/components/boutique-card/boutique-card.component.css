@@ -1,0 +1,53 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+/* Ratio vertical de carte à collectionner e-commerce (environ 2.5 / 4 pour laisser de la place aux tailles) */
+.boutique-card-wrapper {
+  perspective: 1000px;
+  min-height: 480px;
+}
+
+/* Effet Holographique Irisé (Panini Foil) pour articles Featured / Nouveautés */
+.holographic-featured {
+  position: relative;
+  overflow: hidden;
+}
+
+.holographic-featured::after {
+  content: '';
+  position: absolute;
+  inset: -100%;
+  width: 300%;
+  height: 300%;
+  background: linear-gradient(
+    115deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.5) 36%,
+    rgba(34, 211, 238, 0.45) 45%, /* Cyan */
+    rgba(232, 121, 249, 0.5) 50%, /* Magenta */
+    rgba(251, 191, 36, 0.45) 55%, /* Or */
+    rgba(59, 247, 51, 0.4) 62%,  /* Vert fluo */
+    transparent 75%
+  );
+  transform: translate(-60%, -60%) rotate(25deg);
+  transition: transform 0.75s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+  pointer-events: none;
+  opacity: 0.15;
+  mix-blend-mode: overlay;
+  z-index: 25;
+}
+
+.boutique-card-wrapper:hover .holographic-featured::after {
+  transform: translate(25%, 25%) rotate(25deg);
+  opacity: 0.9;
+}
+
+/* Texture terrain de football & diagonales jersey */
+.bg-pitch-grid-subtle {
+  background-image: 
+    radial-gradient(circle at center, rgba(41, 219, 34, 0.08) 1px, transparent 1px),
+    linear-gradient(to right, rgba(16, 29, 105, 0.04) 1px, transparent 1px);
+  background-size: 20px 20px, 40px 40px;
+}

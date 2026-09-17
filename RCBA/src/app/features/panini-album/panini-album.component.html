@@ -1,0 +1,140 @@
+<div class="min-h-screen bg-slate-900 text-white py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto space-y-8">
+
+    <!-- En-tête de l'Album Panini RCBA -->
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#070e36] via-[#101d69] to-[#0d3b14] p-8 sm:p-12 border-2 border-amber-400/40 shadow-2xl">
+      <div class="absolute inset-0 bg-pitch-grid opacity-25"></div>
+      <div class="absolute inset-0 bg-jersey-stripes opacity-15"></div>
+
+      <!-- Halo lumineux or & vert -->
+      <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-amber-400/20 blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-20 -top-20 w-80 h-80 rounded-full bg-[#3bf733]/20 blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 border border-amber-300/40 text-xs font-black uppercase font-sport tracking-wider">
+              <span>👑</span> COLLECTION OFFICIELLE RCBA 2026-2027
+            </span>
+            <span class="text-xs font-mono text-emerald-400 font-bold">FFF 528340</span>
+          </div>
+
+          <h1 class="text-3xl sm:text-5xl font-black uppercase tracking-tight font-display text-white">
+            Album des Vignettes <span class="bg-gradient-to-r from-amber-300 via-yellow-200 to-[#3bf733] bg-clip-text text-transparent">Style Panini</span>
+          </h1>
+
+          <p class="text-sm sm:text-base text-slate-300 max-w-2xl mt-2 leading-relaxed font-sans">
+            Retrouvez tous les visages du Racing Club Bû Abondant sous forme de cartes collector interactives :
+            <strong class="text-amber-300">Vignettes Dorées</strong> pour les membres de la Direction & du Bureau, et
+            <strong class="text-cyan-300">Reflets Holographiques</strong> pour les cartes Rares !
+          </p>
+        </div>
+
+        <div class="flex items-center gap-3 shrink-0">
+          <div class="text-right hidden sm:block">
+            <div class="text-2xl font-black font-sport text-amber-300">{{ players().length }}</div>
+            <div class="text-[10px] uppercase font-bold text-slate-400">Cartes répertoriées</div>
+          </div>
+          <div class="h-16 w-16 rounded-2xl bg-white/10 backdrop-blur-md p-2 flex items-center justify-center border border-white/20 shadow-xl">
+            <img src="/logo.png" alt="RCBA" class="max-h-full max-w-full object-contain" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Barre de Filtres de Collection -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
+      <button
+        type="button"
+        (click)="setFilter('all')"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-wider transition-all"
+        [class.bg-amber-400]="activeFilter() === 'all'"
+        [class.text-slate-950]="activeFilter() === 'all'"
+        [class.shadow-lg]="activeFilter() === 'all'"
+        [class.bg-slate-800]="activeFilter() !== 'all'"
+        [class.text-slate-300]="activeFilter() !== 'all'"
+        [class.hover:bg-slate-700]="activeFilter() !== 'all'"
+      >
+        <span>🌟</span> Toutes les Vignettes ({{ players().length }})
+      </button>
+
+      <button
+        type="button"
+        (click)="setFilter('gold')"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-wider transition-all"
+        [class.bg-amber-400]="activeFilter() === 'gold'"
+        [class.text-slate-950]="activeFilter() === 'gold'"
+        [class.shadow-lg]="activeFilter() === 'gold'"
+        [class.bg-slate-800]="activeFilter() !== 'gold'"
+        [class.text-amber-300]="activeFilter() !== 'gold'"
+        [class.hover:bg-slate-700]="activeFilter() !== 'gold'"
+      >
+        <span>👑</span> Direction (Vignettes Dorées)
+      </button>
+
+      <button
+        type="button"
+        (click)="setFilter('rare')"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-wider transition-all"
+        [class.bg-cyan-400]="activeFilter() === 'rare'"
+        [class.text-slate-950]="activeFilter() === 'rare'"
+        [class.shadow-lg]="activeFilter() === 'rare'"
+        [class.bg-slate-800]="activeFilter() !== 'rare'"
+        [class.text-cyan-300]="activeFilter() !== 'rare'"
+        [class.hover:bg-slate-700]="activeFilter() !== 'rare'"
+      >
+        <span>✨</span> Cartes Rares Holographiques
+      </button>
+
+      <button
+        type="button"
+        (click)="setFilter('jeunes')"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-wider transition-all"
+        [class.bg-[#3bf733]]="activeFilter() === 'jeunes'"
+        [class.text-slate-950]="activeFilter() === 'jeunes'"
+        [class.shadow-lg]="activeFilter() === 'jeunes'"
+        [class.bg-slate-800]="activeFilter() !== 'jeunes'"
+        [class.text-emerald-300]="activeFilter() !== 'jeunes'"
+        [class.hover:bg-slate-700]="activeFilter() !== 'jeunes'"
+      >
+        <span>⚽</span> École de Foot & Jeunes
+      </button>
+
+      <button
+        type="button"
+        (click)="setFilter('seniors')"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-wider transition-all"
+        [class.bg-blue-500]="activeFilter() === 'seniors'"
+        [class.text-white]="activeFilter() === 'seniors'"
+        [class.shadow-lg]="activeFilter() === 'seniors'"
+        [class.bg-slate-800]="activeFilter() !== 'seniors'"
+        [class.text-blue-300]="activeFilter() !== 'seniors'"
+        [class.hover:bg-slate-700]="activeFilter() !== 'seniors'"
+      >
+        <span>🏆</span> Seniors & Staff
+      </button>
+    </div>
+
+    <!-- Grille Responsive des Vignettes Panini (grid-cols-2 md:grid-cols-4 lg:grid-cols-5) -->
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-5 sm:gap-6">
+      @for (player of filteredPlayers(); track player.id) {
+        <app-panini-card
+          [firstName]="player.firstName"
+          [lastName]="player.lastName"
+          [category]="player.category"
+          [role]="player.role"
+          [photoUrl]="player.photoUrl"
+          [number]="player.number"
+          [isRare]="player.isRare"
+          [isGold]="player.isGold || false"
+        />
+      } @empty {
+        <div class="col-span-full text-center py-20 text-slate-500">
+          <span class="text-4xl block mb-2">🔍</span>
+          <p class="font-bold text-sm">Aucune vignette ne correspond au filtre sélectionné.</p>
+        </div>
+      }
+    </div>
+
+  </div>
+</div>
