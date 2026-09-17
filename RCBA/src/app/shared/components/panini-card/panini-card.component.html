@@ -68,8 +68,8 @@
       </div>
     </header>
 
-    <!-- 2. Zone Photo du Joueur / Dirigeant -->
-    <div class="relative flex-1 flex items-center justify-center overflow-hidden px-2">
+    <!-- 2. Zone Photo du Joueur / Dirigeant (Proportions & Cadrage Visage Parfaitement Centré) -->
+    <div class="relative flex-1 w-full flex items-center justify-center overflow-hidden px-2 py-1">
       <!-- Halo lumineux centré -->
       <div
         class="absolute w-36 h-36 rounded-full blur-xl opacity-40 pointer-events-none"
@@ -77,30 +77,32 @@
         [class.bg-amber-300]="isGold()"
       ></div>
 
-      <!-- Image avec directive ngSrc ou fallback sécurisé -->
-      @if (photoUrl()) {
-        <img
-          [ngSrc]="photoUrl()!"
-          [alt]="firstName() + ' ' + lastName()"
-          width="240"
-          height="240"
-          class="relative z-10 w-full h-full object-cover object-top drop-shadow-xl transition-transform duration-500 group-hover:scale-105 rounded-lg"
-          priority
-        />
-      } @else {
-        <div
-          class="relative z-10 w-28 h-28 sm:w-32 sm:h-32 rounded-2xl flex flex-col items-center justify-center text-white shadow-xl border-2 border-white/40 backdrop-blur-xs"
-          [class.bg-white/10]="!isGold()"
-          [class.bg-amber-900/40]="isGold()"
-        >
-          <span class="text-3xl sm:text-4xl font-black font-sport tracking-wider drop-shadow-md">
-            {{ initials() }}
-          </span>
-          <span class="text-[9px] font-semibold text-white/70 uppercase tracking-widest mt-1">
-            RCBA
-          </span>
-        </div>
-      }
+      <!-- Cadre photo centré aux proportions harmonieuses et constantes -->
+      <div class="relative z-10 w-full h-full max-h-[175px] aspect-[4/4.5] flex items-center justify-center">
+        @if (photoUrl()) {
+          <img
+            [ngSrc]="photoUrl()!"
+            [alt]="firstName() + ' ' + lastName()"
+            width="240"
+            height="270"
+            class="w-full h-full object-cover object-[center_18%] drop-shadow-xl transition-transform duration-500 group-hover:scale-105 rounded-xl border border-white/20 shadow-md"
+            priority
+          />
+        } @else {
+          <div
+            class="w-full h-full rounded-xl flex flex-col items-center justify-center text-white shadow-xl border-2 border-white/40 backdrop-blur-xs"
+            [class.bg-white/10]="!isGold()"
+            [class.bg-amber-900/40]="isGold()"
+          >
+            <span class="text-3xl sm:text-4xl font-black font-sport tracking-wider drop-shadow-md">
+              {{ initials() }}
+            </span>
+            <span class="text-[9px] font-semibold text-white/70 uppercase tracking-widest mt-1">
+              RCBA
+            </span>
+          </div>
+        }
+      </div>
     </div>
 
     <!-- 3. Pied de la vignette : Catégorie, Bandeau Nom et Rôle -->
