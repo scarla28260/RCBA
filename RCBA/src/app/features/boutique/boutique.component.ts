@@ -21,17 +21,17 @@ export class BoutiqueComponent {
       brand: 'adidas Tiro 24',
       badge: 'Best-Seller',
       description: 'Maillot officiel de match du Racing Club Bû Abondant aux couleurs Bleu Roi et Vert avec blason officiel brodé et flocage club.',
-      image: '/logo.png',
+      image: '/images/boutique/maillot-domicile.png',
       availableSizes: ['6 ans', '8 ans', '10 ans', '12 ans', '14 ans', '16 ans', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
     },
     {
       id: 'short-match',
-      name: 'Short Officiel adidas',
+      name: 'Short Officiel adidas Match',
       category: 'tenue',
       price: 22,
       brand: 'adidas Tiro 24',
       description: 'Short respirant Aeroready avec taille élastique et cordon de serrage. Blason RCBA sur la cuisse droite.',
-      image: '/logo.png',
+      image: '/images/boutique/kit-home.png',
       availableSizes: ['6 ans', '8 ans', '10 ans', '12 ans', '14 ans', '16 ans', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
     },
     {
@@ -42,7 +42,7 @@ export class BoutiqueComponent {
       brand: 'adidas Entrada',
       badge: 'Indispensable',
       description: 'Haut d\'échauffement demi-zip chaud et isolant pour les séances du mercredi et les déplacements en soirée.',
-      image: '/logo.png',
+      image: '/images/boutique/pack-training.png',
       availableSizes: ['6 ans', '8 ans', '10 ans', '12 ans', '14 ans', '16 ans', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
     },
     {
@@ -52,7 +52,7 @@ export class BoutiqueComponent {
       price: 38,
       brand: 'adidas Tiro',
       description: 'Coupe slim fuselée avec zips aux chevilles facilitant le passage par-dessus les chaussures à crampons.',
-      image: '/logo.png',
+      image: '/images/boutique/pack-training.png',
       availableSizes: ['6 ans', '8 ans', '10 ans', '12 ans', '14 ans', '16 ans', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
     },
     {
@@ -62,7 +62,7 @@ export class BoutiqueComponent {
       price: 52,
       brand: 'adidas Core',
       description: 'Veste déperlante avec capuche intégrée pour affronter la pluie et le vent sur les bancs de touche.',
-      image: '/logo.png',
+      image: '/images/boutique/jacket-tactical.png',
       availableSizes: ['6 ans', '8 ans', '10 ans', '12 ans', '14 ans', '16 ans', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
     },
     {
@@ -73,7 +73,7 @@ export class BoutiqueComponent {
       brand: 'adidas Stadium',
       badge: 'Chaleur Max',
       description: 'Manteau long grand froid rembourré avec poches doublées polaire et logo brodé au cœur.',
-      image: '/logo.png',
+      image: '/images/boutique/veste-softshell.png',
       availableSizes: ['6 ans', '8 ans', '10 ans', '12 ans', '14 ans', '16 ans', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
     },
     {
@@ -83,7 +83,7 @@ export class BoutiqueComponent {
       price: 12,
       brand: 'adidas Milano',
       description: 'Paire de chaussettes montantes anatomiques avec maintien de la cheville et de la voûte plantaire.',
-      image: '/logo.png',
+      image: '/images/boutique/kit-home.png',
       availableSizes: ['27-30 (Enfant)', '31-34 (Enfant)', '35-38 (Junior)', '39-42 (Adulte)', '43-46 (Adulte)'],
     },
     {
@@ -93,7 +93,7 @@ export class BoutiqueComponent {
       price: 34,
       brand: 'adidas Tiro Bag',
       description: 'Grand sac à bandoulière matelassée avec fond rigide imperméable et compartiment ventilé pour chaussures sales.',
-      image: '/logo.png',
+      image: '/images/boutique/sac-sport.png',
       availableSizes: ['Taille Unique (M - 40L)', 'Grand Format (L - 60L)'],
     },
     {
@@ -104,7 +104,7 @@ export class BoutiqueComponent {
       brand: 'RCBA Club',
       badge: 'Supporter',
       description: 'L\'ensemble chaud officiel en tricot aux couleurs du club pour soutenir nos équipes le week-end.',
-      image: '/logo.png',
+      image: '/images/boutique/accessories.png',
       availableSizes: ['Taille Unique Enfant', 'Taille Unique Adulte'],
     },
     {
@@ -114,7 +114,7 @@ export class BoutiqueComponent {
       price: 10,
       brand: 'RCBA Club',
       description: 'Gourde individuelle réutilisable avec bouchon sport étanche personnalisable avec le prénom du joueur.',
-      image: '/logo.png',
+      image: '/images/boutique/accessories.png',
       availableSizes: ['750 ml'],
     },
   ]);
