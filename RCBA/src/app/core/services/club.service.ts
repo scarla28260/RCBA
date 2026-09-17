@@ -2596,6 +2596,22 @@ export class ClubService {
     }
   }
 
+  /**
+   * Supprimer un licencié du registre et le retirer de son équipe éventuelle
+   */
+  deleteLicencie(licencieId: string): void {
+    // 1. Retirer de la liste des licenciés
+    this.licencies.update((list) => list.filter((l) => l.id !== licencieId));
+
+    // 2. Retirer de la liste des joueurs de toutes les équipes
+    this.teams.update((teams) =>
+      teams.map((team) => ({
+        ...team,
+        players: (team.players || []).filter((p) => p.id !== licencieId),
+      }))
+    );
+  }
+
   // ==========================================
   // CONVOCATIONS OFFICIELLES (COACH & DIRECTION & ÉQUIPES)
   // ==========================================

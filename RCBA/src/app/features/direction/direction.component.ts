@@ -479,6 +479,26 @@ export class DirectionComponent {
     };
   }
 
+  /**
+   * Supprimer définitivement un joueur / licencié
+   */
+  deleteLicencie(licencie: Licencie): void {
+    const confirmation = window.confirm(
+      `Êtes-vous sûr de vouloir supprimer définitivement le joueur ${licencie.prenom} ${licencie.nom} (Licence n° ${licencie.numeroLicence}) du registre du club et de ses équipes ?`
+    );
+    if (!confirmation) return;
+
+    this.clubService.deleteLicencie(licencie.id);
+
+    // Si la fiche était ouverte, on la ferme
+    if (this.selectedLicencie()?.id === licencie.id) {
+      this.closeLicencieDetails();
+    }
+
+    this.assignmentSuccessMsg.set(`Le joueur ${licencie.prenom} ${licencie.nom} a été supprimé avec succès.`);
+    setTimeout(() => this.assignmentSuccessMsg.set(null), 4000);
+  }
+
   getLicenceBadgeClass(status: LicenceStatus): string {
     switch (status) {
       case 'validee': return 'bg-emerald-100 text-emerald-800 border-emerald-200';
