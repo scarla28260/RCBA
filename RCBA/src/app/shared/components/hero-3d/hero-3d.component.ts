@@ -125,44 +125,75 @@ export class Hero3DComponent implements AfterViewInit, OnDestroy {
     logoTexture.flipY = false;
 
     // =========================================================================
-    // ARCHITECTURE PBR À DOUBLE COUCHE (Groupe parent unique)
+    // ARCHITECTURE 3D EN RELIEF (Support Cylindre Biseauté + Dôme de Résine)
     // =========================================================================
     this.badgeGroup = new THREE.Group();
 
     // -------------------------------------------------------------------------
-    // COUCHE 1 : L'Écusson (Plat et sans distorsion géométrique)
+    // 1. LE SUPPORT 3D DU LOGO (Cylindre épais / Jeton de collection)
     // -------------------------------------------------------------------------
-    const logoGeometry = new THREE.CircleGeometry(2, 64);
-    const logoMaterial = new THREE.MeshBasicMaterial({
+    // Dimensions : Rayon 2, Épaisseur 0.2, 64 segments
+    const cylinderGeometry = new THREE.CylinderGeometry(2, 2, 0.2, 64);
+    
+    // Matériau tranche (contour) : Métallique sombre avec liseré lumineux vert néon #00FF66
+    const rimMaterial = new THREE.MeshStandardMaterial({
+      color: 0x070B14,
+      metalness: 0.9,
+      roughness: 0.2,
+      emissive: 0x00ff66,
+      emissiveIntensity: 0.8,
+    });
+
+    // Matériau face supérieure (couvercle avant) : Logo RCBA
+    const faceMaterial = new THREE.MeshStandardMaterial({
       map: logoTexture,
       transparent: true,
-      side: THREE.DoubleSide,
+      roughness: 0.3,
+      metalness: 0.1,
     });
-    const meshLogo = new THREE.Mesh(logoGeometry, logoMaterial);
-    meshLogo.position.set(0, 0, 0);
-    this.badgeGroup.add(meshLogo);
+
+    // Matériau face inférieure (fond arrière)
+    const backMaterial = new THREE.MeshStandardMaterial({
+      color: 0x070B14,
+      metalness: 0.9,
+      roughness: 0.3,
+    });
+
+    // CylinderGeometry materials: [0: contour, 1: top, 2: bottom]
+    const meshBase = new THREE.Mesh(cylinderGeometry, [rimMaterial, faceMaterial, backMaterial]);
+    
+    // Oriente le cylindre face caméra
+    meshBase.rotation.x = Math.PI / 2;
+    meshBase.position.set(0, 0, 0);
+    this.badgeGroup.add(meshBase);
 
     // -------------------------------------------------------------------------
-    // COUCHE 2 : Le Dôme de Résine Époxy (Superposition / Overlay sans transmission)
+    // 2. LE DÔME DE RÉSINE (Demi-sphère écrasée par-dessus le cylindre)
     // -------------------------------------------------------------------------
-    // 1. Sphère complète écrasée sur Z pour créer la lentille convexe
-    const domeGeometry = new THREE.SphereGeometry(2, 64, 64);
+    // Demi-sphère : phiLength = 2PI, thetaLength = PI/2
+    const domeGeometry = new THREE.SphereGeometry(2, 64, 64, 0, Math.PI * 2, 0, Math.PI / 2);
     
-    // 2. Matériau Verre / Résine Époxy (Failsafe sans transmission, avec clearcoat pour l'éclat blanc)
+    // Matériau du dôme : MeshPhysicalMaterial transparent avec clearcoat
     const domeMaterial = new THREE.MeshPhysicalMaterial({
       color: 0xffffff,
       transparent: true,
-      opacity: 0.15,
-      depthWrite: false, // Empêche les conflits de superposition (Z-fighting)
+      opacity: 0.2,
       roughness: 0.0,
-      metalness: 0.1,
       clearcoat: 1.0,
       clearcoatRoughness: 0.0,
+      depthWrite: false, // Empêche l'occlusion du logo sous-jacent
     });
     const meshDome = new THREE.Mesh(domeGeometry, domeMaterial);
-    meshDome.scale.set(1, 1, 0.1);
-    // Positionné juste devant le logo
-    meshDome.position.set(0, 0, 0.1);
+    
+    // Aplatissement sur Y pour former la lentille bombée
+    meshDome.scale.set(1, 0.15, 1);
+    
+    // Comme la demi-sphère pointe vers le haut (+Y), on la pivote de PI/2 sur X
+    // pour que le sommet du dôme bombé pointe directement vers l'avant (vers la caméra)
+    meshDome.rotation.x = Math.PI / 2;
+    
+    // Positionnée juste au-dessus de la face supérieure du cylindre (z = 0.10)
+    meshDome.position.set(0, 0, 0.10);
     this.badgeGroup.add(meshDome);
 
     // Verrouillage initial du groupe
@@ -176,10 +207,10 @@ export class Hero3DComponent implements AfterViewInit, OnDestroy {
   private animate = (): void => {
     this.animFrameId = requestAnimationFrame(this.animate);
 
-    // Animation de balancier sur le GROUPE UNIQUEMENT
-    this.badgeGroup.rotation.y = Math.sin(this.clock.getElapsedTime()) * 0.3;
+    // 3. Animation de balancier sur l'axe Y (Phase 14)
+    this.badgeGroup.rotation.y = Math.sin(this.clock.getElapsedTime() * 1.2) * 0.3;
 
-    // Tout autre axe reste strictement figé à zéro
+    // Ne touche à aucun autre axe de rotation
     this.badgeGroup.rotation.x = 0;
     this.badgeGroup.rotation.z = 0;
 
