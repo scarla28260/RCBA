@@ -24,9 +24,37 @@
 }
 
 /* ——————————————————————————————————————
-   DIRECTION ARTISTIQUE "NEXT-GEN & E-SPORT" (RCBA 2026-2027)
-   Inspirée de EA FC, Nike FC, Sorare et de l'e-sport
+   PHASE 17 : RÉSILIENCE GLOBALE & ÉLASTICITÉ TYPOGRAPHIQUE
+   (Vaccin CSS pour Dark Mode, WCAG, Flexbox et Césure)
 —————————————————————————————————————— */
+
+@layer base {
+  body {
+    /* Contraste optimal par défaut pour le Dark Mode */
+    background-color: #020617; /* bg-slate-950 */
+    color: #cbd5e1; /* text-slate-300 */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Empêche TOUT débordement horizontal en forçant la césure */
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    /* Titres en blanc pur pour contraster avec le corps du texte */
+    color: #ffffff;
+    font-weight: 700;
+
+    /* Équilibre géométriquement les titres sur plusieurs lignes */
+    text-wrap: balance;
+  }
+
+  p {
+    /* Optimise la lecture des paragraphes pour éviter les mots isolés */
+    text-wrap: pretty;
+  }
+}
 
 body {
   font-family: var(--font-sans);
@@ -37,6 +65,8 @@ body {
     radial-gradient(circle at 85% 75%, rgba(0, 255, 102, 0.08) 0%, transparent 45%),
     linear-gradient(to bottom, #070B14, #05080F);
   background-attachment: fixed;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 /* Typographie Cinétique : Brutaliste, Condensée, Uppercase et Italic pour sensation de vitesse */
@@ -45,6 +75,7 @@ h1, h2, h3, .font-kinetic {
   text-transform: uppercase;
   font-style: italic;
   letter-spacing: 0.02em;
+  text-wrap: balance;
 }
 
 /* Bento Grid & Glassmorphism Next-Gen */
