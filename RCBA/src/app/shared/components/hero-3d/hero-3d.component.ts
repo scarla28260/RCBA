@@ -91,9 +91,9 @@ export class Hero3DComponent implements AfterViewInit, OnDestroy {
     // 1. Scène épurée (uniquement mesh du logo, éclairage et caméra)
     this.scene = new THREE.Scene();
 
-    // 2. Caméra parfaitement axée
+    // 2. Caméra parfaitement en face à z = 5
     this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    this.camera.position.set(0, 0, 5.0);
+    this.camera.position.set(0, 0, 5);
     this.camera.lookAt(0, 0, 0);
 
     // 3. Renderer avec antialiasing et transparence Dark Abyssal
@@ -106,102 +106,67 @@ export class Hero3DComponent implements AfterViewInit, OnDestroy {
     this.renderer.setSize(width, height, false);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // 4. Système d'Éclairage
-    // A. Lumière d'ambiance très faible pour conserver la profondeur et les ombres
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.45);
+    // 4. Système d'Éclairage épuré
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     this.scene.add(ambientLight);
 
-    // B. Lumière directionnelle blanche légèrement bleutée pour éclairer la face du logo
-    const dirLightFront = new THREE.DirectionalLight(0xe0f2fe, 2.4);
+    const dirLightFront = new THREE.DirectionalLight(0xe0f2fe, 2.5);
     dirLightFront.position.set(2, 3, 5);
     this.scene.add(dirLightFront);
 
-    // C. PointLight vert néon (#00FF66) placé juste DERRIÈRE l'objet pour un halo subtil
-    const pointLightBackGlow = new THREE.PointLight(0x00ff66, 5, 10);
-    pointLightBackGlow.position.set(0, 0, -1.0);
-    this.scene.add(pointLightBackGlow);
-
-    // 5. Chargement de la Texture du Logo RCBA & Correction UV (Orientation & Symétrie)
+    // 5. Chargement et Configuration Paramétrique de la Texture (Phase 10)
     const textureLoader = new THREE.TextureLoader();
-    
-    // Texture Face Avant (normale, redressée via texture.center et texture.rotation)
-    const logoTextureFront = textureLoader.load('/logo.png');
-    logoTextureFront.colorSpace = THREE.SRGBColorSpace;
-    logoTextureFront.generateMipmaps = true;
-    logoTextureFront.minFilter = THREE.LinearMipmapLinearFilter;
-    
-    // Correction de l'orientation UV due à la rotation du cylindre :
-    // On pivote la texture de 90° autour de son centre pour que le blason ait la pointe vers le bas
-    logoTextureFront.center.set(0.5, 0.5);
-    logoTextureFront.rotation = -Math.PI / 2;
+    const logoTexture = textureLoader.load('/logo.png');
+    logoTexture.colorSpace = THREE.SRGBColorSpace;
+    logoTexture.generateMipmaps = true;
+    logoTexture.minFilter = THREE.LinearMipmapLinearFilter;
 
-    // Texture Face Arrière (inversion de l'axe X pour contrer l'effet miroir + rotation identique)
-    const logoTextureBack = logoTextureFront.clone();
-    logoTextureBack.wrapS = THREE.RepeatWrapping;
-    logoTextureBack.repeat.x = -1;
-    logoTextureBack.center.set(0.5, 0.5);
-    logoTextureBack.rotation = -Math.PI / 2;
+    // 1. Placer le point de pivot au centre exact de l'image
+    logoTexture.center.set(0.5, 0.5);
 
-    // 6. Matériaux du Token (Material Array)
-    // [0]: Tranche (Cylindre rim) - métallique sombre avec bordure émissive vert néon
-    const rimMaterial = new THREE.MeshStandardMaterial({
-      color: 0x070B14,
-      metalness: 0.95,
-      roughness: 0.2,
-      emissive: 0x00ff66,
-      emissiveIntensity: 0.7,
-    });
+    // 2. Remettre l'image à l'endroit (rotation de 180° en radians)
+    logoTexture.rotation = Math.PI;
 
-    // [1]: Face avant - texture orientée correctement
-    const frontMaterial = new THREE.MeshStandardMaterial({
-      map: logoTextureFront,
+    // 3. Annuler l'effet miroir pour que "RCBA" soit lisible de gauche à droite
+    logoTexture.wrapS = THREE.RepeatWrapping;
+    logoTexture.repeat.x = -1;
+
+    // 4. Sécurité contre l'inversion par défaut de WebGL
+    logoTexture.flipY = false;
+
+    // 6. Matériau du Token
+    const tokenMaterial = new THREE.MeshStandardMaterial({
+      map: logoTexture,
+      side: THREE.DoubleSide,
+      transparent: true,
       metalness: 0.15,
       roughness: 0.35,
-      transparent: true,
     });
 
-    // [2]: Face arrière - texture inversée sur X pour lisibilité
-    const backMaterial = new THREE.MeshStandardMaterial({
-      map: logoTextureBack,
-      metalness: 0.15,
-      roughness: 0.35,
-      transparent: true,
-    });
+    // 7. Géométrie : Disque / Cylindre aplati
+    // Utilisation d'un disque (CircleGeometry) ou cylindre très fin sans artefacts latéraux
+    const tokenGeometry = new THREE.CircleGeometry(1.5, 64);
 
-    const materials = [rimMaterial, frontMaterial, backMaterial];
+    this.tokenMesh = new THREE.Mesh(tokenGeometry, tokenMaterial);
 
-    // 7. Géométrie : Cylindre aplati (Token / Écusson)
-    // Rayon: 1.55, Épaisseur: 0.18, 64 segments
-    const tokenGeometry = new THREE.CylinderGeometry(1.55, 1.55, 0.18, 64);
-    
-    // Basculer la géométrie du cylindre (axe Y -> Z) pour que les faces soient face caméra
-    tokenGeometry.rotateX(Math.PI / 2);
-
-    this.tokenMesh = new THREE.Mesh(tokenGeometry, materials);
-
-    // Verrouillage strict des angles d'Euler initiaux
+    // Fixe l'orientation initiale de l'objet 3D à zéro (parfaitement vertical, face caméra)
     this.tokenMesh.position.set(0, 0, 0);
     this.tokenMesh.rotation.set(0, 0, 0);
 
-    // Ajout du seul mesh à la scène (suppression de tout anneau/torus/line)
+    // La scène 3D ne contient QUE le mesh du logo, l'éclairage et la caméra
     this.scene.add(this.tokenMesh);
   }
 
   private animate = (): void => {
     this.animFrameId = requestAnimationFrame(this.animate);
 
-    const time = this.clock.getElapsedTime();
+    // Phase 10 : Utilise UNIQUEMENT cette ligne pour l'animation
+    // Mouvement de balancier lent de gauche à droite
+    this.tokenMesh.rotation.y = Math.sin(this.clock.getElapsedTime()) * 0.3;
 
-    // 1. Oscillation stricte sur l'axe Y : balancier de gauche à droite (amplitude 0.4 rad)
-    // Code exact spécifié : mesh.rotation.y = Math.sin(time * 1.5) * 0.4;
-    this.tokenMesh.rotation.y = Math.sin(time * 1.5) * 0.4;
-
-    // 2. Verrouillage absolu : les axes X et Z restent strictement figés à 0
+    // Tout autre axe reste strictement figé à zéro
     this.tokenMesh.rotation.x = 0;
     this.tokenMesh.rotation.z = 0;
-
-    // 3. Flottement vertical sinusoïdal très doux
-    this.tokenMesh.position.y = Math.sin(time * 1.8) * 0.08;
 
     this.renderer.render(this.scene, this.camera);
   };
