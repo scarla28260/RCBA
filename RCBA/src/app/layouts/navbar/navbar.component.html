@@ -106,13 +106,13 @@
   <!-- Lower Navigation Bar (Next-Gen Glassmorphism & Cyberpunk Neon) -->
   <nav class="hidden lg:block bg-[#070B14]/80 backdrop-blur-xl border-b border-white/10">
     <div class="mx-auto flex h-13 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center gap-1 xl:gap-2 py-1">
+      <div class="flex items-center gap-1 xl:gap-2 py-1 overflow-x-auto scrollbar-hide">
         @for (link of navLinks(); track link.label) {
           <a
             [routerLink]="link.path"
             [routerLinkActive]="'text-[#070B14] font-black bg-[#00FF66] shadow-[0_0_20px_rgba(0,255,102,0.4)] rounded-xl'"
             [routerLinkActiveOptions]="{ exact: link.exact ?? false }"
-            class="inline-flex items-center px-3.5 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider text-slate-300 transition-all duration-200 hover:text-[#00FF66] hover:bg-white/5 active:scale-95"
+            class="inline-flex items-center whitespace-nowrap px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider text-slate-300 transition-all duration-200 hover:text-[#00FF66] hover:bg-white/5 active:scale-95 shrink-0"
             [class.text-[#00FF66]]="link.isPrivate"
           >
             @if (link.isPrivate) {
@@ -123,9 +123,9 @@
         }
       </div>
 
-      <div class="flex items-center gap-2.5 text-xs font-black text-slate-300 bg-white/5 px-3 py-1 rounded-full border border-white/10">
-        <span class="inline-block h-2.5 w-2.5 rounded-full bg-[#00FF66] shadow-[0_0_10px_#00FF66]"></span>
-        <span class="font-sport tracking-wider text-[11px] uppercase text-white">Saison 2026–2027</span>
+      <div class="flex items-center gap-2 text-xs font-black text-slate-300 bg-white/5 px-3 py-1 rounded-full border border-white/10 whitespace-nowrap shrink-0 ml-2">
+        <span class="inline-block h-2 w-2 rounded-full bg-[#00FF66] shadow-[0_0_10px_#00FF66]"></span>
+        <span class="font-sport tracking-wider text-[11px] uppercase text-white whitespace-nowrap">Saison 2026–2027</span>
       </div>
     </div>
   </nav>
