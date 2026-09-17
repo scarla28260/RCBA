@@ -7,6 +7,7 @@ import {
   NgZone,
   inject,
   HostListener,
+  input,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as THREE from 'three';
@@ -16,7 +17,11 @@ import * as THREE from 'three';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="hero-3d-container relative w-full h-[320px] sm:h-[400px] flex items-center justify-center select-none overflow-hidden">
+    <div
+      class="hero-3d-container relative w-full flex items-center justify-center select-none overflow-hidden"
+      [style.height]="customHeight()"
+      [style.width]="customWidth()"
+    >
       <!-- Canvas Three.js injecté -->
       <canvas #threeCanvas class="absolute inset-0 w-full h-full pointer-events-auto cursor-grab active:cursor-grabbing"></canvas>
     </div>
@@ -31,6 +36,12 @@ import * as THREE from 'three';
 export class Hero3DComponent implements AfterViewInit, OnDestroy {
   private readonly ngZone = inject(NgZone);
   private readonly canvasRef = viewChild.required<ElementRef<HTMLCanvasElement>>('threeCanvas');
+
+  // Personnalisation des dimensions (par défaut mode hero)
+  readonly customHeight = input<string>('340px');
+  readonly customWidth = input<string>('100%');
+  readonly speed = input<number>(1.2);
+  readonly fullTurn = input<boolean>(true); // Tour complet continu en 3D
 
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
@@ -152,10 +163,14 @@ export class Hero3DComponent implements AfterViewInit, OnDestroy {
   private animate = (): void => {
     this.animFrameId = requestAnimationFrame(this.animate);
 
-    // Consigne d'Animation : Oscillation UNIQUEMENT sur l'axe Y du groupe principal
-    this.badgeGroup.rotation.y = Math.sin(this.clock.getElapsedTime() * 1.5) * 0.4;
+    // Rotation 3D fluide et continue autour de l'axe Y
+    if (this.fullTurn()) {
+      this.badgeGroup.rotation.y += 0.015 * this.speed();
+    } else {
+      this.badgeGroup.rotation.y = Math.sin(this.clock.getElapsedTime() * 1.5 * this.speed()) * 0.4;
+    }
 
-    // Aucun autre axe de rotation
+    // Aucun autre axe de rotation non désiré
     this.badgeGroup.rotation.x = 0;
     this.badgeGroup.rotation.z = 0;
 

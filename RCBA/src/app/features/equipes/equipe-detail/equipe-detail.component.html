@@ -45,18 +45,13 @@
           </div>
         </div>
 
-        <!-- Right: Écusson animé -->
-        <div class="flex-shrink-0 flex flex-col items-center justify-center p-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl shadow-xl text-center w-56">
-          <div class="relative flex h-24 w-24 items-center justify-center rounded-full bg-white p-2 shadow-xl mb-4">
-            <img
-              src="/logo.png"
-              alt="Blason RCBA"
-              class="h-full w-full object-contain"
-              onerror="this.style.display='none'"
-            />
+        <!-- Right: Écusson 3D animé qui tourne -->
+        <div class="flex-shrink-0 flex flex-col items-center justify-center p-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl shadow-xl text-center w-56 overflow-hidden">
+          <div class="relative flex h-28 w-28 items-center justify-center rounded-2xl bg-[#070B14]/80 p-1 shadow-inner border border-white/15 mb-2 overflow-hidden">
+            <app-hero-3d customHeight="110px" customWidth="110px" [speed]="1.2" [fullTurn]="true" />
           </div>
-          <div class="text-white font-black uppercase text-sm tracking-wide">RCBA</div>
-          <div class="text-[#21ad1c] text-xs font-bold mt-1">Saison 2026–2027</div>
+          <div class="text-white font-black uppercase text-sm tracking-wide font-display">RCBA</div>
+          <div class="text-[#21ad1c] text-xs font-bold mt-0.5">Saison 2026–2027</div>
         </div>
       </div>
     </div>

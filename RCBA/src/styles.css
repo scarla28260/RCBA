@@ -263,3 +263,36 @@ img {
 html {
   scroll-behavior: smooth;
 }
+
+/* ==========================================================================
+   ANIMATION DU LOGO 3D TOURNANT (SUR TOUTES LES PAGES)
+   ========================================================================== */
+@keyframes logoSpin3D {
+  0% {
+    transform: perspective(700px) rotateY(0deg);
+  }
+  50% {
+    transform: perspective(700px) rotateY(180deg);
+  }
+  100% {
+    transform: perspective(700px) rotateY(360deg);
+  }
+}
+
+.logo-spin-3d {
+  display: inline-block;
+  transform-style: preserve-3d;
+  animation: logoSpin3D 8s linear infinite;
+  will-change: transform;
+}
+
+.logo-spin-3d-fast {
+  display: inline-block;
+  transform-style: preserve-3d;
+  animation: logoSpin3D 5s linear infinite;
+  will-change: transform;
+}
+
+.logo-spin-3d:hover {
+  animation-play-state: paused;
+}

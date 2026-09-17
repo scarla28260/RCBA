@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ClubService } from '../../core/services/club.service';
 import { BadgeComponent } from '../../shared/components/badge/badge.component';
+import { Hero3DComponent } from '../../shared/components/hero-3d/hero-3d.component';
 
 @Component({
   selector: 'app-club',
   standalone: true,
-  imports: [CommonModule, RouterLink, BadgeComponent],
+  imports: [CommonModule, RouterLink, BadgeComponent, Hero3DComponent],
   templateUrl: './club.component.html',
   styleUrl: './club.component.css',
 })
