@@ -5,12 +5,13 @@ import { StaffMember } from '../../core/models/club.model';
 
 type Category = 'all' | 'direction' | 'bureau' | 'administration' | 'technique' | 'communication';
 
+import { RouterLink } from '@angular/router';
 import { PaniniCardComponent } from '../../shared/components/panini-card/panini-card.component';
 
 @Component({
   selector: 'app-dirigeants',
   standalone: true,
-  imports: [CommonModule, PaniniCardComponent],
+  imports: [CommonModule, RouterLink, PaniniCardComponent],
   templateUrl: './dirigeants.component.html',
   styleUrl: './dirigeants.component.css',
 })
