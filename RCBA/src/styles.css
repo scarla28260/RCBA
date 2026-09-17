@@ -24,7 +24,7 @@
 
 body {
   font-family: var(--font-sans);
-  background-color: #f8fafc;
+  background-color: #f1f5f9;
   color: #0f172a;
 }
 
@@ -44,28 +44,101 @@ h1, h2, h3, .font-heading {
 /* Texture Pelouse & Vitesse Dynamique */
 .bg-pitch-grid {
   background-image: 
-    radial-gradient(circle at center, rgba(33, 173, 28, 0.08) 1px, transparent 1px),
-    linear-gradient(to right, rgba(16, 29, 105, 0.03) 1px, transparent 1px);
+    radial-gradient(circle at center, rgba(41, 219, 34, 0.12) 1px, transparent 1px),
+    linear-gradient(to right, rgba(16, 29, 105, 0.04) 1px, transparent 1px);
   background-size: 28px 28px, 56px 56px;
 }
 
 .bg-hero-glow {
-  background: radial-gradient(circle at 80% 20%, rgba(37, 207, 31, 0.22) 0%, transparent 45%),
-              radial-gradient(circle at 10% 80%, rgba(31, 57, 207, 0.35) 0%, transparent 55%),
-              linear-gradient(135deg, #091244 0%, #101d69 60%, #0d1652 100%);
+  background: radial-gradient(circle at 85% 15%, rgba(41, 219, 34, 0.28) 0%, transparent 45%),
+              radial-gradient(circle at 10% 85%, rgba(22, 46, 184, 0.45) 0%, transparent 55%),
+              linear-gradient(135deg, #060b28 0%, #101d69 55%, #08113b 100%);
+}
+
+/* Motif Jersey Sportif (Rayures diagonales de maillot) */
+.bg-jersey-stripes {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.03),
+    rgba(255, 255, 255, 0.03) 12px,
+    transparent 12px,
+    transparent 24px
+  );
 }
 
 /* Liseré dynamique néon vert */
 .border-neon-glow {
-  box-shadow: 0 0 15px rgba(41, 219, 34, 0.35);
+  box-shadow: 0 0 20px rgba(41, 219, 34, 0.45), 0 0 2px rgba(41, 219, 34, 0.8);
+}
+
+.border-gold-glow {
+  box-shadow: 0 0 18px rgba(245, 158, 11, 0.35);
+}
+
+/* CARTE PANINI DE COLLECTION AUTHENTIQUE */
+.panini-card {
+  position: relative;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+  box-shadow: 
+    0 10px 25px -5px rgba(10, 20, 74, 0.15),
+    0 8px 10px -6px rgba(10, 20, 74, 0.1),
+    0 0 0 1px rgba(226, 232, 240, 0.8);
+  transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.panini-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 
+    0 25px 35px -10px rgba(16, 29, 105, 0.25),
+    0 0 25px rgba(41, 219, 34, 0.35),
+    0 0 0 2px rgba(41, 219, 34, 0.6);
+}
+
+/* Reflet Holographique Panini Foil */
+.panini-foil {
+  position: relative;
+  overflow: hidden;
+}
+
+.panini-foil::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.25) 45%,
+    rgba(59, 247, 51, 0.2) 50%,
+    rgba(56, 189, 248, 0.2) 55%,
+    transparent 65%
+  );
+  transform: rotate(25deg) translateY(-100%);
+  transition: transform 0.75s ease-in-out;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.panini-card:hover .panini-foil::after {
+  transform: rotate(25deg) translateY(100%);
+  opacity: 1;
+}
+
+/* Ruban Panini Biseauté pour Nom de Joueur / Dirigeant */
+.panini-ribbon {
+  background: linear-gradient(135deg, #091244 0%, #101d69 70%, #162eb8 100%);
+  clip-path: polygon(0 0, 100% 0, 96% 100%, 4% 100%);
 }
 
 .card-dynamic {
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .card-dynamic:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 30px -10px rgba(16, 29, 105, 0.12), 0 0 0 1px rgba(33, 173, 28, 0.25);
+  transform: translateY(-5px);
+  box-shadow: 0 20px 30px -10px rgba(16, 29, 105, 0.16), 0 0 0 1px rgba(33, 173, 28, 0.35);
 }
 
 /* Badge Match / Score Sportif */

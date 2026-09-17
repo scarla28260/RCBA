@@ -53,10 +53,10 @@
               <span>⚽</span> Nos Équipes & Matchs
             </a>
             <a
-              routerLink="/educateurs"
-              class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#101d69]/80 hover:bg-[#101d69] border border-[#29db22]/40 px-5 py-4 text-sm font-bold uppercase tracking-wider text-[#3bf733] hover:text-white transition-colors"
+              routerLink="/login"
+              class="inline-flex items-center justify-center gap-2 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/25 px-5 py-4 text-sm font-bold uppercase tracking-wider text-white hover:text-[#3bf733] transition-all backdrop-blur-md active:scale-95"
             >
-              <span>🔒</span> Portail Coach
+              <span>🔒</span> Espace Club (Connexion)
             </a>
           </div>
         </div>
@@ -229,65 +229,6 @@
     </div>
   </section>
 
-  <!-- Résultats & Matchs Récents -->
-  <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="rounded-2xl bg-white border border-slate-200 border-t-4 border-t-[#21ad1c] p-6 sm:p-8 shadow-sm">
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-6 pb-4 border-b border-slate-200 gap-4">
-        <div>
-          <span class="text-xs font-black uppercase tracking-wider text-[#21ad1c]">Compétition & Résultats</span>
-          <h2 class="text-2xl sm:text-3xl font-black uppercase text-[#101d69] tracking-tight mt-0.5">
-            Dernières Rencontres
-          </h2>
-        </div>
-        <a
-          routerLink="/equipes"
-          class="text-xs font-bold uppercase tracking-wider text-[#1f39cf] hover:underline flex items-center gap-1.5"
-        >
-          Tous les effectifs & classements &rarr;
-        </a>
-      </div>
-
-      <!-- Results Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        @for (match of recentResults(); track match.category) {
-          <div class="flex flex-col justify-between rounded-xl border border-slate-200 bg-slate-50 p-5 transition-all hover:shadow-md hover:bg-white">
-            
-            <div class="flex items-center justify-between text-xs text-slate-500 pb-3 border-b border-slate-200">
-              <app-badge [label]="match.category" variant="primary" />
-              <span class="font-medium">{{ match.date }}</span>
-            </div>
-
-            <!-- Teams & Scores -->
-            <div class="py-4 space-y-2">
-              <div class="flex items-center justify-between">
-                <span class="font-bold text-sm text-slate-800" [class.text-[#101d69]]="match.teamHome === 'RCBA'">
-                  {{ match.teamHome }}
-                </span>
-                <span class="text-lg font-black font-mono text-[#101d69]">{{ match.scoreHome }}</span>
-              </div>
-              <div class="flex items-center justify-between">
-                <span class="font-bold text-sm text-slate-700" [class.text-[#101d69]]="match.teamAway === 'RCBA'">
-                  {{ match.teamAway }}
-                </span>
-                <span class="text-lg font-black font-mono text-[#101d69]">{{ match.scoreAway }}</span>
-              </div>
-            </div>
-
-            <!-- Victory/Defeat Indicator -->
-            <div class="pt-3 border-t border-slate-200 flex items-center justify-between text-xs font-bold">
-              @if (match.isVictory) {
-                <app-badge label="Victoire RCBA" variant="success" />
-              } @else {
-                <app-badge label="Terminé" variant="muted" />
-              }
-              <span class="text-[10px] text-slate-500 uppercase tracking-wider">District 28</span>
-            </div>
-
-          </div>
-        }
-      </div>
-    </div>
-  </section>
 
   <!-- ================================================================= -->
   <!-- 📢 PÔLE COMMUNICATION : CLUB À L'HONNEUR, RÉSEAUX & VIE DU CLUB -->
@@ -754,10 +695,11 @@
             </p>
           </div>
           <a
-            routerLink="/educateurs"
-            class="inline-flex items-center justify-center gap-2 rounded-lg bg-[#21ad1c] hover:bg-[#1b8e17] px-4 py-2.5 text-xs font-black uppercase tracking-wider text-white transition-colors shadow-md"
+            routerLink="/login"
+            [queryParams]="{ target: 'coach' }"
+            class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#21ad1c] hover:bg-[#1b8e17] px-4 py-3 text-xs font-black uppercase tracking-wider text-white transition-all shadow-md active:scale-95"
           >
-            Accéder au Portail Coach &rarr;
+            <span>🔒</span> Connexion Portail Coach &rarr;
           </a>
         </div>
 
@@ -776,10 +718,11 @@
             </p>
           </div>
           <a
-            routerLink="/direction"
-            class="inline-flex items-center justify-center gap-2 rounded-lg bg-white hover:bg-slate-100 px-4 py-2.5 text-xs font-black uppercase tracking-wider text-[#101d69] transition-colors shadow-md"
+            routerLink="/login"
+            [queryParams]="{ target: 'direction' }"
+            class="inline-flex items-center justify-center gap-2 rounded-xl bg-white hover:bg-slate-100 px-4 py-3 text-xs font-black uppercase tracking-wider text-[#101d69] transition-all shadow-md active:scale-95"
           >
-            Accéder au Portail Direction &rarr;
+            <span>🔒</span> Connexion Portail Direction &rarr;
           </a>
         </div>
       </div>

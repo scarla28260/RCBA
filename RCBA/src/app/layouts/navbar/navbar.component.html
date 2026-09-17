@@ -33,30 +33,33 @@
         </div>
       </a>
 
-      <!-- Quick Action Right (Portail Coach, Direction & Inscriptions) -->
+      <!-- Quick Action Right (Authentification & Inscriptions) -->
       <div class="hidden sm:flex items-center gap-2">
-        <a
-          routerLink="/educateurs"
-          class="inline-flex items-center gap-1.5 rounded-xl bg-white/10 hover:bg-[#21ad1c] px-3 py-1.5 text-[11px] font-black uppercase tracking-wider text-white hover:text-white transition-all border border-white/20 hover:border-transparent shadow-xs"
-        >
-          <span>⚽</span> Coach
-        </a>
-        <a
-          routerLink="/direction"
-          class="inline-flex items-center gap-1.5 rounded-xl bg-white/10 hover:bg-white/25 px-3 py-1.5 text-[11px] font-black uppercase tracking-wider text-white transition-all border border-white/20 shadow-xs"
-        >
-          <span>🏛️</span> Direction
-        </a>
-
         @if (isAuthenticated()) {
+          @if (currentUser()?.role === 'direction') {
+            <a
+              routerLink="/direction"
+              class="inline-flex items-center gap-1.5 rounded-xl bg-white/15 hover:bg-white/25 px-3 py-1.5 text-[11px] font-black uppercase tracking-wider text-white transition-all border border-white/20 shadow-xs"
+            >
+              <span>🏛️</span> Espace Direction
+            </a>
+          } @else {
+            <a
+              routerLink="/educateurs"
+              class="inline-flex items-center gap-1.5 rounded-xl bg-[#21ad1c] hover:bg-[#1faa18] px-3 py-1.5 text-[11px] font-black uppercase tracking-wider text-white transition-all shadow-xs"
+            >
+              <span>⚽</span> Espace Coach
+            </a>
+          }
+
           <div class="flex items-center gap-1.5 pl-2 border-l border-white/20">
-            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-500/25 border border-emerald-400/40 text-emerald-300 text-[10px] font-black uppercase">
+            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-500/25 border border-emerald-400/40 text-emerald-300 text-[10px] font-black uppercase font-sport">
               <span>●</span> {{ currentUser()?.role === 'direction' ? 'Direction' : 'Coach' }}
             </span>
             <button
               type="button"
               (click)="authService.logout()"
-              class="text-[10px] text-slate-300 hover:text-white underline font-bold"
+              class="text-[10px] text-slate-300 hover:text-white underline font-bold ml-1"
               title="Se déconnecter"
             >
               Déconnexion
@@ -65,9 +68,9 @@
         } @else {
           <a
             routerLink="/login"
-            class="inline-flex items-center gap-1 rounded-xl bg-white/15 hover:bg-white/25 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white transition-all border border-white/15"
+            class="inline-flex items-center gap-1.5 rounded-xl bg-white/15 hover:bg-white/25 px-3 py-1.5 text-[11px] font-black uppercase tracking-wider text-white transition-all border border-white/20 shadow-xs active:scale-95"
           >
-            <span>🔒</span> Connexion
+            <span>🔒</span> Espace Club (Connexion)
           </a>
         }
 

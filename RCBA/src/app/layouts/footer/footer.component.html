@@ -88,10 +88,10 @@
             <a routerLink="/boutique" class="text-amber-300 font-bold hover:underline">Boutique Officielle RCBA 🛍️</a>
           </li>
           <li>
-            <a routerLink="/educateurs" class="text-[#25cf1f] font-bold hover:underline">Portail Coach & Tableau Tactique ⚽</a>
+            <a routerLink="/login" [queryParams]="{ target: 'coach' }" class="text-[#25cf1f] font-bold hover:underline">🔒 Espace Coach (Connexion) ⚽</a>
           </li>
           <li>
-            <a routerLink="/direction" class="text-sky-300 font-bold hover:underline">Portail Direction & Gouvernance 🏛️</a>
+            <a routerLink="/login" [queryParams]="{ target: 'direction' }" class="text-sky-300 font-bold hover:underline">🔒 Espace Direction (Connexion) 🏛️</a>
           </li>
         </ul>
       </div>

@@ -158,76 +158,102 @@
             <p class="text-sm font-semibold mt-2">Aucun match programmé pour cette sélection.</p>
           </div>
         } @else {
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             @for (match of filteredMatches(); track match.id) {
-              <div class="rounded-xl border border-slate-200 bg-slate-50 hover:bg-white p-5 space-y-4 hover:shadow-lg transition-all duration-200 group">
+              <div class="rounded-2xl border-2 border-slate-200 bg-white hover:border-[#3bf733] p-6 space-y-5 hover:shadow-xl transition-all duration-300 card-dynamic group relative overflow-hidden">
+                <!-- Accent stripe top -->
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r"
+                     [class]="match.isHome ? 'from-[#3bf733] via-[#21ad1c] to-[#101d69]' : 'from-[#101d69] via-blue-600 to-[#3bf733]'"></div>
+
                 <!-- En-tête : catégorie, date, badge domicile/extérieur -->
-                <div class="flex items-center justify-between text-xs">
+                <div class="flex items-center justify-between text-xs pt-1">
                   <div class="flex items-center gap-2">
-                    <app-badge [label]="match.category" variant="primary" />
-                    <span class="font-semibold text-slate-600">{{ match.competition }}</span>
+                    <span class="px-2.5 py-1 rounded-lg bg-[#101d69] text-white font-sport font-black text-[11px] uppercase tracking-wider shadow-2xs">
+                      {{ match.category }}
+                    </span>
+                    <span class="font-bold text-slate-500 font-sport text-xs uppercase">{{ match.competition }}</span>
                   </div>
                   @if (match.isHome) {
-                    <span class="rounded-full bg-[#21ad1c]/15 text-[#167812] text-[10px] font-black uppercase px-2.5 py-0.5">
+                    <span class="rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 text-[10px] font-black uppercase tracking-wider px-3 py-1 font-sport shadow-2xs">
                       🏠 Domicile
                     </span>
                   } @else {
-                    <span class="rounded-full bg-slate-200 text-slate-700 text-[10px] font-black uppercase px-2.5 py-0.5">
-                      🚌 Déplacement
+                    <span class="rounded-full bg-slate-100 text-slate-700 border border-slate-300 text-[10px] font-black uppercase tracking-wider px-3 py-1 font-sport shadow-2xs">
+                      🚌 Extérieur
                     </span>
                   }
                 </div>
 
-                <!-- Affiche du match -->
-                <div class="py-2 px-3 bg-white rounded-lg border border-slate-100 shadow-xs space-y-2">
-                  <div class="flex items-center justify-between">
-                    <span class="font-black text-sm" [class.text-[#101d69]]="match.teamHome.includes('RCBA')">
-                      {{ match.teamHome }}
-                    </span>
-                    @if (match.isHome) {
-                      <span class="text-xs font-bold text-[#21ad1c]">RCBA</span>
-                    }
-                  </div>
-                  <div class="flex items-center justify-center">
-                    <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 bg-slate-100 px-3 py-0.5 rounded-full">
-                      VS
-                    </span>
-                  </div>
-                  <div class="flex items-center justify-between">
-                    <span class="font-black text-sm" [class.text-[#101d69]]="match.teamAway.includes('RCBA')">
-                      {{ match.teamAway }}
-                    </span>
-                    @if (!match.isHome) {
-                      <span class="text-xs font-bold text-[#21ad1c]">RCBA</span>
-                    }
+                <!-- Scoreboard / Affiche Dynamique du match -->
+                <div class="p-4 bg-gradient-to-r from-slate-900 via-[#0a1445] to-slate-900 rounded-xl text-white shadow-md space-y-3 relative overflow-hidden">
+                  <div class="absolute inset-0 bg-pitch-grid opacity-20 pointer-events-none"></div>
+
+                  <div class="relative z-10 flex items-center justify-between gap-3">
+                    <!-- Équipe Domicile -->
+                    <div class="flex-1 text-left">
+                      <span class="block text-sm sm:text-base font-black uppercase tracking-tight font-display"
+                            [class.text-[#3bf733]]="match.teamHome.includes('RCBA')"
+                            [class.text-white]="!match.teamHome.includes('RCBA')">
+                        {{ match.teamHome }}
+                      </span>
+                      @if (match.isHome) {
+                        <span class="inline-flex items-center gap-1 text-[9px] font-sport uppercase tracking-wider font-black text-[#3bf733]">
+                          <span>●</span> Club Hôte
+                        </span>
+                      }
+                    </div>
+
+                    <!-- VS Badge -->
+                    <div class="shrink-0 flex flex-col items-center">
+                      <span class="text-[11px] font-black uppercase tracking-widest font-sport text-slate-950 bg-gradient-to-r from-amber-400 to-[#3bf733] px-3 py-1 rounded-full shadow-md">
+                        VS
+                      </span>
+                    </div>
+
+                    <!-- Équipe Extérieur -->
+                    <div class="flex-1 text-right">
+                      <span class="block text-sm sm:text-base font-black uppercase tracking-tight font-display"
+                            [class.text-[#3bf733]]="match.teamAway.includes('RCBA')"
+                            [class.text-white]="!match.teamAway.includes('RCBA')">
+                        {{ match.teamAway }}
+                      </span>
+                      @if (!match.isHome) {
+                        <span class="inline-flex items-center gap-1 text-[9px] font-sport uppercase tracking-wider font-black text-[#3bf733]">
+                          Club Visiteur <span>●</span>
+                        </span>
+                      }
+                    </div>
                   </div>
                 </div>
 
                 <!-- Détails horaire, lieu & convocation -->
-                <div class="space-y-1.5 text-xs text-slate-600">
-                  <div class="flex items-center gap-2">
-                    <span class="text-slate-400">📅</span>
-                    <span class="font-bold text-slate-800">{{ match.date }} à {{ match.time }}</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <span class="text-slate-400">📍</span>
-                    <span>{{ match.stade }} ({{ match.location }})</span>
-                  </div>
-                  @if (match.convocationTime) {
-                    <div class="flex items-center gap-2 pt-1 border-t border-slate-100 text-[#101d69] font-bold">
-                      <span class="text-amber-500">⏰</span>
-                      <span>Rdv convocation : {{ match.convocationTime }}</span>
+                <div class="space-y-2 text-xs text-slate-700 bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                  <div class="flex items-center justify-between font-sport">
+                    <div class="flex items-center gap-2">
+                      <span class="text-sm">📅</span>
+                      <span class="font-black text-slate-900 uppercase tracking-wide">{{ match.date }} à {{ match.time }}</span>
                     </div>
-                  }
+                    @if (match.convocationTime) {
+                      <span class="inline-flex items-center gap-1 text-rose-700 bg-rose-100/80 border border-rose-200 px-2 py-0.5 rounded-md font-bold text-[11px]">
+                        <span>⏰</span> Rdv : {{ match.convocationTime }}
+                      </span>
+                    }
+                  </div>
+
+                  <div class="flex items-center gap-2 text-slate-600">
+                    <span class="text-sm">📍</span>
+                    <span class="font-medium truncate">{{ match.stade }} — {{ match.location }}</span>
+                  </div>
+
                   @if (match.footeoUrl) {
-                    <div class="pt-2 border-t border-slate-100 flex justify-end">
+                    <div class="pt-2 border-t border-slate-200 flex justify-end">
                       <a
                         [href]="match.footeoUrl"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="inline-flex items-center gap-1.5 text-[11px] font-black uppercase text-[#101d69] hover:text-[#21ad1c] transition-colors"
+                        class="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-[#101d69] hover:text-[#21ad1c] transition-colors font-sport"
                       >
-                        <span>Fiche Match Footeo</span>
+                        <span>Feuille de match officielle FFF / Footeo</span>
                         <span>↗</span>
                       </a>
                     </div>

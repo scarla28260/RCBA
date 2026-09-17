@@ -36,8 +36,10 @@ export class DirigeantsComponent {
     const map = new Map<string, StaffMember>();
 
     for (const member of rawList) {
-      // Clé unique insensible à la casse et aux espaces
-      const key = `${member.firstName.trim().toLowerCase()}_${member.lastName.trim().toLowerCase()}`;
+      // Clé unique normalisée (minuscules, sans accents, sans espaces superflus)
+      const cleanFirst = member.firstName.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      const cleanLast = member.lastName.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      const key = `${cleanFirst}_${cleanLast}`;
 
       if (!map.has(key)) {
         map.set(key, {
@@ -49,7 +51,7 @@ export class DirigeantsComponent {
         const existing = map.get(key)!;
         // Cumul des rôles distincts
         const existingRoles = existing.roles || [existing.role];
-        if (!existingRoles.includes(member.role)) {
+        if (!existingRoles.some((r) => r.trim().toLowerCase() === member.role.trim().toLowerCase())) {
           existingRoles.push(member.role);
         }
         existing.roles = existingRoles;
