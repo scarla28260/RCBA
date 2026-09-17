@@ -44,9 +44,8 @@ export class Hero3DComponent implements AfterViewInit, OnDestroy {
   private animFrameId: number | null = null;
   private clock = new THREE.Clock();
 
-  // Mesh unique du Token / Logo RCBA
-  private tokenMesh!: THREE.Mesh;
-  private mouseParallaxY = 0;
+  // Groupe 3D contenant les 2 couches (Écusson plat + Dôme de résine)
+  private badgeGroup = new THREE.Group();
 
   @HostListener('window:resize')
   onResize(): void {
@@ -61,10 +60,7 @@ export class Hero3DComponent implements AfterViewInit, OnDestroy {
 
   @HostListener('mousemove', ['$event'])
   onMouseMove(event: MouseEvent): void {
-    const rect = this.canvasRef().nativeElement.getBoundingClientRect();
-    const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-    // Subtile influence parallaxe sur l'axe Y
-    this.mouseParallaxY = x * 0.25;
+    // Événement réservé
   }
 
   ngAfterViewInit(): void {
@@ -88,7 +84,7 @@ export class Hero3DComponent implements AfterViewInit, OnDestroy {
     const width = canvas.clientWidth || 400;
     const height = canvas.clientHeight || 350;
 
-    // 1. Scène épurée (uniquement mesh du logo, éclairage et caméra)
+    // 1. Scène épurée
     this.scene = new THREE.Scene();
 
     // 2. Caméra parfaitement en face à z = 5
@@ -106,7 +102,7 @@ export class Hero3DComponent implements AfterViewInit, OnDestroy {
     this.renderer.setSize(width, height, false);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // 4. Système d'Éclairage épuré
+    // 4. Système d'Éclairage (DirectionalLight pour accrocher le clearcoat du dôme de résine)
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     this.scene.add(ambientLight);
 
@@ -114,64 +110,77 @@ export class Hero3DComponent implements AfterViewInit, OnDestroy {
     dirLightFront.position.set(2, 3, 5);
     this.scene.add(dirLightFront);
 
-    // 5. Chargement et Configuration Paramétrique de la Texture (Phase 10)
+    // 5. Chargement et Configuration Paramétrique de la Texture
     const textureLoader = new THREE.TextureLoader();
     const logoTexture = textureLoader.load('/logo.png');
     logoTexture.colorSpace = THREE.SRGBColorSpace;
     logoTexture.generateMipmaps = true;
     logoTexture.minFilter = THREE.LinearMipmapLinearFilter;
 
-    // 1. Placer le point de pivot au centre exact de l'image
+    // Paramètres stricts conservés
     logoTexture.center.set(0.5, 0.5);
-
-    // 2. Remettre l'image à l'endroit (rotation de 180° en radians)
     logoTexture.rotation = Math.PI;
-
-    // 3. Annuler l'effet miroir pour que "RCBA" soit lisible de gauche à droite
     logoTexture.wrapS = THREE.RepeatWrapping;
     logoTexture.repeat.x = -1;
-
-    // 4. Sécurité contre l'inversion par défaut de WebGL
     logoTexture.flipY = false;
 
-    // 6. Matériau Avancé PBR (Physically Based Rendering - Effet Résine Époxy / Vernis)
-    const tokenMaterial = new THREE.MeshPhysicalMaterial({
+    // =========================================================================
+    // ARCHITECTURE PBR À DOUBLE COUCHE (Groupe parent unique)
+    // =========================================================================
+    this.badgeGroup = new THREE.Group();
+
+    // -------------------------------------------------------------------------
+    // COUCHE 1 : L'Écusson (Plat et sans distorsion géométrique)
+    // -------------------------------------------------------------------------
+    const logoGeometry = new THREE.CircleGeometry(2, 64);
+    const logoMaterial = new THREE.MeshBasicMaterial({
       map: logoTexture,
-      side: THREE.DoubleSide,
       transparent: true,
-      roughness: 0.15,
-      metalness: 0.1,
+      side: THREE.DoubleSide,
+    });
+    const meshLogo = new THREE.Mesh(logoGeometry, logoMaterial);
+    meshLogo.position.set(0, 0, 0);
+    this.badgeGroup.add(meshLogo);
+
+    // -------------------------------------------------------------------------
+    // COUCHE 2 : Le Dôme de Résine Époxy (Le Volume Lenticulaire en Verre PBR)
+    // -------------------------------------------------------------------------
+    // Demi-sphère (phiLength = 2PI, thetaLength = PI/2) écrasée sur Z pour créer une lentille convexe
+    const domeGeometry = new THREE.SphereGeometry(2, 64, 64, 0, Math.PI * 2, 0, Math.PI / 2);
+    const domeMaterial = new THREE.MeshPhysicalMaterial({
+      map: null,
+      transmission: 1.0,
+      opacity: 1,
+      transparent: true,
+      roughness: 0.0,
+      ior: 1.5,
+      thickness: 0.5,
       clearcoat: 1.0,
       clearcoatRoughness: 0.05,
     });
+    const meshDome = new THREE.Mesh(domeGeometry, domeMaterial);
+    meshDome.scale.set(1, 1, 0.2);
+    // Positionné juste devant l'écusson pour éviter le Z-fighting
+    meshDome.position.set(0, 0, 0.05);
+    this.badgeGroup.add(meshDome);
 
-    // 7. Géométrie Convexe (Forme Lenticulaire / Badge Bombé)
-    // Sphère haute résolution écrasée sur son axe de profondeur Z
-    const tokenGeometry = new THREE.SphereGeometry(2, 64, 64);
+    // Verrouillage initial du groupe
+    this.badgeGroup.position.set(0, 0, 0);
+    this.badgeGroup.rotation.set(0, 0, 0);
 
-    this.tokenMesh = new THREE.Mesh(tokenGeometry, tokenMaterial);
-
-    // Écrasement sur l'axe Z pour transformer la sphère en pastille/badge bombé
-    this.tokenMesh.scale.set(1, 1, 0.15);
-
-    // Fixe l'orientation initiale de l'objet 3D à zéro (parfaitement vertical, face caméra)
-    this.tokenMesh.position.set(0, 0, 0);
-    this.tokenMesh.rotation.set(0, 0, 0);
-
-    // La scène 3D ne contient QUE le mesh du logo, l'éclairage et la caméra
-    this.scene.add(this.tokenMesh);
+    // Ajout du groupe à la scène
+    this.scene.add(this.badgeGroup);
   }
 
   private animate = (): void => {
     this.animFrameId = requestAnimationFrame(this.animate);
 
-    // Phase 10 : Utilise UNIQUEMENT cette ligne pour l'animation
-    // Mouvement de balancier lent de gauche à droite
-    this.tokenMesh.rotation.y = Math.sin(this.clock.getElapsedTime()) * 0.3;
+    // Animation de balancier sur le GROUPE UNIQUEMENT
+    this.badgeGroup.rotation.y = Math.sin(this.clock.getElapsedTime()) * 0.3;
 
     // Tout autre axe reste strictement figé à zéro
-    this.tokenMesh.rotation.x = 0;
-    this.tokenMesh.rotation.z = 0;
+    this.badgeGroup.rotation.x = 0;
+    this.badgeGroup.rotation.z = 0;
 
     this.renderer.render(this.scene, this.camera);
   };
