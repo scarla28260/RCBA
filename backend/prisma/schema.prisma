@@ -1,0 +1,174 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// =========================================================================
+// 1. SYSTÈME RBAC STRICT (Constantes / Types d'accès RCBA)
+// Valeurs Role : ADMINISTRATEUR, RESPONSABLE_SPORTIF, RESPONSABLE_CATEGORIE, EDUCATEUR, DIRIGEANT
+// =========================================================================
+
+// Modèle Utilisateur - Authentification individuelle obligatoire (aucun mot de passe collectif)
+model User {
+  id               String            @id @default(uuid())
+  email            String            @unique
+  passwordHash     String
+  firstName        String
+  lastName         String
+  phone            String?
+  role             String            @default("EDUCATEUR") // ADMINISTRATEUR | RESPONSABLE_SPORTIF | RESPONSABLE_CATEGORIE | EDUCATEUR | DIRIGEANT
+  categoryAssigned String?           // Ex: "U11", "U13", "Seniors"
+  isActive         Boolean           @default(true)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  // Relations d'audit et de propriété
+  createdExercises  Exercise[]       @relation("ExerciseAuthor")
+  createdSessions   TrainingSession[] @relation("SessionAuthor")
+  uploadedDocuments Document[]       @relation("DocumentUploader")
+  orders            Order[]          @relation("UserOrders")
+}
+
+// =========================================================================
+// 2. RESSOURCES PÉDAGOGIQUES (Chartes, Formulaires, Règlements, Modèles)
+// Categories : CHARTE, FORMULAIRE, REGLEMENT, CONVOCATION_TEMPLATE, GUIDE_PEDAGOGIQUE
+// =========================================================================
+model Document {
+  id          String           @id @default(uuid())
+  title       String
+  description String?
+  fileUrl     String
+  fileName    String
+  fileSize    Int              // En octets
+  category    String           @default("GUIDE_PEDAGOGIQUE") // CHARTE | FORMULAIRE | REGLEMENT | CONVOCATION_TEMPLATE | GUIDE_PEDAGOGIQUE
+  targetRole  String?          // Restriction facultative par rôle
+  version     String           @default("1.0")
+  isPublic    Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  uploaderId  String
+  uploader    User             @relation("DocumentUploader", fields: [uploaderId], references: [id], onDelete: Cascade)
+}
+
+// =========================================================================
+// 3. CATALOGUE D'EXERCICES PÉDAGOGIQUES (Filtres métiers stricts)
+// AgeCategory : U6_U7, U8_U9, U10_U11, U12_U13, U14_U15, U16_U18, SENIORS, VETERANS
+// ExerciseTheme : ECHAUFFEMENT, MOTRICITE_COORDINATION, CONSERVATION_PROGRESSION,
+//                 FINITION_FRAPPE, TRANSITION_OFF_DEF, TRANSITION_DEF_OFF, DUEL_1V1,
+//                 TACTIQUE_DEFENSIVE, TACTIQUE_OFFENSIVE, GARDIEN_DE_BUT
+// =========================================================================
+model Exercise {
+  id                String         @id @default(uuid())
+  title             String
+  description       String
+  ageCategory       String         // U6_U7 | U8_U9 | U10_U11 | U12_U13 | U14_U15 | U16_U18 | SENIORS | VETERANS
+  theme             String         // ECHAUFFEMENT | MOTRICITE_COORDINATION | CONSERVATION_PROGRESSION...
+  durationMinutes   Int            // Durée de l'atelier
+  targetPlayers     Int            // Effectif nécessaire
+  materialNeeded    String         // Matériel requis (plots, coupelles, chasubles, ballons, etc.)
+  setupTactics      String?        // Dispositif / Consignes pédagogiques
+  tacticalBoardData String?        // Données sérialisées JSON du tableau tactique interactif
+  diagramUrl        String?        // Schéma ou image illustrative
+  isValidated       Boolean        @default(false) // Validé par Responsable Sportif
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  authorId          String
+  author            User           @relation("ExerciseAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+
+  // Blocs de séances utilisant cet exercice
+  sessionBlocks     SessionBlock[]
+}
+
+// =========================================================================
+// 4. CRÉATEUR DE SÉANCES D'ENTRAÎNEMENT (Blocs relationnels stricts)
+// BlockType : ACCUEIL, ECHAUFFEMENT, EXERCICE_TECHNIQUE, SITUATION_TACTIQUE, JEU, RETOUR_AU_CALME, BILAN
+// SessionStatus : BROUILLON, SOUMIS, VALIDE, ARCHIVE
+// =========================================================================
+model TrainingSession {
+  id               String         @id @default(uuid())
+  title            String
+  targetCategory   String         // U6_U7 | U8_U9 | U10_U11 | U12_U13 | U14_U15 | U16_U18 | SENIORS | VETERANS
+  mainObjective    String
+  secondaryGoal    String?
+  scheduledDate    DateTime?
+  totalDurationMin Int            @default(90)
+  status           String         @default("BROUILLON") // BROUILLON | SOUMIS | VALIDE | ARCHIVE
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  authorId         String
+  author           User           @relation("SessionAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+
+  // Blocs relationnels constituant le déroulement chronologique de la séance
+  blocks           SessionBlock[]
+}
+
+model SessionBlock {
+  id                String          @id @default(uuid())
+  type              String          // ACCUEIL | ECHAUFFEMENT | EXERCICE_TECHNIQUE | SITUATION_TACTIQUE | JEU | RETOUR_AU_CALME | BILAN
+  orderIndex        Int             // Ordre d'enchaînement chronologique (0, 1, 2...)
+  durationMinutes   Int             // Durée allouée à ce bloc
+  instructions      String?         // Consignes particulières de l'éducateur
+  createdAt         DateTime        @default(now())
+
+  // Séance parente
+  trainingSessionId String
+  trainingSession   TrainingSession @relation(fields: [trainingSessionId], references: [id], onDelete: Cascade)
+
+  // Exercice lié (optionnel)
+  exerciseId        String?
+  exercise          Exercise?       @relation(fields: [exerciseId], references: [id], onDelete: SetNull)
+}
+
+// =========================================================================
+// 5. MODULE E-COMMERCE - BOUTIQUE OFFICIELLE RCBA (Phase 4)
+// OrderStatus : PENDING, PAID, DELIVERED
+// =========================================================================
+model Product {
+  id              String      @id @default(uuid())
+  name            String
+  description     String?
+  price           Float
+  image_url       String
+  available_sizes String      // Chaîne sérialisée JSON des tailles disponibles
+  is_active       Boolean     @default(true)
+  category        String?     // Ex: "Maillot", "Survêtement", "Pack", "Accessoires"
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  orderItems      OrderItem[]
+}
+
+model Order {
+  id              String      @id @default(uuid())
+  user_id         String?
+  user            User?       @relation("UserOrders", fields: [user_id], references: [id], onDelete: SetNull)
+  status          String      @default("PENDING") // PENDING | PAID | DELIVERED
+  total_amount    Float
+  customerName    String?
+  customerEmail   String?
+  customerPhone   String?
+  helloAssoPaymentId String?  // Point d'accroche pour la redirection API HelloAsso
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  items           OrderItem[]
+}
+
+model OrderItem {
+  id              String      @id @default(uuid())
+  orderId         String
+  order           Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId       String
+  product         Product     @relation(fields: [productId], references: [id], onDelete: Restrict)
+  quantity        Int         @default(1)
+  selectedSize    String      // Taille sélectionnée
+  unitPrice       Float
+  createdAt       DateTime    @default(now())
+}

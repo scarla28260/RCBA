@@ -1,0 +1,12 @@
+# dependencies
+node_modules
+/dist
+
+# environment test
+.env
+.env.local
+
+# database
+*.db
+*.db-journal
+rcba.db
