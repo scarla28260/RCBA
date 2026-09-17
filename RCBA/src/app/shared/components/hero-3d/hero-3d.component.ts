@@ -143,25 +143,26 @@ export class Hero3DComponent implements AfterViewInit, OnDestroy {
     this.badgeGroup.add(meshLogo);
 
     // -------------------------------------------------------------------------
-    // COUCHE 2 : Le Dôme de Résine Époxy (Le Volume Lenticulaire en Verre PBR)
+    // COUCHE 2 : Le Dôme de Résine Époxy (Superposition / Overlay sans transmission)
     // -------------------------------------------------------------------------
-    // Demi-sphère (phiLength = 2PI, thetaLength = PI/2) écrasée sur Z pour créer une lentille convexe
-    const domeGeometry = new THREE.SphereGeometry(2, 64, 64, 0, Math.PI * 2, 0, Math.PI / 2);
+    // 1. Sphère complète écrasée sur Z pour créer la lentille convexe
+    const domeGeometry = new THREE.SphereGeometry(2, 64, 64);
+    
+    // 2. Matériau Verre / Résine Époxy (Failsafe sans transmission, avec clearcoat pour l'éclat blanc)
     const domeMaterial = new THREE.MeshPhysicalMaterial({
-      map: null,
-      transmission: 1.0,
-      opacity: 1,
+      color: 0xffffff,
       transparent: true,
+      opacity: 0.15,
+      depthWrite: false, // Empêche les conflits de superposition (Z-fighting)
       roughness: 0.0,
-      ior: 1.5,
-      thickness: 0.5,
+      metalness: 0.1,
       clearcoat: 1.0,
-      clearcoatRoughness: 0.05,
+      clearcoatRoughness: 0.0,
     });
     const meshDome = new THREE.Mesh(domeGeometry, domeMaterial);
-    meshDome.scale.set(1, 1, 0.2);
-    // Positionné juste devant l'écusson pour éviter le Z-fighting
-    meshDome.position.set(0, 0, 0.05);
+    meshDome.scale.set(1, 1, 0.1);
+    // Positionné juste devant le logo
+    meshDome.position.set(0, 0, 0.1);
     this.badgeGroup.add(meshDome);
 
     // Verrouillage initial du groupe
