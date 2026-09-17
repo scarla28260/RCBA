@@ -78,12 +78,12 @@
       ></div>
 
       <!-- Cadre photo centré aux proportions harmonieuses et constantes -->
-      <div class="relative z-10 w-full h-full max-h-[175px] aspect-[4/4.5] flex items-center justify-center">
+      <div class="relative z-10 w-full h-full max-h-[185px] aspect-[4/4.5] flex items-center justify-center">
         @if (photoUrl()) {
           <img
             [src]="photoUrl()!"
             [alt]="firstName() + ' ' + lastName()"
-            class="w-full h-full object-cover object-[center_18%] drop-shadow-xl transition-transform duration-500 group-hover:scale-105 rounded-xl border border-white/20 shadow-md"
+            class="w-full h-full object-cover object-[center_30%] drop-shadow-xl transition-transform duration-500 group-hover:scale-105 rounded-xl border border-white/20 shadow-md"
             loading="lazy"
             (error)="$any($event.target).style.display='none'"
           />
@@ -115,15 +115,15 @@
 
     <!-- 3. Pied de la vignette : Catégorie, Bandeau Nom et Rôle -->
     <footer class="relative z-20 p-2.5 pt-1">
-      <!-- Catégorie au-dessus du nom -->
-      <div class="flex items-center justify-between mb-1">
+      <!-- Catégorie et Rôle avec retour à la ligne ou flex-wrap propre -->
+      <div class="flex flex-wrap items-center justify-between gap-1 mb-1.5 min-h-[22px]">
         <span
-          class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md font-sport border shadow-xs"
+          class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md font-sport border shadow-xs whitespace-nowrap"
           [class]="categoryBadgeBg()"
         >
           {{ category() }}
         </span>
-        <span class="text-[9px] font-bold text-slate-200 tracking-wide">
+        <span class="text-[9px] font-bold text-slate-200 tracking-wide truncate max-w-[55%] text-right" [title]="role()">
           {{ role() }}
         </span>
       </div>

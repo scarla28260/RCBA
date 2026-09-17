@@ -5,10 +5,12 @@ import { StaffMember } from '../../core/models/club.model';
 
 type Category = 'all' | 'direction' | 'bureau' | 'administration' | 'technique' | 'communication';
 
+import { PaniniCardComponent } from '../../shared/components/panini-card/panini-card.component';
+
 @Component({
   selector: 'app-dirigeants',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PaniniCardComponent],
   templateUrl: './dirigeants.component.html',
   styleUrl: './dirigeants.component.css',
 })
@@ -109,10 +111,10 @@ export class DirigeantsComponent {
   getCategoryLabel(category: string): string {
     const map: Record<string, string> = {
       direction: 'Direction',
-      bureau: 'Bureau Exécutif',
-      administration: 'Administration / CA',
-      technique: 'Staff Technique',
-      communication: 'Communication',
+      bureau: 'Bureau',
+      administration: 'Admin',
+      technique: 'Staff Tech',
+      communication: 'Com',
     };
     return map[category] ?? category;
   }
@@ -132,8 +134,32 @@ export class DirigeantsComponent {
     return `${member.firstName[0]}${member.lastName[0]}`.toUpperCase();
   }
 
+  /**
+   * Seuls les membres de la Direction / Bureau exécutif ont droit aux cartes dorées
+   */
   isDirectionMember(member: StaffMember): boolean {
     const cats = member.categories || [member.category];
-    return cats.includes('bureau') || cats.includes('administration');
+    const role = (member.role || '').toLowerCase();
+    return (
+      cats.includes('bureau') ||
+      role.includes('président') ||
+      role.includes('secrétaire général') ||
+      role.includes('trésorier')
+    );
+  }
+
+  /**
+   * Attribue un numéro de carte collector pour la vignette Panini
+   */
+  getMemberNumber(member: StaffMember, index: number): number {
+    if (this.isDirectionMember(member)) {
+      // Numérotation dédiée pour la Direction : 1, 2, 3...
+      const dirIndex = this.uniqueStaff()
+        .filter((m) => this.isDirectionMember(m))
+        .findIndex((m) => m.id === member.id);
+      return dirIndex >= 0 ? dirIndex + 1 : index + 1;
+    }
+    return index + 1;
   }
 }
+
