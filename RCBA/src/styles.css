@@ -1,38 +1,95 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-rcba-blue: #101d69;
-  --color-rcba-blue-royal: #1f39cf;
-  --color-rcba-blue-light: #eef2ff;
-  --color-rcba-green: #21ad1c;
-  --color-rcba-green-vivid: #25cf1f;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-display: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  --font-sport: 'Chakra Petch', 'Outfit', sans-serif;
+  --font-hero: 'Syne', sans-serif;
+
+  --color-rcba-blue: #0b154d;
+  --color-rcba-blue-royal: #162eb8;
+  --color-rcba-blue-electric: #2563eb;
+  --color-rcba-blue-light: #eef4ff;
+  
+  --color-rcba-green: #1faa18;
+  --color-rcba-green-vivid: #29db22;
+  --color-rcba-green-neon: #3bf733;
   --color-rcba-green-light: #f0fdf4;
 }
 
 /* ——————————————————————————————————————
-   Centrage global des images
-   Toutes les images dans l'app sont centrées
-   par défaut (horizontal + vertical).
+   Design System Ambitieux & Dynamique RCBA
+   Club amateur jeune, audacieux et moderne
 —————————————————————————————————————— */
+
+body {
+  font-family: var(--font-sans);
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+h1, h2, h3, .font-heading {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+.font-sport {
+  font-family: var(--font-sport);
+}
+
+.font-hero {
+  font-family: var(--font-hero);
+}
+
+/* Texture Pelouse & Vitesse Dynamique */
+.bg-pitch-grid {
+  background-image: 
+    radial-gradient(circle at center, rgba(33, 173, 28, 0.08) 1px, transparent 1px),
+    linear-gradient(to right, rgba(16, 29, 105, 0.03) 1px, transparent 1px);
+  background-size: 28px 28px, 56px 56px;
+}
+
+.bg-hero-glow {
+  background: radial-gradient(circle at 80% 20%, rgba(37, 207, 31, 0.22) 0%, transparent 45%),
+              radial-gradient(circle at 10% 80%, rgba(31, 57, 207, 0.35) 0%, transparent 55%),
+              linear-gradient(135deg, #091244 0%, #101d69 60%, #0d1652 100%);
+}
+
+/* Liseré dynamique néon vert */
+.border-neon-glow {
+  box-shadow: 0 0 15px rgba(41, 219, 34, 0.35);
+}
+
+.card-dynamic {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-dynamic:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 30px -10px rgba(16, 29, 105, 0.12), 0 0 0 1px rgba(33, 173, 28, 0.25);
+}
+
+/* Badge Match / Score Sportif */
+.badge-sport {
+  font-family: var(--font-sport);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Centrage global des images */
 img {
   display: block;
-  /* Centre horizontalement dans son conteneur inline */
   margin-inline: auto;
 }
 
-/* Photos de portrait (staff, équipes) — toujours centrées */
 img.object-cover {
   object-position: center center;
 }
 
-/* Logos sponsors et badges — centrés dans leur wrapper */
 img.object-contain {
   object-position: center center;
 }
 
-/* ——————————————————————————————————————
-   Utilitaire scrollbar-hide (filtres nav)
-—————————————————————————————————————— */
+/* Scrollbar discrète */
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -41,9 +98,6 @@ img.object-contain {
   display: none;
 }
 
-/* ——————————————————————————————————————
-   Smooth scroll global
-—————————————————————————————————————— */
 html {
   scroll-behavior: smooth;
 }

@@ -19,6 +19,7 @@ export class DirigeantsComponent {
   readonly allStaff = this.clubService.staff;
   readonly activeCategory = signal<Category>('direction');
   readonly showOrganigramme = signal<boolean>(true);
+  readonly selectedPoster = signal<string | null>('orga1');
 
   readonly categories: { key: Category; label: string; icon: string }[] = [
     { key: 'direction', label: 'Direction & Bureau', icon: '🏛️' },

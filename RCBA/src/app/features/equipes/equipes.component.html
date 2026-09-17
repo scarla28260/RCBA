@@ -1,44 +1,47 @@
 <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-10">
 
-  <!-- Page Header -->
-  <div class="bg-white rounded-2xl border-t-4 border-[#101d69] p-8 shadow-sm">
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-      <div class="max-w-3xl space-y-2">
+  <!-- Page Header Dynamique & Sportif -->
+  <div class="bg-gradient-to-r from-[#091244] via-[#101d69] to-[#070e36] rounded-3xl p-8 sm:p-10 text-white shadow-xl relative overflow-hidden border border-white/15">
+    <div class="absolute inset-0 bg-pitch-grid opacity-30 pointer-events-none"></div>
+    <div class="absolute top-0 right-0 w-80 h-80 rounded-full bg-[#29db22]/15 blur-3xl pointer-events-none"></div>
+
+    <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+      <div class="max-w-3xl space-y-3">
         <div class="inline-flex items-center gap-2">
-          <span class="rounded-full bg-[#21ad1c]/15 px-3 py-1 text-xs font-black uppercase tracking-wider text-[#167812]">
-            Saison 2026–2027
+          <span class="rounded-full bg-gradient-to-r from-[#21ad1c] to-[#25cf1f] px-3.5 py-1 text-xs font-black uppercase tracking-wider text-white shadow-xs">
+            ⚡ Saison 2026–2027
           </span>
-          <span class="text-xs font-bold text-slate-500 uppercase">District Eure-et-Loir & Ligue FFF</span>
+          <span class="text-xs font-bold text-emerald-300 uppercase tracking-widest font-sport">District Eure-et-Loir &bull; Ligue FFF</span>
         </div>
-        <h1 class="text-3xl sm:text-4xl font-black uppercase text-[#101d69] tracking-tight">
-          Nos Équipes & Engagements Officiels
+        <h1 class="text-4xl sm:text-5xl font-black uppercase italic tracking-tighter text-white font-hero">
+          Pôles & Équipes Officielles
         </h1>
-        <p class="text-sm text-slate-600 leading-relaxed">
-          Le Racing Club Bû Abondant compte <strong class="text-[#101d69]">5 équipes engagées en championnat de District</strong> (U13 D1, U15 D3, Seniors D3, Vétérans D1 et Vétérans D3) ainsi que son École de Foot labellisée Espoir FFF et sa section Féminine.
+        <p class="text-sm sm:text-base text-slate-200 leading-relaxed font-normal">
+          Le Racing Club Bû Abondant compte <strong class="text-[#3bf733]">5 équipes engagées en championnat officiel de District 28</strong>, une École de Foot labellisée FFF Espoir et un pôle Féminin en plein essor.
         </p>
       </div>
 
-      <!-- Quick stats -->
+      <!-- Quick stats athlétiques -->
       <div class="flex flex-wrap sm:flex-nowrap gap-3 shrink-0">
-        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-center min-w-[90px]">
-          <div class="text-2xl font-black text-rose-600">{{ competitionCount() }}</div>
-          <div class="text-[10px] font-black text-slate-600 uppercase tracking-wider mt-0.5">Compétitions</div>
-          <div class="text-[9px] text-slate-400">District 28</div>
+        <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 text-center min-w-[95px] card-dynamic">
+          <div class="text-3xl font-black text-rose-400 font-sport">{{ competitionCount() }}</div>
+          <div class="text-[10px] font-black text-slate-200 uppercase tracking-wider mt-1">Compétitions</div>
+          <div class="text-[9px] text-emerald-300 font-bold">District 28</div>
         </div>
-        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-center min-w-[90px]">
-          <div class="text-2xl font-black text-[#21ad1c]">{{ ecoleFootCount() }}</div>
-          <div class="text-[10px] font-black text-slate-600 uppercase tracking-wider mt-0.5">École de Foot</div>
-          <div class="text-[9px] text-slate-400">Foot à 8 & 5</div>
+        <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 text-center min-w-[95px] card-dynamic">
+          <div class="text-3xl font-black text-[#3bf733] font-sport">{{ ecoleFootCount() }}</div>
+          <div class="text-[10px] font-black text-slate-200 uppercase tracking-wider mt-1">École de Foot</div>
+          <div class="text-[9px] text-emerald-300 font-bold">U6 → U13</div>
         </div>
-        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-center min-w-[90px]">
-          <div class="text-2xl font-black text-amber-500">{{ footFemininCount() }}</div>
-          <div class="text-[10px] font-black text-slate-600 uppercase tracking-wider mt-0.5">Féminines</div>
-          <div class="text-[9px] text-slate-400">Label Bronze</div>
+        <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 text-center min-w-[95px] card-dynamic">
+          <div class="text-3xl font-black text-amber-300 font-sport">{{ footFemininCount() }}</div>
+          <div class="text-[10px] font-black text-slate-200 uppercase tracking-wider mt-1">Féminines</div>
+          <div class="text-[9px] text-amber-200 font-bold">Label FFF</div>
         </div>
-        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-center min-w-[90px]">
-          <div class="text-2xl font-black text-[#101d69]">{{ foot11Count() }}</div>
-          <div class="text-[10px] font-black text-slate-600 uppercase tracking-wider mt-0.5">Foot à 11</div>
-          <div class="text-[9px] text-slate-400">Compétition</div>
+        <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 text-center min-w-[95px] card-dynamic">
+          <div class="text-3xl font-black text-sky-300 font-sport">{{ foot11Count() }}</div>
+          <div class="text-[10px] font-black text-slate-200 uppercase tracking-wider mt-1">Foot à 11</div>
+          <div class="text-[9px] text-sky-200 font-bold">U15, Sen., Vét.</div>
         </div>
       </div>
     </div>
@@ -112,23 +115,24 @@
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     @for (team of filteredTeams(); track team.id; let idx = $index) {
       <div
-        class="rounded-2xl bg-white p-6 shadow-sm border border-slate-200 flex flex-col justify-between space-y-4 transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
+        class="rounded-3xl bg-white p-6 sm:p-7 shadow-sm border border-slate-200/90 flex flex-col justify-between space-y-5 card-dynamic relative overflow-hidden group"
         [class.border-t-4]="true"
         [class.border-t-[#101d69]]="team.pole === 'foot-a-11'"
         [class.border-t-[#21ad1c]]="team.pole === 'ecole-foot'"
+        [class.border-t-amber-500]="team.pole === 'foot-feminin'"
       >
         <div>
           <!-- Badges de haut de carte -->
           <div class="flex items-center justify-between mb-3 gap-2">
             <span
-              class="text-[10px] font-black uppercase px-2.5 py-1 rounded-full"
+              class="text-[10px] font-black uppercase px-3 py-1 rounded-full font-sport tracking-wider"
               [class]="team.pole === 'ecole-foot'
                 ? 'bg-[#21ad1c]/15 text-[#167812]'
-                : 'bg-[#101d69]/10 text-[#101d69]'"
+                : (team.pole === 'foot-feminin' ? 'bg-amber-100 text-amber-900' : 'bg-[#101d69]/10 text-[#101d69]')"
             >
               {{ team.format }}
             </span>
-            <span class="text-xs font-bold text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full">
+            <span class="text-xs font-black text-slate-600 bg-slate-100 px-3 py-0.5 rounded-full font-sport">
               {{ team.ageGroup }}
             </span>
           </div>

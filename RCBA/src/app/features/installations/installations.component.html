@@ -1,13 +1,19 @@
 <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-10">
-  <!-- Page Header -->
-  <div class="bg-white rounded-2xl border-t-4 border-[#101d69] p-8 shadow-sm">
-    <div class="max-w-3xl">
-      <span class="text-xs font-black uppercase tracking-wider text-[#21ad1c]">Territoire & Terrains</span>
-      <h1 class="text-3xl sm:text-4xl font-black uppercase text-[#101d69] tracking-tight mt-1">
+  <!-- Page Header Dynamique & Sportif -->
+  <div class="bg-gradient-to-r from-[#091244] via-[#101d69] to-[#070e36] rounded-3xl p-8 sm:p-10 text-white shadow-xl relative overflow-hidden border border-white/15">
+    <div class="absolute inset-0 bg-pitch-grid opacity-30 pointer-events-none"></div>
+    <div class="max-w-3xl space-y-3 relative z-10">
+      <div class="inline-flex items-center gap-2">
+        <span class="rounded-full bg-gradient-to-r from-[#21ad1c] to-[#25cf1f] px-3.5 py-1 text-xs font-black uppercase tracking-wider text-white shadow-xs">
+          ⚡ Terrains & Terroir
+        </span>
+        <span class="text-xs font-bold text-emerald-300 uppercase tracking-widest font-sport">Bû &bull; Abondant &bull; Serville</span>
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-black uppercase italic tracking-tighter text-white font-hero">
         Nos Installations Sportives
       </h1>
-      <p class="text-sm text-slate-600 mt-2 leading-relaxed">
-        Le Racing Club Bû Abondant s'appuie sur les infrastructures de ses communes partenaires : <strong class="text-[#101d69]">Bû</strong>, <strong class="text-[#167812]">Abondant</strong> et <strong class="text-sky-800">Serville</strong>.
+      <p class="text-sm sm:text-base text-slate-200 leading-relaxed font-normal">
+        Des infrastructures entretenues et éclairées pour accueillir entraînements, plateaux du samedi et rencontres officielles de championnat.
       </p>
     </div>
   </div>
@@ -16,7 +22,7 @@
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     @for (site of installations(); track site.id; let idx = $index) {
       <div
-        class="rounded-2xl bg-white p-6 shadow-sm border border-slate-200 flex flex-col justify-between space-y-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
+        class="rounded-3xl bg-white p-6 sm:p-7 shadow-sm border border-slate-200/90 flex flex-col justify-between space-y-6 card-dynamic relative overflow-hidden group"
         [class.border-t-4]="true"
         [class.border-t-[#101d69]]="idx % 2 === 0"
         [class.border-t-[#21ad1c]]="idx % 2 !== 0"

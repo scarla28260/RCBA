@@ -1,35 +1,38 @@
 <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-10">
 
-  <!-- PAGE HEADER -->
-  <div class="bg-white rounded-2xl border-t-4 border-[#101d69] p-8 shadow-sm">
-    <div class="flex flex-col items-center text-center gap-5">
-      <!-- Club Logo -->
-      <img
-        src="/logo.png"
-        alt="Logo Racing Club Bû Abondant"
-        class="h-24 w-auto object-contain mx-auto"
-        onerror="this.style.display='none'"
-      />
+  <!-- PAGE HEADER Dynamique & Sportif -->
+  <div class="bg-gradient-to-r from-[#091244] via-[#101d69] to-[#070e36] rounded-3xl p-8 sm:p-10 text-white shadow-xl relative overflow-hidden border border-white/15">
+    <div class="absolute inset-0 bg-pitch-grid opacity-30 pointer-events-none"></div>
+    <div class="flex flex-col items-center text-center gap-5 relative z-10">
+      <!-- Club Logo avec Glow Dynamique -->
+      <div class="p-2 rounded-2xl bg-white shadow-xl border-2 border-[#29db22]">
+        <img
+          src="/logo.png"
+          alt="Logo Racing Club Bû Abondant"
+          class="h-20 w-auto object-contain mx-auto"
+          onerror="this.style.display='none'"
+        />
+      </div>
       <div>
-        <span class="inline-flex items-center gap-1.5 rounded-full bg-[#21ad1c]/15 px-3 py-1 text-xs font-black uppercase tracking-wider text-[#167812]">
-          ⚽ Saison 2026–2027 • District 28
+        <span class="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#21ad1c] to-[#25cf1f] px-3.5 py-1 text-xs font-black uppercase tracking-wider text-white shadow-xs">
+          ⚡ Calendrier &bull; Saison 2026–2027 &bull; District 28
         </span>
-        <h1 class="text-3xl sm:text-4xl font-black uppercase text-[#101d69] tracking-tight mt-2">
+        <h1 class="text-4xl sm:text-5xl font-black uppercase italic tracking-tighter text-white font-hero mt-3">
           Agenda, Matchs & Convocations
         </h1>
-        <p class="text-sm text-slate-600 mt-2 leading-relaxed max-w-2xl mx-auto">
+        <p class="text-sm sm:text-base text-slate-200 mt-2 leading-relaxed max-w-2xl mx-auto font-normal">
           Consultez les rencontres officielles du week-end, le planning hebdomadaire des entraînements par équipe et les événements du <strong>Racing Club Bû Abondant</strong>.
         </p>
       </div>
 
       <!-- Navigation d'onglets de la page -->
-      <div class="flex flex-wrap justify-center gap-2 pt-2 border-t border-slate-100 w-full">
+      <div class="flex flex-wrap justify-center gap-2 pt-4 border-t border-white/15 w-full">
         <button
           type="button"
           (click)="activeSection.set('matchs')"
           [class]="activeSection() === 'matchs'
-            ? 'px-5 py-2 rounded-full font-black text-xs uppercase tracking-wider bg-[#101d69] text-white shadow-sm transition-all'
-            : 'px-5 py-2 rounded-full font-bold text-xs uppercase tracking-wider bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all'"
+            ? 'px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-wider bg-[#29db22] text-slate-950 shadow-md transition-all font-sport'
+            : 'px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider bg-white/10 text-white hover:bg-white/20 transition-all font-sport border border-white/15'"
         >
           ⚽ Rencontres & Convocations ({{ upcomingMatches().length }})
         </button>
@@ -37,8 +40,8 @@
           type="button"
           (click)="activeSection.set('planning')"
           [class]="activeSection() === 'planning'
-            ? 'px-5 py-2 rounded-full font-black text-xs uppercase tracking-wider bg-[#101d69] text-white shadow-sm transition-all'
-            : 'px-5 py-2 rounded-full font-bold text-xs uppercase tracking-wider bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all'"
+            ? 'px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-wider bg-[#29db22] text-slate-950 shadow-md transition-all font-sport'
+            : 'px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider bg-white/10 text-white hover:bg-white/20 transition-all font-sport border border-white/15'"
         >
           🕒 Planning des Entraînements
         </button>
@@ -46,8 +49,8 @@
           type="button"
           (click)="activeSection.set('evenements')"
           [class]="activeSection() === 'evenements'
-            ? 'px-5 py-2 rounded-full font-black text-xs uppercase tracking-wider bg-[#101d69] text-white shadow-sm transition-all'
-            : 'px-5 py-2 rounded-full font-bold text-xs uppercase tracking-wider bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all'"
+            ? 'px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-wider bg-[#29db22] text-slate-950 shadow-md transition-all font-sport'
+            : 'px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider bg-white/10 text-white hover:bg-white/20 transition-all font-sport border border-white/15'"
         >
           📅 Événements du Club ({{ clubEvents().length }})
         </button>

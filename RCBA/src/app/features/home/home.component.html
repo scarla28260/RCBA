@@ -1,87 +1,100 @@
-<div class="space-y-12 pb-16">
-  <!-- Hero Section : Institutionnel, Lumineux & Sportif -->
-  <section class="relative bg-gradient-to-b from-[#101d69] via-[#162788] to-[#101d69] text-white py-16 sm:py-20 shadow-lg">
-    <!-- Subtle Grass & Field Pitch Overlay -->
-    <div class="absolute inset-0 bg-[radial-gradient(#ffffff15_1px,transparent_1px)] [background-size:24px_24px] opacity-40"></div>
+<div class="space-y-14 pb-20">
+  <!-- Hero Section : Jeune, Ambitieux, Ultra-Dynamique (Électrique & Néon) -->
+  <section class="relative bg-hero-glow text-white py-18 sm:py-24 shadow-2xl overflow-hidden">
+    <!-- Texture Pelouse & Vitesse -->
+    <div class="absolute inset-0 bg-pitch-grid opacity-60"></div>
+    <!-- Éclairage d'accentuation dynamique -->
+    <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-[#162eb8]/40 blur-3xl pointer-events-none"></div>
+    <div class="absolute top-1/2 -right-32 w-96 h-96 rounded-full bg-[#29db22]/20 blur-3xl pointer-events-none"></div>
 
     <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="flex flex-col lg:flex-row items-center justify-between gap-10">
+      <div class="flex flex-col lg:flex-row items-center justify-between gap-12">
         
         <!-- Left: Text & Badges -->
         <div class="flex-1 text-center lg:text-left space-y-6">
           <div class="inline-flex flex-wrap items-center justify-center lg:justify-start gap-2.5">
-            <span class="inline-flex items-center gap-1.5 rounded-full bg-[#21ad1c] px-3.5 py-1 text-xs font-black uppercase tracking-wider text-white shadow-sm">
-              <span class="h-2 w-2 rounded-full bg-white animate-pulse"></span>
-              Couleurs officielles : Bleu Roi & Vert
+            <span class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#21ad1c] to-[#25cf1f] px-4 py-1 text-xs font-black uppercase tracking-wider text-white shadow-md shadow-[#21ad1c]/30">
+              <span class="h-2 w-2 rounded-full bg-white animate-ping"></span>
+              Club Formateur & Ambitieux
             </span>
-            <span class="rounded-full bg-white/15 px-3 py-1 text-xs font-bold text-sky-100 backdrop-blur-xs border border-white/20">
-              Affiliation FFF n° 528340 &bull; District 28
+            <span class="rounded-full bg-white/10 px-3.5 py-1 text-xs font-bold text-emerald-200 backdrop-blur-md border border-white/20">
+              Affiliation FFF n° 528340 &bull; Eure-et-Loir (D28)
             </span>
           </div>
 
-          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase italic tracking-tight leading-none text-white">
-            Racing Club <br />
-            <span class="text-[#25cf1f] drop-shadow-sm">Bû &bull; Abondant</span>
-          </h1>
+          <div class="space-y-2">
+            <span class="text-xs sm:text-sm font-sport font-bold uppercase tracking-[0.3em] text-[#3bf733] block">
+              — DÉPASSEMENT • FORMATION • PASSION —
+            </span>
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black uppercase italic tracking-tighter leading-none text-white font-hero">
+              Racing Club <br />
+              <span class="bg-gradient-to-r from-[#29db22] via-[#60ef5a] to-[#38bdf8] bg-clip-text text-transparent drop-shadow-sm">
+                Bû &bull; Abondant
+              </span>
+            </h1>
+          </div>
 
-          <p class="text-base sm:text-lg text-slate-100 max-w-2xl font-medium leading-relaxed">
-            Bienvenue sur le portail officiel du RCBA. Un club formateur et familial au nord de l'Eure-et-Loir, rassemblant les passionnés de football de l'école de foot aux vétérans.
+          <p class="text-base sm:text-lg text-slate-200 max-w-2xl font-normal leading-relaxed">
+            L'énergie du football amateur moderne. De l'École de Foot labellisée FFF aux équipes Seniors et Vétérans, un projet sportif tourné vers le jeu, le respect et la victoire collective.
           </p>
 
-          <!-- CTAs -->
-          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3.5 pt-2">
+          <!-- CTAs Sportifs & Dynamiques -->
+          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3.5 pt-3">
             <a
               routerLink="/inscriptions"
-              class="inline-flex items-center justify-center rounded-lg bg-[#21ad1c] px-6 py-3.5 text-sm font-black uppercase tracking-wider text-white shadow-md hover:bg-[#1b8e17] transition-transform active:scale-95"
+              class="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#21ad1c] to-[#29db22] px-7 py-4 text-sm font-black uppercase tracking-wider text-white shadow-lg shadow-[#21ad1c]/40 hover:shadow-[#21ad1c]/60 hover:scale-105 transition-all duration-300 active:scale-95"
             >
-              ⚽ Inscriptions & Licences
+              <span>⚡</span> Rejoindre le Club (Licences)
             </a>
             <a
-              routerLink="/club"
-              class="inline-flex items-center justify-center rounded-lg bg-white px-6 py-3.5 text-sm font-black uppercase tracking-wider text-[#101d69] shadow-md hover:bg-slate-100 transition-colors active:scale-95"
+              routerLink="/equipes"
+              class="inline-flex items-center justify-center gap-2 rounded-2xl bg-white/10 hover:bg-white/20 backdrop-blur-md border-2 border-white/30 px-6 py-4 text-sm font-black uppercase tracking-wider text-white transition-all active:scale-95"
             >
-              📋 L'Organigramme du Club
+              <span>⚽</span> Nos Équipes & Matchs
             </a>
             <a
               routerLink="/educateurs"
-              class="inline-flex items-center justify-center rounded-lg border-2 border-white/40 bg-white/10 px-5 py-3.5 text-sm font-bold uppercase tracking-wider text-white hover:bg-white/20 transition-colors"
+              class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#101d69]/80 hover:bg-[#101d69] border border-[#29db22]/40 px-5 py-4 text-sm font-bold uppercase tracking-wider text-[#3bf733] hover:text-white transition-colors"
             >
-              🔒 Espace Éducateurs
+              <span>🔒</span> Portail Coach
             </a>
           </div>
         </div>
 
         <!-- Right: Crest & Labels Emblem -->
-        <div class="flex flex-col items-center justify-center p-6 sm:p-8 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl text-center max-w-sm w-full">
-          <div class="relative flex h-32 w-32 items-center justify-center rounded-full bg-white p-2 shadow-xl mb-4">
+        <div class="flex flex-col items-center justify-center p-7 sm:p-9 rounded-3xl bg-gradient-to-b from-white/15 to-white/5 backdrop-blur-xl border border-white/20 shadow-2xl text-center max-w-sm w-full relative overflow-hidden group">
+          <!-- Effet néon au survol -->
+          <div class="absolute -inset-0.5 bg-gradient-to-r from-[#29db22] to-[#162eb8] rounded-3xl opacity-0 group-hover:opacity-30 blur-xl transition-all duration-500"></div>
+
+          <div class="relative flex h-36 w-36 items-center justify-center rounded-3xl bg-white p-2.5 shadow-2xl mb-4 group-hover:scale-105 transition-transform duration-300 border-2 border-[#29db22]">
             <img
               src="logo.png"
               alt="Blason Officiel RCBA"
               class="h-full w-full object-contain"
               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
             />
-            <span class="absolute inset-0 items-center justify-center text-2xl font-black text-[#101d69] hidden">RCBA</span>
+            <span class="absolute inset-0 items-center justify-center text-3xl font-black text-[#101d69] font-sport hidden">RCBA</span>
           </div>
           
-          <h2 class="text-lg font-black uppercase text-white tracking-wide">
+          <h2 class="text-xl font-black uppercase text-white tracking-wide font-display">
             Racing Club Bû Abondant
           </h2>
-          <span class="text-xs font-bold text-[#25cf1f] mt-0.5">Fondé en 2020 &bull; Eure-et-Loir</span>
+          <span class="text-xs font-sport font-bold text-[#3bf733] mt-1 uppercase tracking-wider">Bleu Roi & Vert &bull; Fondé en 2020</span>
 
-          <div class="mt-5 pt-5 border-t border-white/20 w-full">
-            <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[#25cf1f] text-center mb-3">Labels Nationaux FFF</p>
+          <div class="mt-6 pt-5 border-t border-white/15 w-full">
+            <p class="text-[10px] font-sport font-black uppercase tracking-[0.25em] text-[#3bf733] text-center mb-3">Double Label National FFF</p>
             <div class="flex items-center justify-around gap-4">
               <div class="flex flex-col items-center gap-2">
-                <div class="p-2 rounded-xl bg-white/95 shadow-md flex items-center justify-center">
+                <div class="p-2.5 rounded-2xl bg-white shadow-lg flex items-center justify-center border border-slate-100 group-hover:scale-105 transition-transform">
                   <img src="/label-espoir.png" alt="Label Espoir FFF" class="h-16 w-auto object-contain filter contrast-125" />
                 </div>
-                <span class="text-[11px] font-black text-white uppercase tracking-wide">Label Espoir</span>
+                <span class="text-[11px] font-black text-white uppercase tracking-wide font-sport">Espoir FFF</span>
               </div>
               <div class="flex flex-col items-center gap-2">
-                <div class="p-2 rounded-xl bg-white/95 shadow-md flex items-center justify-center">
+                <div class="p-2.5 rounded-2xl bg-white shadow-lg flex items-center justify-center border border-slate-100 group-hover:scale-105 transition-transform">
                   <img src="/label-feminine.png" alt="Label École Féminine FFF" class="h-16 w-auto object-contain filter contrast-125" />
                 </div>
-                <span class="text-[11px] font-black text-white uppercase tracking-wide">Label Féminin</span>
+                <span class="text-[11px] font-black text-white uppercase tracking-wide font-sport">Féminin FFF</span>
               </div>
             </div>
           </div>
@@ -91,24 +104,29 @@
     </div>
   </section>
 
-  <!-- Section Chiffres Clés (Clean White Cards avec Top Border Bleu & Vert) -->
+  <!-- Section Chiffres Clés : Format Badges Athlétiques Impactants -->
   <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
       @for (metric of metrics(); track metric.label; let idx = $index) {
         <div
-          class="rounded-xl bg-white p-6 shadow-sm border border-slate-200 transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
-          [class.border-t-4]="true"
-          [class.border-t-[#101d69]]="idx % 2 === 0"
-          [class.border-t-[#21ad1c]]="idx % 2 !== 0"
+          class="rounded-3xl bg-white p-6 shadow-sm border border-slate-200/80 card-dynamic relative overflow-hidden"
+          [class.border-l-4]="true"
+          [class.border-l-[#101d69]]="idx % 2 === 0"
+          [class.border-l-[#21ad1c]]="idx % 2 !== 0"
         >
-          <div
-            class="text-3xl sm:text-4xl font-black font-mono"
-            [class.text-[#101d69]]="idx % 2 === 0"
-            [class.text-[#21ad1c]]="idx % 2 !== 0"
-          >
-            {{ metric.value }}
+          <div class="flex items-center justify-between">
+            <div
+              class="text-3xl sm:text-4xl font-black font-sport tracking-tight"
+              [class.text-[#101d69]]="idx % 2 === 0"
+              [class.text-[#21ad1c]]="idx % 2 !== 0"
+            >
+              {{ metric.value }}
+            </div>
+            <span class="text-lg opacity-40 select-none">
+              {{ idx === 0 ? '👥' : idx === 1 ? '⚽' : idx === 2 ? '🏆' : '🏟️' }}
+            </span>
           </div>
-          <div class="text-xs sm:text-sm font-black text-slate-800 uppercase tracking-wider mt-2">
+          <div class="text-xs sm:text-sm font-black text-slate-800 uppercase tracking-wider mt-3 font-display">
             {{ metric.label }}
           </div>
           <div class="text-xs text-slate-500 mt-1">
