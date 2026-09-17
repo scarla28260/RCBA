@@ -9,13 +9,13 @@
     <div class="relative max-w-7xl mx-auto px-4 py-16 text-center">
       <div class="inline-flex items-center gap-2 bg-[#3bf733]/20 border border-[#3bf733]/40 text-[#3bf733] rounded-full px-4 py-1.5 text-xs font-black uppercase tracking-wider mb-6 font-sport shadow-md">
         <span>⚡</span>
-        <span>Gouvernance & Organigramme Officiel • Saison 2026–2027</span>
+        <span>Dirigeants, Bureau & Éducateurs • Saison 2026–2027</span>
       </div>
       <h1 class="text-4xl sm:text-6xl font-black uppercase tracking-tight text-white mb-4 font-display">
-        Organigramme & <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-[#3bf733]">Dirigeants RCBA</span>
+        Trombinoscope & <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-[#3bf733]">Dirigeants RCBA</span>
       </h1>
       <p class="text-sky-100 text-sm sm:text-base max-w-3xl mx-auto leading-relaxed">
-        Découvrez l'équipe dirigeante, administrative et technique qui pilote les ambitions du <strong class="text-white">{{ clubName() }}</strong>. Une gouvernance structurée, moderne et engagée pour l'épanouissement de chaque licencié.
+        Retrouvez les cartes officielles de l'équipe dirigeante, administrative et technique du <strong class="text-white">{{ clubName() }}</strong>. Une équipe mobilisée au quotidien pour les jeunes et le football amateur local.
       </p>
 
       <!-- Métriques Athlétiques -->
@@ -36,179 +36,6 @@
           <div class="text-3xl sm:text-4xl font-black text-[#3bf733] font-sport">2</div>
           <div class="text-xs font-bold text-sky-200 mt-1 uppercase tracking-wider">Labels FFF Certifiés</div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SECTION VIZ ORGANIGRAMME HIÉRARCHIQUE EN 3 VOLETS -->
-  <section class="max-w-7xl mx-auto px-4 pt-10">
-    <div class="rounded-3xl bg-white border border-slate-200 p-6 sm:p-10 shadow-xl space-y-8">
-      <div class="flex flex-col lg:flex-row lg:items-center justify-between pb-6 border-b border-slate-200 gap-6">
-        <div>
-          <div class="inline-flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#101d69]">
-            <span class="text-base">🏛️</span> Structure Fédérale FFF n° 528340
-          </div>
-          <h2 class="text-2xl sm:text-4xl font-black uppercase text-[#101d69] tracking-tight mt-1 font-display">
-            Architecture de la Gouvernance
-          </h2>
-          <p class="text-xs sm:text-sm text-slate-600 mt-2 max-w-2xl leading-relaxed">
-            Consultez les 3 volets d'organisation officielle du club : du Bureau Directeur à l'animation des bénévoles et l'encadrement terrain.
-          </p>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-3 shrink-0">
-          <a
-            href="https://s2.static-footeo.com/uploads/rcba/Medias/RCBA_Organigramme_g%C3%A9n%C3%A9ral_2025_2026_court__t6yqb4.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#101d69] to-[#0b1348] text-white px-5 py-3 text-xs font-black uppercase tracking-wider shadow-md hover:shadow-lg transition-all active:scale-95"
-          >
-            <span>📄 PDF Synthèse Officielle ↗</span>
-          </a>
-          <a
-            href="https://s2.static-footeo.com/uploads/rcba/Medias/Statuts%20RCBA__qg1bkg.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-xs font-black uppercase tracking-wider text-slate-700 hover:border-[#101d69] hover:bg-white transition-all shadow-sm"
-          >
-            <span>⚖️ Statuts Fédéraux ↗</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- ARBRE VISUEL SYNTHÉTIQUE -->
-      <div class="p-6 rounded-2xl bg-gradient-to-br from-slate-900 via-[#0a1445] to-slate-900 text-white relative overflow-hidden shadow-xl border border-white/10">
-        <div class="absolute inset-0 opacity-10 bg-pitch-grid pointer-events-none"></div>
-
-        <div class="relative z-10 text-center space-y-2 mb-8">
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#3bf733]/20 border border-[#3bf733]/40 text-[#3bf733] text-[11px] font-black uppercase tracking-widest font-sport">
-            Arbre Directeur Synthétique
-          </span>
-          <h3 class="text-xl sm:text-2xl font-black uppercase tracking-wider text-white font-display">
-            Conseil d'Administration & Exécutif
-          </h3>
-        </div>
-
-        <!-- Schéma interactif des pôles -->
-        <div class="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-          
-          <!-- Volet 1 -->
-          <div class="rounded-2xl bg-white/10 backdrop-blur-md border p-5 flex flex-col justify-between transition-all"
-               [class]="selectedPoster() === 'orga1' ? 'border-[#3bf733] ring-2 ring-[#3bf733]/40 bg-white/15' : 'border-white/15 hover:border-emerald-400/50 hover:bg-white/15'">
-            <div>
-              <div class="flex items-center justify-between mb-3">
-                <span class="text-2xl">🥇</span>
-                <span class="text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full bg-emerald-400 text-slate-950 font-sport">Volet 1</span>
-              </div>
-              <h4 class="text-base font-black uppercase text-white font-display">Direction & Bureau</h4>
-              <p class="text-xs text-sky-200/90 mt-1.5 leading-relaxed">
-                Pilotage stratégique, représentation légale, finances et secrétariat général du club.
-              </p>
-              <div class="mt-4 pt-3 border-t border-white/10 space-y-1 text-xs text-slate-300">
-                <div class="flex items-center gap-2"><span class="text-[#3bf733]">✓</span> Présidence & Vices-Présidences</div>
-                <div class="flex items-center gap-2"><span class="text-[#3bf733]">✓</span> Trésorerie Principale & Adjointe</div>
-                <div class="flex items-center gap-2"><span class="text-[#3bf733]">✓</span> Secrétariat Général & Affiliations</div>
-              </div>
-            </div>
-            <div class="mt-5 flex gap-2">
-              <button (click)="selectedPoster.set('orga1')"
-                      class="flex-1 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all border font-sport"
-                      [class]="selectedPoster() === 'orga1' ? 'bg-[#3bf733] text-slate-950 border-[#3bf733] shadow-md' : 'bg-white/10 text-white border-white/20 hover:bg-white/20'">
-                👁️ Aperçu HD
-              </button>
-              <a href="/orga1.png" target="_blank" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs border border-white/20 flex items-center justify-center" title="Plein écran">
-                ↗
-              </a>
-            </div>
-          </div>
-
-          <!-- Volet 2 -->
-          <div class="rounded-2xl bg-white/10 backdrop-blur-md border p-5 flex flex-col justify-between transition-all"
-               [class]="selectedPoster() === 'orga2' ? 'border-cyan-400 ring-2 ring-cyan-400/40 bg-white/15' : 'border-white/15 hover:border-cyan-400/50 hover:bg-white/15'">
-            <div>
-              <div class="flex items-center justify-between mb-3">
-                <span class="text-2xl">⚽</span>
-                <span class="text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full bg-cyan-400 text-slate-950 font-sport">Volet 2</span>
-              </div>
-              <h4 class="text-base font-black uppercase text-white font-display">Pôle Technique & Sport</h4>
-              <p class="text-xs text-sky-200/90 mt-1.5 leading-relaxed">
-                Coordination sportive des catégories foot animation, pré-formation et foot à 11 compétitif.
-              </p>
-              <div class="mt-4 pt-3 border-t border-white/10 space-y-1 text-xs text-slate-300">
-                <div class="flex items-center gap-2"><span class="text-cyan-400">✓</span> Responsable Technique des Jeunes (RTJ)</div>
-                <div class="flex items-center gap-2"><span class="text-cyan-400">✓</span> Éducateurs Diplômés École de Foot (U6–U13)</div>
-                <div class="flex items-center gap-2"><span class="text-cyan-400">✓</span> Staff Foot à 11 (U15, Seniors, Vétérans)</div>
-              </div>
-            </div>
-            <div class="mt-5 flex gap-2">
-              <button (click)="selectedPoster.set('orga2')"
-                      class="flex-1 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all border font-sport"
-                      [class]="selectedPoster() === 'orga2' ? 'bg-cyan-400 text-slate-950 border-cyan-400 shadow-md' : 'bg-white/10 text-white border-white/20 hover:bg-white/20'">
-                👁️ Aperçu HD
-              </button>
-              <a href="/orga2.png" target="_blank" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs border border-white/20 flex items-center justify-center" title="Plein écran">
-                ↗
-              </a>
-            </div>
-          </div>
-
-          <!-- Volet 3 -->
-          <div class="rounded-2xl bg-white/10 backdrop-blur-md border p-5 flex flex-col justify-between transition-all"
-               [class]="selectedPoster() === 'orga3' ? 'border-amber-400 ring-2 ring-amber-400/40 bg-white/15' : 'border-white/15 hover:border-amber-400/50 hover:bg-white/15'">
-            <div>
-              <div class="flex items-center justify-between mb-3">
-                <span class="text-2xl">🎉</span>
-                <span class="text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full bg-amber-400 text-slate-950 font-sport">Volet 3</span>
-              </div>
-              <h4 class="text-base font-black uppercase text-white font-display">Vie du Club & Bénévolat</h4>
-              <p class="text-xs text-sky-200/90 mt-1.5 leading-relaxed">
-                Dynamisation événementielle, relations partenaires, buvettes, tournois et communication.
-              </p>
-              <div class="mt-4 pt-3 border-t border-white/10 space-y-1 text-xs text-slate-300">
-                <div class="flex items-center gap-2"><span class="text-amber-400">✓</span> Commission Événements & Tournois</div>
-                <div class="flex items-center gap-2"><span class="text-amber-400">✓</span> Sponsoring, Équipements & Boutique</div>
-                <div class="flex items-center gap-2"><span class="text-amber-400">✓</span> Réseaux Sociaux & Image du Club</div>
-              </div>
-            </div>
-            <div class="mt-5 flex gap-2">
-              <button (click)="selectedPoster.set('orga3')"
-                      class="flex-1 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all border font-sport"
-                      [class]="selectedPoster() === 'orga3' ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-md' : 'bg-white/10 text-white border-white/20 hover:bg-white/20'">
-                👁️ Aperçu HD
-              </button>
-              <a href="/orga3.png" target="_blank" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs border border-white/20 flex items-center justify-center" title="Plein écran">
-                ↗
-              </a>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Visionneuse HD Affiche Intégrée -->
-        @if (selectedPoster()) {
-          <div class="relative z-10 mt-8 pt-8 border-t border-white/15">
-            <div class="flex items-center justify-between mb-4">
-              <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-[#3bf733] animate-pulse"></span>
-                <h5 class="text-xs sm:text-sm font-black uppercase tracking-wider text-sky-200 font-sport">
-                  Affichage Officiel Haute Définition • 
-                  @if (selectedPoster() === 'orga1') { Volet 1 : Direction & Bureau }
-                  @if (selectedPoster() === 'orga2') { Volet 2 : Pôle Technique & Éducateurs }
-                  @if (selectedPoster() === 'orga3') { Volet 3 : Vie du Club & Bénévolat }
-                </h5>
-              </div>
-              <button (click)="selectedPoster.set(null)" class="text-xs text-slate-400 hover:text-white px-2 py-1 rounded bg-white/10 transition-colors">
-                ✕ Masquer l'affiche
-              </button>
-            </div>
-
-            <div class="rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl bg-black/60 backdrop-blur-md">
-              <img [src]="'/' + selectedPoster() + '.png'"
-                   [alt]="'Organigramme RCBA ' + selectedPoster()"
-                   class="w-full h-auto max-h-[680px] object-contain mx-auto transition-transform hover:scale-[1.01]" />
-            </div>
-          </div>
-        }
       </div>
     </div>
   </section>
