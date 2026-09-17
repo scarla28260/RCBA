@@ -14,6 +14,8 @@ import {
   Licencie,
   Convocation,
   PlayerEvolutionStat,
+  ClubHighlight,
+  SocialFeedPost,
 } from '../models/club.model';
 
 @Injectable({

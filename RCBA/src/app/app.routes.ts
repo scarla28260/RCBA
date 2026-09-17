@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -71,6 +72,7 @@ export const routes: Routes = [
       },
       {
         path: 'educateurs',
+        canActivate: [authGuard],
         loadComponent: () =>
           import('./features/educateurs/educateurs.component').then(
             (m) => m.EducateursComponent
@@ -83,6 +85,7 @@ export const routes: Routes = [
       },
       {
         path: 'direction',
+        canActivate: [authGuard],
         loadComponent: () =>
           import('./features/direction/direction.component').then(
             (m) => m.DirectionComponent

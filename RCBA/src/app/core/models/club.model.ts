@@ -258,3 +258,4 @@ export interface PlayerEvolutionStat {
   coachFeedback: string;
   lastUpdated: string;
 }
+
