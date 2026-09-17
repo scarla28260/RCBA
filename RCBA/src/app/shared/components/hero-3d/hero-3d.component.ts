@@ -121,19 +121,26 @@ export class Hero3DComponent implements AfterViewInit, OnDestroy {
     pointLightBackGlow.position.set(0, 0, -1.0);
     this.scene.add(pointLightBackGlow);
 
-    // 5. Chargement de la Texture du Logo RCBA & Correction UV (Miroir)
+    // 5. Chargement de la Texture du Logo RCBA & Correction UV (Orientation & Symétrie)
     const textureLoader = new THREE.TextureLoader();
     
-    // Texture Face Avant (normale, lisible de gauche à droite)
+    // Texture Face Avant (normale, redressée via texture.center et texture.rotation)
     const logoTextureFront = textureLoader.load('/logo.png');
     logoTextureFront.colorSpace = THREE.SRGBColorSpace;
     logoTextureFront.generateMipmaps = true;
     logoTextureFront.minFilter = THREE.LinearMipmapLinearFilter;
+    
+    // Correction de l'orientation UV due à la rotation du cylindre :
+    // On pivote la texture de 90° autour de son centre pour que le blason ait la pointe vers le bas
+    logoTextureFront.center.set(0.5, 0.5);
+    logoTextureFront.rotation = -Math.PI / 2;
 
-    // Texture Face Arrière (inversion de l'axe X pour contrer l'effet miroir)
+    // Texture Face Arrière (inversion de l'axe X pour contrer l'effet miroir + rotation identique)
     const logoTextureBack = logoTextureFront.clone();
     logoTextureBack.wrapS = THREE.RepeatWrapping;
     logoTextureBack.repeat.x = -1;
+    logoTextureBack.center.set(0.5, 0.5);
+    logoTextureBack.rotation = -Math.PI / 2;
 
     // 6. Matériaux du Token (Material Array)
     // [0]: Tranche (Cylindre rim) - métallique sombre avec bordure émissive vert néon
@@ -183,19 +190,18 @@ export class Hero3DComponent implements AfterViewInit, OnDestroy {
   private animate = (): void => {
     this.animFrameId = requestAnimationFrame(this.animate);
 
-    const elapsedTime = this.clock.getElapsedTime();
+    const time = this.clock.getElapsedTime();
 
-    // 1. Oscillation fluide sinusoïdale sur l'axe vertical Y (amplitude 0.6 rad)
-    // Le logo oscille de gauche à droite sans jamais faire un tour complet
-    const oscillation = Math.sin(elapsedTime * 1.2) * 0.6;
-    this.tokenMesh.rotation.y = oscillation + this.mouseParallaxY;
+    // 1. Oscillation stricte sur l'axe Y : balancier de gauche à droite (amplitude 0.4 rad)
+    // Code exact spécifié : mesh.rotation.y = Math.sin(time * 1.5) * 0.4;
+    this.tokenMesh.rotation.y = Math.sin(time * 1.5) * 0.4;
 
-    // 2. Blocage absolu de toute rotation sur les axes X et Z
+    // 2. Verrouillage absolu : les axes X et Z restent strictement figés à 0
     this.tokenMesh.rotation.x = 0;
     this.tokenMesh.rotation.z = 0;
 
     // 3. Flottement vertical sinusoïdal très doux
-    this.tokenMesh.position.y = Math.sin(elapsedTime * 1.5) * 0.08;
+    this.tokenMesh.position.y = Math.sin(time * 1.8) * 0.08;
 
     this.renderer.render(this.scene, this.camera);
   };
