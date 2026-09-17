@@ -110,107 +110,65 @@ export class Hero3DComponent implements AfterViewInit, OnDestroy {
     dirLightFront.position.set(2, 3, 5);
     this.scene.add(dirLightFront);
 
-    // 5. Chargement et Configuration Paramétrique de la Texture
+    // 5. Chargement de la Texture SANS AUCUNE MODIFICATION UV
     const textureLoader = new THREE.TextureLoader();
-    const logoTexture = textureLoader.load('/logo.png');
-    logoTexture.colorSpace = THREE.SRGBColorSpace;
-    logoTexture.generateMipmaps = true;
-    logoTexture.minFilter = THREE.LinearMipmapLinearFilter;
-
-    // Paramètres stricts conservés
-    logoTexture.center.set(0.5, 0.5);
-    logoTexture.rotation = Math.PI;
-    logoTexture.wrapS = THREE.RepeatWrapping;
-    logoTexture.repeat.x = -1;
-    logoTexture.flipY = false;
+    const textureLogo = textureLoader.load('/logo.png');
+    textureLogo.colorSpace = THREE.SRGBColorSpace;
 
     // =========================================================================
-    // ARCHITECTURE 3D EN RELIEF (Support Cylindre Biseauté + Dôme de Résine)
+    // ARCHITECTURE DIRECTIVE STRICTE : LE "SANDWICH" 3 COUCHES
     // =========================================================================
+    
+    // 1. Le Groupe Principal (Le seul élément qui sera animé)
     this.badgeGroup = new THREE.Group();
+    this.scene.add(this.badgeGroup);
 
-    // -------------------------------------------------------------------------
-    // 1. LE SUPPORT 3D DU LOGO (Cylindre épais / Jeton de collection)
-    // -------------------------------------------------------------------------
-    // Dimensions : Rayon 2, Épaisseur 0.2, 64 segments
-    const cylinderGeometry = new THREE.CylinderGeometry(2, 2, 0.2, 64);
-    
-    // Matériau tranche (contour) : Métallique sombre avec liseré lumineux vert néon #00FF66
-    const rimMaterial = new THREE.MeshStandardMaterial({
-      color: 0x070B14,
-      metalness: 0.9,
-      roughness: 0.2,
-      emissive: 0x00ff66,
-      emissiveIntensity: 0.8,
-    });
+    // 2. Couche Centrale : L'Image Plate (Zéro distorsion)
+    // Cercle parfait face caméra. Le SEUL objet qui reçoit la texture.
+    const logoGeo = new THREE.CircleGeometry(2, 64);
+    const logoMat = new THREE.MeshBasicMaterial({ map: textureLogo, transparent: true });
+    const logoMesh = new THREE.Mesh(logoGeo, logoMat);
+    logoMesh.position.set(0, 0, 0); // Centre absolu
+    this.badgeGroup.add(logoMesh);
 
-    // Matériau face supérieure (couvercle avant) : Logo RCBA
-    const faceMaterial = new THREE.MeshStandardMaterial({
-      map: logoTexture,
+    // 3. Couche Arrière : L'Épaisseur du Badge (Le volume 3D)
+    // Cylindre opaque (vert néon #00FF66) placé derrière l'image
+    const backGeo = new THREE.CylinderGeometry(1.98, 1.98, 0.15, 64);
+    const backMat = new THREE.MeshStandardMaterial({ color: 0x00FF66, metalness: 0.5, roughness: 0.5 });
+    const backMesh = new THREE.Mesh(backGeo, backMat);
+    backMesh.rotation.x = Math.PI / 2; // On couche le cylindre pour que sa face plate regarde la caméra
+    backMesh.position.set(0, 0, -0.08); // Reculé DERRIÈRE l'image plate
+    this.badgeGroup.add(backMesh);
+
+    // 4. Couche Avant : Le Dôme de Résine (Le reflet)
+    // Demi-sphère écrasée, 100% transparente, placée devant l'image
+    const domeGeo = new THREE.SphereGeometry(2, 64, 64, 0, Math.PI * 2, 0, Math.PI / 2);
+    const domeMat = new THREE.MeshPhysicalMaterial({
       transparent: true,
-      roughness: 0.3,
-      metalness: 0.1,
-    });
-
-    // Matériau face inférieure (fond arrière)
-    const backMaterial = new THREE.MeshStandardMaterial({
-      color: 0x070B14,
-      metalness: 0.9,
-      roughness: 0.3,
-    });
-
-    // CylinderGeometry materials: [0: contour, 1: top, 2: bottom]
-    const meshBase = new THREE.Mesh(cylinderGeometry, [rimMaterial, faceMaterial, backMaterial]);
-    
-    // Oriente le cylindre face caméra
-    meshBase.rotation.x = Math.PI / 2;
-    meshBase.position.set(0, 0, 0);
-    this.badgeGroup.add(meshBase);
-
-    // -------------------------------------------------------------------------
-    // 2. LE DÔME DE RÉSINE (Demi-sphère écrasée par-dessus le cylindre)
-    // -------------------------------------------------------------------------
-    // Demi-sphère : phiLength = 2PI, thetaLength = PI/2
-    const domeGeometry = new THREE.SphereGeometry(2, 64, 64, 0, Math.PI * 2, 0, Math.PI / 2);
-    
-    // Matériau du dôme : MeshPhysicalMaterial transparent avec clearcoat
-    const domeMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0xffffff,
-      transparent: true,
-      opacity: 0.2,
+      opacity: 0.1,
+      depthWrite: false,
       roughness: 0.0,
       clearcoat: 1.0,
-      clearcoatRoughness: 0.0,
-      depthWrite: false, // Empêche l'occlusion du logo sous-jacent
     });
-    const meshDome = new THREE.Mesh(domeGeometry, domeMaterial);
-    
-    // Aplatissement sur Y pour former la lentille bombée
-    meshDome.scale.set(1, 0.15, 1);
-    
-    // Comme la demi-sphère pointe vers le haut (+Y), on la pivote de PI/2 sur X
-    // pour que le sommet du dôme bombé pointe directement vers l'avant (vers la caméra)
-    meshDome.rotation.x = Math.PI / 2;
-    
-    // Positionnée juste au-dessus de la face supérieure du cylindre (z = 0.10)
-    meshDome.position.set(0, 0, 0.10);
-    this.badgeGroup.add(meshDome);
+    const domeMesh = new THREE.Mesh(domeGeo, domeMat);
+    domeMesh.rotation.x = Math.PI / 2; // Pointe vers la caméra
+    domeMesh.scale.set(1, 0.2, 1); // Aplatissement extrême pour faire une lentille
+    domeMesh.position.set(0, 0, 0.01); // Avancé juste DEVANT l'image plate
+    this.badgeGroup.add(domeMesh);
 
-    // Verrouillage initial du groupe
+    // Orientation initiale à zéro
     this.badgeGroup.position.set(0, 0, 0);
     this.badgeGroup.rotation.set(0, 0, 0);
-
-    // Ajout du groupe à la scène
-    this.scene.add(this.badgeGroup);
   }
 
   private animate = (): void => {
     this.animFrameId = requestAnimationFrame(this.animate);
 
-    // 3. Animation de balancier sur l'axe Y (Phase 14)
-    this.badgeGroup.rotation.y = Math.sin(this.clock.getElapsedTime() * 1.2) * 0.3;
+    // 5. L'Animation (Garde-fou strict)
+    // Oscillation UNIQUEMENT sur l'axe Y du groupe principal
+    this.badgeGroup.rotation.y = Math.sin(this.clock.getElapsedTime() * 1.5) * 0.35;
 
-    // Ne touche à aucun autre axe de rotation
+    // Aucun autre axe de rotation
     this.badgeGroup.rotation.x = 0;
     this.badgeGroup.rotation.z = 0;
 
