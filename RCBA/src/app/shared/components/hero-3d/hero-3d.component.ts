@@ -134,20 +134,25 @@ export class Hero3DComponent implements AfterViewInit, OnDestroy {
     // 4. Sécurité contre l'inversion par défaut de WebGL
     logoTexture.flipY = false;
 
-    // 6. Matériau du Token
-    const tokenMaterial = new THREE.MeshStandardMaterial({
+    // 6. Matériau Avancé PBR (Physically Based Rendering - Effet Résine Époxy / Vernis)
+    const tokenMaterial = new THREE.MeshPhysicalMaterial({
       map: logoTexture,
       side: THREE.DoubleSide,
       transparent: true,
-      metalness: 0.15,
-      roughness: 0.35,
+      roughness: 0.15,
+      metalness: 0.1,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.05,
     });
 
-    // 7. Géométrie : Disque / Cylindre aplati
-    // Utilisation d'un disque (CircleGeometry) ou cylindre très fin sans artefacts latéraux
-    const tokenGeometry = new THREE.CircleGeometry(1.5, 64);
+    // 7. Géométrie Convexe (Forme Lenticulaire / Badge Bombé)
+    // Sphère haute résolution écrasée sur son axe de profondeur Z
+    const tokenGeometry = new THREE.SphereGeometry(2, 64, 64);
 
     this.tokenMesh = new THREE.Mesh(tokenGeometry, tokenMaterial);
+
+    // Écrasement sur l'axe Z pour transformer la sphère en pastille/badge bombé
+    this.tokenMesh.scale.set(1, 1, 0.15);
 
     // Fixe l'orientation initiale de l'objet 3D à zéro (parfaitement vertical, face caméra)
     this.tokenMesh.position.set(0, 0, 0);
