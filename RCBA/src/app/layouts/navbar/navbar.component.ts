@@ -25,7 +25,6 @@ export class NavbarComponent {
     { label: 'ACCUEIL', path: '/', exact: true },
     { label: 'LE CLUB', path: '/club' },
     { label: 'DIRIGEANTS', path: '/dirigeants' },
-    { label: 'ALBUM PANINI', path: '/album' },
     { label: 'ÉQUIPES', path: '/equipes' },
     { label: 'CALENDRIER & RÉSULTATS', path: '/agenda' },
     { label: 'INSTALLATIONS', path: '/installations' },

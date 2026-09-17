@@ -20,6 +20,8 @@ export class PaniniCardComponent {
   readonly isRare = input<boolean>(false);
   readonly isGold = input<boolean>(false); // Mode vignette dorée (Direction / Légende)
   readonly number = input<number | undefined>(undefined);
+  readonly teamName = input<string | undefined>(undefined);
+  readonly isSelected = input<boolean>(false); // Badge convoqué pour les joueurs
 
   /**
    * Initiales si pas de photo

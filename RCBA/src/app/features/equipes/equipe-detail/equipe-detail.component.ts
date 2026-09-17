@@ -4,11 +4,12 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
 import { ClubService } from '../../../core/services/club.service';
 import { BadgeComponent } from '../../../shared/components/badge/badge.component';
+import { PaniniCardComponent } from '../../../shared/components/panini-card/panini-card.component';
 
 @Component({
   selector: 'app-equipe-detail',
   standalone: true,
-  imports: [RouterLink, BadgeComponent],
+  imports: [RouterLink, BadgeComponent, PaniniCardComponent],
   templateUrl: './equipe-detail.component.html',
   styleUrl: './equipe-detail.component.css',
 })

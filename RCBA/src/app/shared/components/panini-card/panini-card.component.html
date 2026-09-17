@@ -81,12 +81,11 @@
       <div class="relative z-10 w-full h-full max-h-[175px] aspect-[4/4.5] flex items-center justify-center">
         @if (photoUrl()) {
           <img
-            [ngSrc]="photoUrl()!"
+            [src]="photoUrl()!"
             [alt]="firstName() + ' ' + lastName()"
-            width="240"
-            height="270"
             class="w-full h-full object-cover object-[center_18%] drop-shadow-xl transition-transform duration-500 group-hover:scale-105 rounded-xl border border-white/20 shadow-md"
-            priority
+            loading="lazy"
+            (error)="$any($event.target).style.display='none'"
           />
         } @else {
           <div
@@ -99,6 +98,15 @@
             </span>
             <span class="text-[9px] font-semibold text-white/70 uppercase tracking-widest mt-1">
               RCBA
+            </span>
+          </div>
+        }
+
+        <!-- Badge sélection en match si convoqué -->
+        @if (isSelected()) {
+          <div class="absolute top-1.5 right-1.5 z-20">
+            <span class="inline-flex items-center gap-1 text-[8px] font-black uppercase bg-[#21ad1c] text-white px-2 py-0.5 rounded-full shadow-md animate-pulse">
+              ⚽ Convoqué
             </span>
           </div>
         }

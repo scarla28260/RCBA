@@ -75,74 +75,18 @@
           </div>
           <span class="text-xs font-bold text-slate-400 uppercase">Cartes Officielles RCBA</span>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
           @for (staff of staffForTeam(); track staff.id) {
             <!-- CARTE PANINI OFFICIELLE DU STAFF -->
-            <div class="group relative rounded-2xl p-[3px] bg-gradient-to-b from-[#21ad1c] via-[#101d69] to-[#0d1550] shadow-md hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300">
-              <div class="rounded-[14px] bg-white overflow-hidden flex flex-col h-full border border-white/40">
-                <!-- En-tête Panini -->
-                <div class="bg-gradient-to-r from-[#101d69] to-[#0d1550] px-3.5 py-2 flex items-center justify-between border-b-2 border-[#21ad1c]">
-                  <div class="flex items-center gap-1.5">
-                    <span class="text-sm">⭐</span>
-                    <span class="text-[9px] font-black uppercase tracking-[0.25em] text-white">RCBA • 2026-27</span>
-                  </div>
-                  <span class="text-[8px] font-black uppercase px-2 py-0.5 rounded-full bg-[#21ad1c] text-white">
-                    Éducateur
-                  </span>
-                </div>
-
-                <!-- Cadre photo Panini centré (taille uniforme 112px x 112px) -->
-                <div class="relative h-48 bg-gradient-to-b from-slate-900 via-[#101d69] to-slate-900 flex items-center justify-center overflow-hidden">
-                  <div class="absolute inset-0 opacity-15"
-                       style="background-image: repeating-linear-gradient(45deg, #21ad1c 0, #21ad1c 1px, transparent 0, transparent 20px);"></div>
-                  <div class="absolute text-[55px] font-black text-white/5 select-none pointer-events-none">
-                    STAFF
-                  </div>
-
-                  <div class="relative z-10 p-1 rounded-full bg-gradient-to-tr from-amber-300 via-white to-[#21ad1c] shadow-2xl">
-                    @if (staff.photo) {
-                      <img
-                        [src]="staff.photo"
-                        [alt]="staff.firstName + ' ' + staff.lastName"
-                        class="w-28 h-28 rounded-full object-cover object-top border-2 border-white shadow-inner group-hover:scale-105 transition-transform duration-500"
-                        loading="lazy"
-                        (error)="$any($event.target).style.display='none'"
-                      />
-                    } @else {
-                      <div
-                        class="w-28 h-28 rounded-full flex items-center justify-center text-white text-2xl font-black shadow-inner border-2 border-white"
-                        style="background: linear-gradient(135deg, #21ad1c, #101d69)"
-                      >
-                        {{ getInitials(staff.firstName, staff.lastName) }}
-                      </div>
-                    }
-                  </div>
-
-                  <div class="absolute bottom-2 right-2.5 z-10">
-                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-white text-[#101d69] text-xs font-black shadow">
-                      📋
-                    </span>
-                  </div>
-                </div>
-
-                <!-- Cartouche Nom & Rôle Panini -->
-                <div class="p-4 flex-1 flex flex-col justify-between text-center bg-gradient-to-b from-white to-slate-50">
-                  <div>
-                    <h3 class="font-black text-slate-900 text-base uppercase tracking-tight leading-tight">
-                      {{ staff.firstName }} <br />
-                      <span class="text-[#101d69]">{{ staff.lastName }}</span>
-                    </h3>
-                    <div class="inline-block mt-2 px-2.5 py-1 rounded-md bg-slate-100 border border-slate-200 text-xs font-bold text-slate-700">
-                      {{ staff.role }}
-                    </div>
-                  </div>
-                  <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between text-[9px] font-mono font-bold text-slate-400">
-                    <span>RCBA-STAFF</span>
-                    <span class="text-[#21ad1c]">{{ team()!.name }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <app-panini-card
+              [firstName]="staff.firstName"
+              [lastName]="staff.lastName"
+              category="Staff RCBA"
+              [role]="staff.role"
+              [photoUrl]="staff.photo"
+              [isGold]="false"
+              [isRare]="false"
+            />
           }
         </div>
       </section>
@@ -223,94 +167,20 @@
           <span class="text-xs font-bold text-slate-400 uppercase">Cartes Officielles RCBA</span>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
           @for (player of playersForTeam(); track player.id) {
             <!-- CARTE PANINI OFFICIELLE DU JOUEUR -->
-            <div class="group relative rounded-2xl p-[2.5px] bg-gradient-to-b from-amber-400 via-[#101d69] to-[#0d1550] shadow-md hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300">
-              <div class="rounded-[14px] bg-white overflow-hidden flex flex-col h-full border border-white/40">
-                <!-- Header carte -->
-                <div class="bg-gradient-to-r from-[#101d69] to-[#0d1550] px-3 py-1.5 flex items-center justify-between border-b-2 border-amber-400">
-                  <span class="text-[8px] font-black uppercase tracking-[0.2em] text-white">RCBA • JOUEUR</span>
-                  @if (player.number) {
-                    <span class="text-xs font-black text-amber-400 font-mono">#{{ player.number }}</span>
-                  }
-                </div>
-
-                <!-- Cadre photo joueur Panini (112px x 112px centré uniforme) -->
-                <div class="relative h-44 bg-gradient-to-b from-slate-900 via-[#101d69] to-slate-900 flex items-center justify-center overflow-hidden">
-                  <div class="absolute inset-0 opacity-15"
-                       style="background-image: repeating-linear-gradient(45deg, #21ad1c 0, #21ad1c 1px, transparent 0, transparent 20px);"></div>
-
-                  <div class="relative z-10 p-1 rounded-full bg-gradient-to-tr from-amber-300 via-white to-[#21ad1c] shadow-xl">
-                    @if (player.photo) {
-                      <img
-                        [src]="player.photo"
-                        [alt]="player.displayName"
-                        class="w-24 h-24 rounded-full object-cover object-top border-2 border-white shadow-inner group-hover:scale-105 transition-transform duration-500"
-                        loading="lazy"
-                        (error)="$any($event.target).style.display='none'"
-                      />
-                    } @else {
-                      <div
-                        class="w-24 h-24 rounded-full flex items-center justify-center text-white text-xl font-black shadow-inner border-2 border-white"
-                        style="background: linear-gradient(135deg, #1f39cf, #101d69)"
-                      >
-                        {{ getInitials(player.firstName, player.lastName) }}
-                      </div>
-                    }
-                  </div>
-
-                  <!-- Badge sélection en match si convoqué -->
-                  @if (isPlayerSelected(player)) {
-                    <div class="absolute top-2 right-2 z-10">
-                      <span class="inline-flex items-center gap-1 text-[8px] font-black uppercase bg-[#21ad1c] text-white px-2 py-0.5 rounded-full shadow-sm animate-pulse">
-                        ⚽ Convoqué
-                      </span>
-                    </div>
-                  }
-
-                  @if (player.position) {
-                    <div class="absolute bottom-2 left-2 z-10">
-                      <span class="text-[9px] font-bold text-white bg-slate-900/80 backdrop-blur-xs px-2 py-0.5 rounded-full border border-white/20">
-                        {{ player.position }}
-                      </span>
-                    </div>
-                  }
-                </div>
-
-                <!-- Cartouche Nom Panini : UNIQUEMENT LE PRÉNOM (et 1ère lettre du nom si homonymes) -->
-                <div class="p-3 text-center bg-gradient-to-b from-white to-slate-50 flex-1 flex flex-col justify-between">
-                  <div>
-                    <h3 class="font-black text-slate-900 text-base uppercase tracking-tight leading-tight">
-                      {{ player.displayName }}
-                    </h3>
-                  </div>
-
-                  <!-- Stats d'évolution du joueur si disponibles -->
-                  @if (player.stats) {
-                    <div class="mt-2.5 pt-2 border-t border-slate-100 grid grid-cols-3 gap-1 text-center bg-slate-50 rounded-lg p-1.5">
-                      <div>
-                        <div class="text-[9px] text-slate-400 font-bold uppercase">Buts</div>
-                        <div class="text-xs font-black text-[#101d69]">{{ player.stats.goals }}</div>
-                      </div>
-                      <div>
-                        <div class="text-[9px] text-slate-400 font-bold uppercase">Passes</div>
-                        <div class="text-xs font-black text-[#21ad1c]">{{ player.stats.assists }}</div>
-                      </div>
-                      <div>
-                        <div class="text-[9px] text-slate-400 font-bold uppercase">Prog.</div>
-                        <div class="text-xs font-black text-amber-500">{{ player.stats.ratingProgression }}/10</div>
-                      </div>
-                    </div>
-                  }
-
-                  <div class="mt-2 pt-1.5 border-t border-slate-100 flex items-center justify-between text-[8px] font-mono font-bold text-slate-400">
-                    <span>{{ team()!.ageGroup }}</span>
-                    <span class="text-[#21ad1c]">{{ team()!.format }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <app-panini-card
+              [firstName]="player.firstName"
+              [lastName]="player.lastName"
+              [category]="team()!.ageGroup"
+              [role]="player.position || 'Joueur'"
+              [photoUrl]="player.photo"
+              [number]="player.number"
+              [isSelected]="isPlayerSelected(player)"
+              [isRare]="false"
+              [isGold]="false"
+            />
           }
         </div>
       </section>
